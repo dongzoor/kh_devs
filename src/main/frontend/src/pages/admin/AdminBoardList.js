@@ -64,7 +64,7 @@ function AdminBoardList() {
     };
 
     BoardData();
-  }, [loading]);
+  }, []);
 
   if (loading) {
     return <Loading></Loading>;

@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -5,11 +7,9 @@ import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
-import { useState, useEffect } from "react";
-import UserApi from "../../api/UserApi";
 
 function OffcanvasExample() {
-  const [userEmail, setUserEmail] = useState()
+  const [userEmail, setUserEmail] = useState("");
   // 초기값 설정
   useEffect(() => {
     const sessioninfo = sessionStorage.getItem("userEmail");
@@ -18,15 +18,9 @@ function OffcanvasExample() {
     }
   }, []);
 
-  const onClickLogout = async () => {
-    if (window.confirm("로그아웃 하시겠습니까?")) {
-      const logOut = await UserApi.logOut();
-
-      if (logOut.data === true) {
-        window.alert("로그아웃 되었습니다.");
-        sessionStorage.clear();
-      }
-    }
+  const onClickLogout = (e) => {
+    window.alert("로그아웃 되었습니다.");
+    sessionStorage.clear();
   };
 
   return (
@@ -54,7 +48,7 @@ function OffcanvasExample() {
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
-                  {userEmail !== null && (
+                  {userEmail !== "" && (
                     <Nav.Link href="/" onClick={onClickLogout}>
                       로그아웃
                     </Nav.Link>
@@ -74,7 +68,7 @@ function OffcanvasExample() {
                       내 스터디 보기
                     </NavDropdown.Item>
                   </NavDropdown>
-                  <Nav.Link href="/study">스터디</Nav.Link>
+                  <Nav.Link href="/studies">스터디</Nav.Link>
                   <Nav.Link href="/social">Social</Nav.Link>
                   <Nav.Link href="/AdminLogin">관리자모드</Nav.Link>
                 </Nav>

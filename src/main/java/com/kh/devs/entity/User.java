@@ -16,8 +16,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
+@Table(name = "Users") //User가 예약어라 에러 발생 -> 수정
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
@@ -39,15 +39,16 @@ public class User {
 
     // user-role enum type : user/admin 추가
     // default는 user로 하고, admin 계정은 미리 서버에 넣어두는걸로 하기
-
     @Column(name = "userRole")
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
+
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime createDate;
+
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime modifyDate;
-}
 
+}

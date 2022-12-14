@@ -4,6 +4,7 @@ import com.kh.devs.dao.SocialRepository;
 import com.kh.devs.dao.UserRepository;
 import com.kh.devs.dto.SocialDTO;
 import com.kh.devs.entity.Social;
+import com.kh.devs.entity.Study;
 import com.kh.devs.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -124,6 +125,8 @@ public class SocialService {
         socialRepository.deleteById(socialId); // 오류가 터지면 익센셥 타서 신경 노노
         return "ok";
     }
-
+    public List<Social> getAdSocialList2() {
+        return socialRepository.findAll();
+    }
 
 }

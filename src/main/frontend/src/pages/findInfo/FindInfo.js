@@ -1,7 +1,5 @@
 // 아이디, 비밀번호 찾기 페이지
 
-import "./FindInfo.css";
-
 import { Link, useNavigate } from "react-router-dom";
 import React, { useRef, useState } from "react";
 
