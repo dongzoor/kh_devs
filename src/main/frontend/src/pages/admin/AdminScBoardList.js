@@ -46,7 +46,7 @@ function AdminScBoardList() {
         };
 
         BoardData();
-    }, [loading]);
+    }, []);
 
     if (loading) {
         return <Loading></Loading>;
