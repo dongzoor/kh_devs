@@ -6,7 +6,7 @@ import axios from "axios";
 const SocialApi = {
   // 게시글 전체 조회
   socialList: async function () {
-    return await axios.get("/api/social");
+    return await axios.get("api/social");
   },
   // 게시글 상세 조회
   socialDetail: async function (socialId) {
