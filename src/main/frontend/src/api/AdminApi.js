@@ -15,12 +15,13 @@ const AdminApi = {
     //     cmd: "admemlist"
 
     //   };
-    return await axios.get(WN_DOMAIN + "adUserList", HEADER);
+    //   "/api/adUserList"
+    return await axios.get("/api/adUserList");
   },
 
 // 어드민 멤버 개별 조회
   admemberDetail: async function (userId) {
-    return await axios.get(WN_DOMAIN  + "adUserList/" + userId, HEADER);
+    return await axios.get("/api/adUserList/" + userId);
   },
 
   AdUserUpdate: async function ( userid , userNickname, password, phone, profileImage) {
@@ -32,9 +33,9 @@ const AdminApi = {
       profileImage: profileImage,
     };
     return await axios.put(
-      WN_DOMAIN + "adUserList/" + userid + "/update",
-      updateObj,
-      HEADER
+    "/api/adUserList/" + userid + "/update",
+      updateObj
+
     );
   },
 
@@ -44,37 +45,37 @@ const AdminApi = {
       adminEmail: id,
       password: pwd,
     };
-    return await axios.post(WN_DOMAIN +"adLogin", loginObj, HEADER);
+    return await axios.post("/api/adLogin", loginObj);
   },
 
 //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
   // 어드민이 스터디게시판 전체 조회
   adstudyboardList: async function () {
-    return await axios.get(WN_DOMAIN + "adStudies", HEADER);
+    return await axios.get("/api/adStudies");
   },
 
   // 어드민이 소셜게시판 전체 조회
   adSocialboardList: async function () {
-    return await axios.get(WN_DOMAIN + "adSocialList", HEADER);
+    return await axios.get("/api/adSocialList2");
   },
 
  // 어드민이 스터디 게시판 삭제
  deleteStudyBoard: async function (study_id) {  
   console.log("소셜아이디 : " + study_id)
   return await axios.delete(
-    WN_DOMAIN + "deleteAdStudy/" + study_id , HEADER);
+   "/api/deleteAdStudy/" + study_id);
 },
 //
 // 어드민이 소셜게시판 별개 조회
   socialDetail: async function (social_Id) {
-    return await axios.get(WN_DOMAIN + "social/" + social_Id, HEADER);
+    return await axios.get("/api/social/" + social_Id);
   },
 
 // 어드민이 소셜게시판 삭제
   socialAdDelete: async function (socialId) {
     console.log("소셜아이디 : " + socialId);
-    return await axios.delete(WN_DOMAIN + "adSocialList/" + socialId, HEADER);  
+    return await axios.delete("/api/adSocialList/" + socialId);  
   },
   // socialAdDelete: async function (socialId) {
   //   console.log("소셜아이디 : " + socialId);
@@ -90,9 +91,9 @@ const AdminApi = {
       // image: image, // firebase 성공하면
     };
     return await axios.put(
-      WN_DOMAIN + "adSocialList/" + socialId + "/update",
-      updateObj,
-      HEADER
+      "/api/adSocialList/" + socialId + "/update",
+      updateObj
+      
     );
   },
 
@@ -100,7 +101,7 @@ const AdminApi = {
   // 어드민이 멤버삭제
   deleteAdmem: async function () {
     return await axios.delete(
-      WN_DOMAIN + "Delete", HEADER);
+      "/api/Delete");
   },
 
 

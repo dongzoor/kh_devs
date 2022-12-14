@@ -8,7 +8,7 @@ import { MdArrowBack } from "react-icons/md";
 import Modal from "../../utill/Modal";
 import Terms from "../register/Terms";
 import UserApi from "../../api/UserApi";
-import { storageService } from "../../lib/api/Fbase";
+import { storageService } from "../../lib/api/fbase";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 
