@@ -5,7 +5,7 @@ import { ref, uploadString } from "@firebase/storage";
 
 import { Link } from "react-router-dom";
 import { MdArrowBack } from "react-icons/md";
-import Modal from "../../utill/Modal"
+import Modal from "../../utill/Modal";
 import Terms from "../register/Terms";
 import UserApi from "../../api/UserApi";
 import { storageService } from "../../lib/api/Fbase";

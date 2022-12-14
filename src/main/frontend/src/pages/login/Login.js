@@ -4,7 +4,7 @@ import "../login/Login.css";
 
 import { FaLock, FaUser } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SiGithub, SiGoogle, SiKakaotalk } from "react-icons/si";
 import { getDownloadURL, ref } from "@firebase/storage";
 
@@ -28,40 +28,15 @@ const Container = styled.div`
 `;
 
 function Login() {
-  // useEffect(() => {
-  //   const res = UserApi.readUserInfo();
-
-  //   console.log(res.data);
-
-  //   if (res.data !== false) {
-  //     // 사람정보에 이미지가 존재하는 경우
-  //     if (res.data.profileImage !== null) {
-  //       //FireBase에서 이미지를 불러올 경로 참고 생성
-  //       let attachmentUrl = ref(
-  //         storageService,
-  //         `/USER/${res.data.profileImage}`
-  //       );
-
-  //       // 경로 참고를 가지고 이미지 경로를 불러온다.
-  //       let profileImagePath = getDownloadURL(attachmentUrl);
-
-  //       sessionStorage.setItem("profileImage", res.data.profileImage);
-  //       sessionStorage.setItem("profileImagePath", profileImagePath);
-  //     }
-
-  //     sessionStorage.setItem("userEmail", res.data.userEmail);
-  //     sessionStorage.setItem("userNickname", res.data.userNickname);
-  //     sessionStorage.setItem("phone", res.data.phone);
-  //     navigate("/Profile");
-  //   }
-  // }, []);
-
   const navigate = useNavigate();
 
-  // 세션이 존재하는 경우 프로필 화면으로
-  if (sessionStorage.getItem("userEmail") !== null) {
-    window.location.replace("/Profile");
-  }
+  useEffect(() => {
+    // 세션이 존재하는 경우 프로필 화면으로
+    if (sessionStorage.getItem("userEmail") !== null) {
+      navigate("/Profile");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // 키보드 입력
   const [inputId, setInputId] = useState("");
@@ -102,7 +77,7 @@ function Login() {
       sessionStorage.setItem("userEmail", res.data.userEmail);
       sessionStorage.setItem("userNickname", res.data.userNickname);
       sessionStorage.setItem("phone", res.data.phone);
-      navigate("/Profile");
+      window.location.replace("/Profile");
     } else if (res.data === false) {
       window.alert("이메일이나 비밀번호를 확인해주세요.");
     }
@@ -111,10 +86,10 @@ function Login() {
   return (
     <Box>
       <Container>
-        <div class="screen">
-          <div class="screen__content">
-            <form class="login">
-              <div class="login__field">
+        <div className="screen">
+          <div className="screen__content">
+            <form className="login">
+              <div className="login__field">
                 <FaUser className="login__icon" />
                 <input
                   type="text"
@@ -124,7 +99,7 @@ function Login() {
                   onChange={onChangeId}
                 />
               </div>
-              <div class="login__field">
+              <div className="login__field">
                 <FaLock className="pwd__icon" />
                 <input
                   type="password"
@@ -172,21 +147,21 @@ function Login() {
                 <a href="#" className="kakaoIcon">
                   <SiKakaotalk />
                 </a>
-                <a href="/oauth2/authorization/google" className="googleIcon">
+                <a href="#" className="kakaoIcon">
                   <SiGoogle />
                 </a>
-                {/* <GoogleLogin /> */}
+
                 <a href="#" className="githubIcon">
                   <SiGithub />
                 </a>
               </div>
             </div>
           </div>
-          <div class="screen__background">
-            <span class="screen__background__shape screen__background__shape4"></span>
-            <span class="screen__background__shape screen__background__shape3"></span>
-            <span class="screen__background__shape screen__background__shape2"></span>
-            <span class="screen__background__shape screen__background__shape1"></span>
+          <div className="screen__background">
+            <span className="screen__background__shape screen__background__shape4"></span>
+            <span className="screen__background__shape screen__background__shape3"></span>
+            <span className="screen__background__shape screen__background__shape2"></span>
+            <span className="screen__background__shape screen__background__shape1"></span>
           </div>
         </div>
       </Container>

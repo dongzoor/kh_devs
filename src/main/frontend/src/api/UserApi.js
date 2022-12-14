@@ -65,14 +65,6 @@ const UserApi = {
   delete: async function (userEmail) {
     return await axios.delete(`delete/${userEmail}`);
   },
-
-  readUserInfo: async function () {
-    return await axios.post("readUserInfo");
-  },
-
-  logOut: async function () {
-    return await axios.post("logOut");
-  },
 };
 
 export default UserApi;
