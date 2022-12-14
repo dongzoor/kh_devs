@@ -60,6 +60,7 @@ public class SocialService {
         socialDTO.setTag(social.getTag());
         socialDTO.setLike(social.getLike());
         socialDTO.setImage(social.getImage());
+        socialDTO.setImageId(social.getImageId());
         socialDTO.setView(social.getView());
         socialDTO.setComment(social.getComment());
         socialDTO.setPostDate(social.getPostDate());
@@ -68,7 +69,7 @@ public class SocialService {
         return socialDTO;
     }
     // Social Write 등록
-    public boolean regSocial(Long userId, String title, String content, String tag, String image) throws Exception { // 결과값은 성공,실패만 알려주면 되니까 boolean
+    public boolean regSocial(Long userId, String title, String content, String tag, String image, String imageId) throws Exception { // 결과값은 성공,실패만 알려주면 되니까 boolean
         try{
             User user = userRepository.findById(userId).get(); // 객체로 user 정보를 다시 찾아와서 넣어주기 위함
             System.out.println("#############################");
@@ -80,6 +81,7 @@ public class SocialService {
             social.setTag(tag);
             social.setContent(content);
             social.setImage(image);
+            social.setImageId(imageId);
             social.setPostDate(LocalDateTime.now());  // 게시일 정보 자동 기입
             Social rst = socialRepository.save(social);
             log.warn(rst.toString()); // 터미널 창에 찍으려구
@@ -89,15 +91,16 @@ public class SocialService {
         }
     }
     @Transactional  // 수정
-    public boolean updateSocial(Long socialId,String title, String content, String tag, String image) {
+    public boolean updateSocial(Long socialId,String title, String content, String tag, String image, String imageId) {
         Social social = socialRepository.findById(socialId)
                 .orElseThrow(()->{
                     return new IllegalArgumentException("글 찾기 실패: 아이디를 찾을 수 없습니다.");
-        });
+                });
         social.setTitle(title);
         social.setTag(tag);
         social.setContent(content);
         social.setImage(image);
+        social.setImageId(imageId);
         social.setUpDate(LocalDateTime.now());  // 수정일 정보 자동 기입
         return true;
     }

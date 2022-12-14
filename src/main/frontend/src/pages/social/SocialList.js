@@ -1,15 +1,13 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import SocialApi from "../../api/SocialApi";
-import Photo from "./pic/짱난.gif";
-
+import Photo from "./pic/pic.gif";
 import {
   IoEyeOutline,
   IoHeartOutline,
   IoChatboxOutline,
 } from "react-icons/io5";
-import { Link } from "react-router-dom";
 
 const Social = () => {
   const [socialList, setSocialList] = useState("");
@@ -21,7 +19,7 @@ const Social = () => {
       try {
         const response = await SocialApi.socialList();
         setSocialList(response.data);
-        console.log("★ Social List " , response.data);
+        console.log("★ Social List ", response.data);
       } catch (e) {
         console.log(e);
       }

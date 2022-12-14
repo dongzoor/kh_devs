@@ -13,11 +13,10 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
-@RequestMapping("/social")
+@RequestMapping("/api/social")
 public class SocialController {
-    @Autowired
     private final SocialService socialService; // Controller 는 넘어온 요청을 처리하기 위해 Service 를 호출한다.
 
     // social 전체 목록 조회
@@ -42,7 +41,8 @@ public class SocialController {
         String content = regData.get("content");
         String tag = regData.get("tag");
         String image = regData.get("image");
-        boolean result = socialService.regSocial(userid, title, content, tag, image);
+        String imageId = regData.get("imageId");
+        boolean result = socialService.regSocial(userid, title, content, tag, image, imageId);
         if (result) {
             return new ResponseEntity<>(true, HttpStatus.OK);  // 프론트의 res.data 값(true)으로 넘어온다!!!
         } else {
@@ -58,7 +58,8 @@ public class SocialController {
         String content = editData.get("content");
         String tag = editData.get("tag");
         String image = editData.get("image");
-        boolean result = socialService.updateSocial(socialId, title, content, tag, image);
+        String imageId = editData.get("imageId");
+        boolean result = socialService.updateSocial(socialId, title, content, tag, image, imageId);
         if (result) {
             return new ResponseEntity<>(true, HttpStatus.OK);  // 프론트의 res.data 값(true)으로 넘어온다!!!
         } else {

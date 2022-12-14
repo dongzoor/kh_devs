@@ -1,16 +1,16 @@
 import axios from "axios";
 
-const DOMAIN = "http://localhost:8211/";
-const HEADER = "application/json";
+// const DOMAIN = "http://localhost:8211/";
+// const HEADER = "application/json";
 
 const SocialApi = {
   // 게시글 전체 조회
   socialList: async function () {
-    return await axios.get(DOMAIN + "social", HEADER);
+    return await axios.get("/api/social");
   },
   // 게시글 상세 조회
   socialDetail: async function (socialId) {
-    return await axios.get(DOMAIN + "social/" + socialId, HEADER);
+    return await axios.get(`/api/social/${socialId}`);
   },
   // 게시글 작성
   socialWrite: async function (user, title, content, tag, image, imageId) {
@@ -22,7 +22,7 @@ const SocialApi = {
       image: image,
       imageId: imageId,
     };
-    return await axios.post(DOMAIN + "social/write", writeObj, HEADER);
+    return await axios.post("/api/social/write", writeObj);
   },
   // 게시글 수정
   socialUpdate: async function (socialId, title, content, tag, image, imageId) {
@@ -31,44 +31,38 @@ const SocialApi = {
       content: content,
       tag: tag,
       image: image,
-      imageId: imageId
+      imageId: imageId,
     };
-    return await axios.put(
-      DOMAIN + "social/" + socialId + "/update",
-      updateObj,
-      HEADER
-    );
+    return await axios.put(`/api/social/${socialId}/update`, updateObj);
   },
-
   // 게시글 삭제
   socialDelete: async function (socialId) {
-    return await axios.delete(DOMAIN + "social/" + socialId, HEADER);
+    return await axios.delete(`/api/social/${socialId}`);
   },
-
-  // 댓글 조회 api
-  commentList: async function (socialId) {
-    return await axios.get(DOMAIN + "social/" + socialId, HEADER);
-  },
-  // 댓글 입력 api
-  insertComment: async function (id, content, boardId) {
-    console.log(
-      "아이디 : " + id + "댓글 내용 : " + content + "게시판 번호 : " + boardId
-    );
-    const regObj = {
-      id: id,
-      content: content,
-      boardId: boardId,
-    };
-    return await axios.post(DOMAIN + "regcomment", regObj, HEADER);
-  },
-  // 댓글 삭제 api
-  deleteComment: async function (postId) {
-    console.log("댓글 번호 : " + postId);
-    const deleteObj = {
-      postId: String(postId),
-    };
-    return await axios.post(DOMAIN + "deleteComment", deleteObj, HEADER);
-  },
+  //   // 댓글 조회 api
+  //   commentList: async function (socialId) {
+  //     return await axios.get(DOMAIN + "social/" + socialId, HEADER);
+  //   },
+  //   // 댓글 입력 api
+  //   insertComment: async function (id, content, boardId) {
+  //     console.log(
+  //       "아이디 : " + id + "댓글 내용 : " + content + "게시판 번호 : " + boardId
+  //     );
+  //     const regObj = {
+  //       id: id,
+  //       content: content,
+  //       boardId: boardId,
+  //     };
+  //     return await axios.post(DOMAIN + "regcomment", regObj, HEADER);
+  //   },
+  //   // 댓글 삭제 api
+  //   deleteComment: async function (postId) {
+  //     console.log("댓글 번호 : " + postId);
+  //     const deleteObj = {
+  //       postId: String(postId),
+  //     };
+  //     return await axios.post(DOMAIN + "deleteComment", deleteObj, HEADER);
+  //   },
 };
 
 export default SocialApi;

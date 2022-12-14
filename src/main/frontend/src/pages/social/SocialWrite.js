@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import styled from "styled-components";
 import SocialApi from "../../api/SocialApi";
-import { storageService } from "../../lib/api/fbase";
+import { storageService } from "../../lib/api/Fbase";
 import { v4 as uuidv4 } from "uuid";
 import {
   ref,

@@ -9,7 +9,7 @@ import { SiGithub, SiGoogle, SiKakaotalk } from "react-icons/si";
 import { getDownloadURL, ref } from "@firebase/storage";
 
 import UserApi from "../../api/UserApi";
-import { storageService } from "../../lib/api/Fbase";
+import { storageService } from "../../lib/api/fbase";
 import styled from "styled-components";
 
 const Box = styled.div`
