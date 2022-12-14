@@ -58,7 +58,7 @@ const UserApi = {
     const idCheck = {
       userEmail: id,
     };
-    return await axios.post("duplCheck", idCheck);
+    return await axios.post("/duplCheck", idCheck);
   },
 
   // 회원탈퇴
