@@ -5,6 +5,7 @@ import com.kh.devs.dto.StudyDTO;
 import com.kh.devs.entity.Study;
 import com.kh.devs.service.StudyService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
+@Slf4j
 public class StudyController {
 
     private final StudyService studyService;
@@ -30,13 +32,16 @@ public class StudyController {
     @GetMapping("/study/{studyId}")
     public ResponseEntity<StudyDTO> studyDTO(@PathVariable Long studyId) {
         Study study = studyService.getStudy(studyId);
+
         return new ResponseEntity(study, HttpStatus.OK);
     }
 
     @PostMapping("/study/write")
     public ResponseEntity<StudyDTO> writeStudy(@RequestBody StudyDTO studyDTO) {
 //        로그인 파트에서 세션으로 주면 받아올 예정
+        System.out.println(studyDTO);
         boolean result = studyService.writeStudy(studyDTO);
+
 //        if(studyService.writeStudy(studyDTO) && )
 
         if(result){

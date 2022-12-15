@@ -5,7 +5,8 @@ import { ref, uploadString, getDownloadURL, deleteObject } from "@firebase/stora
 import { storageService } from "../../lib/api/fbase";
 import StudyApi from "../../lib/api/StudyApi";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { Badge, Button, Form, InputGroup } from "react-bootstrap";
 
 const Box = styled.div`
   margin: 0;
@@ -27,13 +28,33 @@ const StudyWrite = (studyObj) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [studyDetail, setStudyDetail] = useState("");
+  const [hashtag, setHashtag] = useState("");
+  const [hashtags, setHashtags] = useState([]);
   const params = useParams().studyId;
+
+  const navigate = useNavigate();
 
   let attachmentUrl = "";
   let preImgUrl = "";
 
   if (studyDetail.imgUrl) preImgUrl = studyDetail.imgUrl;
 
+  useEffect(() => {
+    const StudyData = async () => {
+      try {
+        const response = await StudyApi.studyDetail(params);
+        // const response = await StudyApi.studyUpdate(parseInt(params), title, content, attachmentUrl);
+        // const SetUserId = await UserApi.~~~//api로 정보 가져와야함
+        setStudyDetail(response.data);
+        setHashtags(response.data.hashtag);
+
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    StudyData();
+
+  }, []);
 
 
   //사진 첨부 없이 텍스트만 트윗하고 싶을 때도 있으므로 기본 값을 ""로 해야한다.
@@ -87,28 +108,29 @@ const StudyWrite = (studyObj) => {
         const attachmentRef = ref(storageService, `/STUDY/${uuidv4()}`); //const fileRef = ref(storageService, `${ studyObj.studyId } / ${ uuidv4() }`);
         //storage 참조 경로로 파일 업로드 하기                                            위의 거로 바꿔주어야 스터디 아이디에 맞게 저장됨
         const response = await uploadString(
-          attachmentRef,
-          attachment,
-          "data_url"
+            attachmentRef,
+            attachment,
+            "data_url"
         );
         //storage 참조 경로에 있는 파일의 URL을 다운로드해서 attachmentUrl 변수에 넣어서 업데이트
         attachmentUrl = await getDownloadURL(response.ref);
 
         const studyUpdate = await StudyApi.studyUpdate(
-          params,
-          title,
-          content,
-          attachmentUrl
+            params,
+            title,
+            content,
+            attachmentUrl,
+            hashtags
         );
         console.log(studyUpdate);
-        window.location.replace("/studies");
+        navigate("/studies");
       } else { //첨부한게 없을 때 (이미지 유지)
 
         const studyUpdate = await StudyApi.studyUpdate(
-          params,
-          title,
-          content,
-          preImgUrl
+            params,
+            title,
+            content,
+            preImgUrl
         );
         console.log(studyUpdate);
         window.location.replace("/studies");
@@ -119,18 +141,19 @@ const StudyWrite = (studyObj) => {
         const attachmentRef = ref(storageService, `/STUDY/${uuidv4()}`); //const fileRef = ref(storageService, `${ studyObj.studyId } / ${ uuidv4() }`);
         //storage 참조 경로로 파일 업로드 하기                                            위의 거로 바꿔주어야 스터디 아이디에 맞게 저장됨
         const response = await uploadString(
-          attachmentRef,
-          attachment,
-          "data_url"
+            attachmentRef,
+            attachment,
+            "data_url"
         );
         //storage 참조 경로에 있는 파일의 URL을 다운로드해서 attachmentUrl 변수에 넣어서 업데이트
         attachmentUrl = await getDownloadURL(response.ref);
       }
       const studyUpdate = await StudyApi.studyUpdate(
-        params,
-        title,
-        content,
-        attachmentUrl
+          params,
+          title,
+          content,
+          attachmentUrl,
+          hashtags
       );
       console.log(studyUpdate);
       window.location.replace("/studies");
@@ -148,43 +171,70 @@ const StudyWrite = (studyObj) => {
     }
   };
 
-  useEffect(() => {
-    const StudyData = async () => {
-      try {
-        const response = await StudyApi.studyDetail(params);
-        console.log(params);
-        // const response = await StudyApi.studyUpdate(parseInt(params), title, content, attachmentUrl);
-        // const SetUserId = await UserApi.~~~//api로 정보 가져와야함
-        setStudyDetail(response.data);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    StudyData();
 
-  }, []);
+
+  const onChangeHashtag = (e) => {
+    const {
+      target: { value }
+    } = e;
+    setHashtag(value);
+  }
+
+  const addHashtag = (e) => {
+    setHashtags([...hashtags, hashtag]);
+    setHashtag('');
+  }
+
+  const onDeleteHash = (e) => {
+    const {
+      target: target
+    } = e;
+
+    hashtags.pop(target.innerHTML);
+    console.log(hashtags);
+    target.innerHTML = "";
+
+  }
 
   return (
-    <Box>
-      <InputContainer style={{ "marginTop": "5vh" }}>
-        <div className="mb-3">
-          <label htmlFor="title-input" className="form-label">Title</label>
-          <input type="email" className="form-control" id="title-input" placeholder="제목을 입력하세요." onChange={titleChange} defaultValue={studyDetail.title} />
-        </div>
-        <div className="mb-3" style={{}}>
-          <label htmlFor="content-textarea" className="form-label">Content</label>
-          <textarea className="form-control" id="content-textarea" rows="20" placeholder="내용을 입력하세요." onChange={contentChange} defaultValue={studyDetail.content}></textarea>
-        </div>
-        <div className="mb-3">
-          <label htmlFor="formFile" className="form-label">Upload Image</label>
-          <input className="form-control" type="file" id="formFile" onChange={imgChange} defaultValue={studyDetail.imgUrl} />
-        </div>
-        <img src={studyDetail.imgUrl} alt="no image" style={{ "width": "5vw", "height": "5vh" }} />
-        <button type="button" className="btn btn-light" style={{ "float": "right" }} onClick={onSubmit}>
-          Update
-        </button>
-      </InputContainer>
-    </Box>
+      <Box>
+        <InputContainer style={{ "marginTop": "5vh" }}>
+          <div className="mb-3">
+            <label htmlFor="title-input" className="form-label">Title</label>
+            <input type="email" className="form-control" id="title-input" placeholder="제목을 입력하세요." onChange={titleChange} defaultValue={studyDetail.title} />
+          </div>
+          <div className="mb-3" style={{}}>
+            <label htmlFor="content-textarea" className="form-label">Content</label>
+            <textarea className="form-control" id="content-textarea" rows="20" placeholder="내용을 입력하세요." onChange={contentChange} defaultValue={studyDetail.content}></textarea>
+          </div>
+          <div className="hastag-contianer">
+            <label htmlFor="hashtag-input" className="form-label">Hashtag</label>
+            <InputGroup className="mb-3" onChange={onChangeHashtag}>
+              <Form.Control
+                  placeholder="태그를 입력하세요."
+                  aria-label="태그를 입력하세요."
+                  aria-describedby="basic-addon2"
+                  id="hashtag-input"
+                  value={hashtag}
+              />
+              <Button variant="outline-secondary" id="button-addon2" onClick={addHashtag}>
+                추가
+              </Button>
+            </InputGroup>
+          </div>
+          <div className="hashtag-container">
+            {hashtags.map(e => <Badge bg="info" style={{ "marginRight": "0.5vw" }} onClick={onDeleteHash}>{e} </Badge>)}
+          </div>
+          <div className="mb-3">
+            <label htmlFor="formFile" className="form-label">Upload Image</label>
+            <input className="form-control" type="file" id="formFile" onChange={imgChange} defaultValue={studyDetail.imgUrl} />
+          </div>
+          <img src={studyDetail.imgUrl} alt="no image" style={{ "width": "5vw", "height": "5vh" }} />
+          <button type="button" className="btn btn-light" style={{ "float": "right" }} onClick={onSubmit}>
+            Update
+          </button>
+        </InputContainer>
+      </Box>
   )
 }
 export default StudyWrite;

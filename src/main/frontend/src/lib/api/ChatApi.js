@@ -6,7 +6,7 @@ const ChatApi = {
     const chatObject = {
       "name": name
     }
-    return await axios.post("chat", chatObject);
+    return await axios.post("/chat", chatObject);
   },
 
 };

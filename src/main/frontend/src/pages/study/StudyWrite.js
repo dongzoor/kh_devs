@@ -6,23 +6,30 @@ import { storageService } from "../../lib/api/fbase";
 import StudyApi from "../../lib/api/StudyApi";
 import { Badge, Button, Form, InputGroup } from "react-bootstrap";
 import { useEffect } from "react";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Box = styled.div`
   margin: 0;
   padding: 0;
   font-family: Raleway, Pretendard Std;
   background: linear-gradient(90deg, #ffe7e8, #8da4d0);
+  
+  .hashtag-container {
+  height: 2vh;
+  margin: -0.8vh 0.2vh 1vh 0;
+  }
+
+  .inputContainer {
+    width: 50vw;
+    height: 90vh;
+    margin: 0 auto;
+    padding: 15px;
+    background-color: #FFF;
+    box-shadow: 0px 0px 24px #5c5696;
+    border-radius: 25px;
+  }
 `;
-const InputContainer = styled.div`
-  width: 50vw;
-  height: 90vh;
-  margin: 0 auto;
-  padding: 15px;
-  background-color: #FFF;
-  box-shadow: 0px 0px 24px #5c5696;
-  border-radius: 25px;
-`;
+
 const StudyWrite = (studyObj) => {
   const [attachment, setAttachment] = useState("");
   const [title, setTitle] = useState("");
@@ -93,8 +100,8 @@ const StudyWrite = (studyObj) => {
       userNickname,
       title,
       content,
-      hashtags,
       attachmentUrl,
+      hashtags,
     );
     console.log(studyReg);
 
@@ -135,20 +142,29 @@ const StudyWrite = (studyObj) => {
     hashtags.pop(target.innerHTML);
     console.log(hashtags);
     target.innerHTML = "";
-
   }
+
+  // const handleKeyPress = (e) => {
+  //   if (e.key === 'Enter') {
+  //     setHashtags([...hashtags, hashtag]);
+  //     setHashtag('');
+  //   }
+  // }
 
   return (
     <Box>
-      <InputContainer style={{ "marginTop": "5vh" }}>
+      <div className="inputContainer">
+
         <div className="mb-3">
           <label htmlFor="title-input" className="form-label">Title</label>
           <input type="text" className="form-control" id="title-input" placeholder="제목을 입력하세요." onChange={titleChange} />
         </div>
+
         <div className="mb-3" style={{}}>
           <label htmlFor="content-textarea" className="form-label">Content</label>
           <textarea className="form-control" id="content-textarea" rows="12" placeholder="내용을 입력하세요." onChange={contentChange}></textarea>
         </div>
+
         <div className="hastag-contianer">
           <label htmlFor="hashtag-input" className="form-label">Hashtag</label>
           <InputGroup className="mb-3" onChange={onChangeHashtag}>
@@ -159,14 +175,29 @@ const StudyWrite = (studyObj) => {
               id="hashtag-input"
               value={hashtag}
             />
-            <Button variant="outline-secondary" id="button-addon2" onClick={addHashtag}>
+            <Button variant="outline-secondary" id="button-addon2" onClick={addHashtag} >
               추가
             </Button>
           </InputGroup>
         </div>
+
         <div className="hashtag-container">
-          {hashtags.map(e => <Badge bg="info" style={{ "marginRight": "0.5vw" }} onClick={onDeleteHash}>{e} </Badge>)}
+          {hashtags.map(e =>
+            <Badge bg="info" style={{ "marginRight": "0.5vw" }} onClick={onDeleteHash}>{e}</Badge>)}
         </div>
+
+        <div>
+          <label htmlFor="memberCount" className="form-label">인원</label>
+          <Form.Select aria-label="memberCount" style={{ "width": "5vw", "marginBottom": "2vh" }}>
+            <option>인원 수</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+          </Form.Select>
+        </div>
+
         <div className="mb-3">
           <label htmlFor="formFile" className="form-label">Upload Image</label>
           <input className="form-control" type="file" id="formFile" onChange={imgChange} />
@@ -174,7 +205,7 @@ const StudyWrite = (studyObj) => {
         <button type="button" className="btn btn-light" style={{ "float": "right" }} onClick={onSubmit}>
           Submit
         </button>
-      </InputContainer>
+      </div>
     </Box >
   )
 }

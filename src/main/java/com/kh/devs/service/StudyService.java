@@ -1,11 +1,8 @@
 package com.kh.devs.service;
 
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.kh.devs.constant.ApplyStatus;
 import com.kh.devs.dao.StudyRepository;
-import com.kh.devs.dto.SocialDTO;
 import com.kh.devs.dto.StudyDTO;
-import com.kh.devs.entity.Social;
 import com.kh.devs.entity.Study;
 import com.kh.devs.exception.NotFoundStudyException;
 import lombok.RequiredArgsConstructor;
@@ -15,13 +12,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class StudyService {
     private final StudyRepository studyRepository;
+    private final UserService userService;
 
     public Boolean writeStudy(StudyDTO studyDTO) {
         Study study = Study.builder()
@@ -32,7 +30,7 @@ public class StudyService {
                 .cnt(0)
                 .writer(studyDTO.getWriter())
                 .imgUrl(studyDTO.getImgUrl())
-                .hashtags(studyDTO.getHashtags())
+                .hashtag(studyDTO.getHashtag())
                 .build();
         Study rst = studyRepository.save(study);
         log.warn(rst.toString());
@@ -76,6 +74,12 @@ public class StudyService {
         studyRepository.deleteById(studyId); // 오류가 터지면 익센셥 타서 신경 노노
         return "OK";
     }
+
+
+//    @Transactional
+//    public Long save(Long userId, StudyDTO studyDTO) {
+//        Study saveStudy = StudyRepository.save();
+//    }
 
 //    public List<StudyDTO> getStudyList(){
 //        List<StudyDTO> studyDTOS = new ArrayList<>();
