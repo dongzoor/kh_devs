@@ -66,9 +66,9 @@ public class UserService {
     }
 
     // 회원정보 찾기 - 아이디 찾기
-    public Optional<Optional<User>> getUserEmail(String phone) {
-        Optional<User> user = userRepository.findByPhone(phone);
-        return Optional.ofNullable(user);
+    public User getUserEmail(String phone) {
+        List<User> user = userRepository.findByPhone(phone);
+        return user.get(0);
     }
 
     // 회원정보 찾기 - 비밀번호 찾기
@@ -77,12 +77,24 @@ public class UserService {
         return user.get(0);
     }
 
-    // 회원 탈퇴
+     //회원 탈퇴
     @Transactional
     public boolean userDelete(String userEmail) {
         List<User> user = userRepository.findByUserEmail(userEmail);
         userRepository.delete(user.get(0));
         return true;
+    }
+
+//    @Transactional
+//    public boolean userAdDelete(Long userId) {
+//        List<User> user = userRepository.findByUserId(userId);
+//        socialRepository.deleteById(socialId); // 오류가 터지면 익센셥 타서 신경 노노
+//        return true;
+//    }
+    @Transactional
+    public String deleteAdUser(Long userId) {
+        userRepository.deleteById(userId); // 오류가 터지면 익센셥 타서 신경 노노
+        return "ok";
     }
 
 

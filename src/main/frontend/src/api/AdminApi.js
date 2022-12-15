@@ -57,7 +57,7 @@ const AdminApi = {
 
   // 어드민이 소셜게시판 전체 조회
   adSocialboardList: async function () {
-    return await axios.get("/api/adSocialList2");
+    return await axios.get("/api/adSocialList");
   },
 
  // 어드민이 스터디 게시판 삭제
@@ -99,9 +99,9 @@ const AdminApi = {
 
 
   // 어드민이 멤버삭제
-  deleteAdmem: async function () {
-    return await axios.delete(
-      "/api/Delete");
+  admemberdelete: async function (userId) {
+    console.log("유저아이디 : " + userId);
+    return await axios.delete( "/api/User/" + userId);
   },
 
 
