@@ -1,16 +1,20 @@
+import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
-import { getDownloadURL, ref, uploadString } from "@firebase/storage";
+import styled from "styled-components";
 import SocialApi from "../../api/SocialApi";
 import { storageService } from "../../lib/api/fbase";
-import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
+import {
+  ref,
+  uploadString,
+  getDownloadURL,
+  deleteObject,
+} from "@firebase/storage";
 
 const SocialWrite = () => {
-  const getUserId = "1";
   const navigate = useNavigate();
-  // const userNickname = sessionStorage.getItem("userNickname");
-  // const getUserId = window.sessionStorage.getItem("userId");
+  // session storage에서 
+  const userEmail = sessionStorage.getItem("userEmail");
   const [titleInput, setTitleInput] = useState("");
   const [contentInput, setContentInput] = useState("");
   const [tagInput, setTagInput] = useState("");
@@ -62,7 +66,7 @@ const SocialWrite = () => {
         console.log("★ 이미지 UUID : " + imageName);
       }
       console.log("###############################");
-      console.log(getUserId);
+      console.log(userEmail);
       console.log(titleInput);
       console.log(contentInput);
       console.log(tagInput);
@@ -71,7 +75,7 @@ const SocialWrite = () => {
       console.log("★ 이미지 주소 : " + attachmentUrl);
       console.log("★ 이미지 UUID : " + imageName);
       const res = await SocialApi.socialWrite(
-        getUserId,
+        userEmail,
         titleInput,
         contentInput,
         tagInput,

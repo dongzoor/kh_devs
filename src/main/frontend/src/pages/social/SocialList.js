@@ -2,16 +2,36 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import SocialApi from "../../api/SocialApi";
+import UserApi from "../../api/UserApi";
+import { storageService } from "../../lib/api/fbase";
+import { getDownloadURL, ref, deleteObject } from "@firebase/storage";
 import Photo from "./pic/pic.gif";
 import {
   IoEyeOutline,
   IoHeartOutline,
   IoChatboxOutline,
 } from "react-icons/io5";
+import { async } from "@firebase/util";
+import { setUserId } from "firebase/analytics";
+
+// const ImageGetComponet = async (props) => {
+//   if (props.uuid !== null) {
+//     let attachmentUrl = ref(
+//       // 참조경로
+//       storageService,
+//       `/USER/${props.uuid}`
+//     );
+//     // 경로 참고를 가지고 이미지 경로를 불러온다.
+//     let res = await getDownloadURL(attachmentUrl);
+//     console.log(res);
+//     return <img src={res} alt=""></img>;
+//   }
+// };
 
 const Social = () => {
   const [socialList, setSocialList] = useState("");
   const [loading, setLoading] = useState(false);
+  // const [userImageUrl, setUserImageUrl] = useState("");
 
   useEffect(() => {
     const socialData = async () => {
@@ -20,6 +40,17 @@ const Social = () => {
         const response = await SocialApi.socialList();
         setSocialList(response.data);
         console.log("★ Social List ", response.data);
+
+        // if (response.data.userImage !== null) {
+        //   let attachmentUrl = ref(
+        //     // 참조경로
+        //     storageService,
+        //     `/USER/${response.data.userImage}`
+        //   );
+        //   console.log(response.data[0].userImage);
+        //   // 경로 참고를 가지고 이미지 경로를 불러온다.
+        //   setUserImageUrl = await getDownloadURL(attachmentUrl);
+        // }
       } catch (e) {
         console.log(e);
       }
@@ -54,7 +85,13 @@ const Social = () => {
                     </div>
                     <div className="flex-box3">
                       <div className="publisher-info">
-                        <img className="photos" src={Photo} alt="프로필 사진" />
+                        {/* <ImageGetComponet uuid={social.userImage} /> */}
+                        <img
+                          className="photos"
+                          // src={social.userImage}
+                          src={Photo}
+                          alt="프로필 사진"
+                        />
                         <span className="nickName">{social.user}</span>
                         <span className="date">| {social.postDate}</span>
                       </div>
@@ -80,7 +117,13 @@ const Social = () => {
                     </div>
                     <div className="flex-box3">
                       <div className="publisher-info">
-                        <img className="photos" src={Photo} alt="프로필 사진" />
+                        {/* <ImageGetComponet uuid={social.userImage} /> */}
+                        <img
+                          className="photos"
+                          // src={social.userImage}
+                          src={Photo}
+                          alt="프로필 사진"
+                        />
                         <span className="nickName">{social.user}</span>
                         <span className="date">| {social.postDate}</span>
                       </div>

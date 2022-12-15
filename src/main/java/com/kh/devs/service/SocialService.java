@@ -32,7 +32,9 @@ public class SocialService {
         for (Social e : socialList) {
             SocialDTO socialDTO = new SocialDTO();
             socialDTO.setSocialId(e.getSocialId());
-            socialDTO.setUser(e.getUser().getUserNickname()); // 작성자 닉네임
+            socialDTO.setUserEmail(e.getUser().getUserEmail());         // 작성자 이메일
+            socialDTO.setUserNickName(e.getUser().getUserNickname());   // 작성자 닉네임
+            socialDTO.setUserImage(e.getUser().getProfileImage());      // 작성자 사진
             socialDTO.setTitle(e.getTitle());
             socialDTO.setContent(e.getContent());
             socialDTO.setTag(e.getTag());
@@ -51,7 +53,9 @@ public class SocialService {
         Social social = socialRepository.findById(socialId).get();
         SocialDTO socialDTO = new SocialDTO();
         socialDTO.setSocialId(social.getSocialId());    // 게시글 id
-        socialDTO.setUser(social.getUser().getUserNickname());   // 작성자 닉네임
+        socialDTO.setUserEmail(social.getUser().getUserEmail());   // 작성자 이메일
+        socialDTO.setUserNickName(social.getUser().getUserNickname());   // 작성자 닉네임
+        socialDTO.setUserImage(social.getUser().getProfileImage());
         socialDTO.setTitle(social.getTitle());
         socialDTO.setContent(social.getContent());
         socialDTO.setTag(social.getTag());
@@ -66,9 +70,9 @@ public class SocialService {
         return socialDTO;
     }
     // Social Write 등록
-    public boolean regSocial(Long userId, String title, String content, String tag, String image, String imageId) throws Exception { // 결과값은 성공,실패만 알려주면 되니까 boolean
+    public boolean regSocial(String userEmail, String title, String content, String tag, String image, String imageId) throws Exception { // 결과값은 성공,실패만 알려주면 되니까 boolean
         try{
-            User user = userRepository.findById(userId).get(); // 객체로 user 정보를 다시 찾아와서 넣어주기 위함
+            User user = (userRepository.findByUserEmail(userEmail)).get(0); // 객체로 user 정보를 다시 찾아와서 넣어주기 위함
             Social social = new Social();
             social.setUser(user);
             social.setTitle(title);

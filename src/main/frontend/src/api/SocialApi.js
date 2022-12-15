@@ -13,9 +13,9 @@ const SocialApi = {
     return await axios.get(`/api/social/${socialId}`);
   },
   // 게시글 작성
-  socialWrite: async function (user, title, content, tag, image, imageId) {
+  socialWrite: async function (userEmail, title, content, tag, image, imageId) {
     const writeObj = {
-      userid: user, // 유저 id(PK)
+      userEmail: userEmail, // 유저 id(PK)
       title: title,
       content: content,
       tag: tag,

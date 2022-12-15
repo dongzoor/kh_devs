@@ -13,7 +13,9 @@ import java.time.LocalDateTime;
 @Setter
 public class SocialDTO {
     private Long socialId;          // 게시글 id
-    private String user;            // 작성자 id
+    private String userEmail;       // 작성자 email
+    private String userNickName;    // 작성자 nickname
+    private String userImage;       // 작성자 이미지 name
     private String title;           // 게시글 제목
     private String content;         // 게시글 내용
     private String tag;             // 해시태그
