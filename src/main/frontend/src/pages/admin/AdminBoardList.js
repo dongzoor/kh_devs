@@ -5,7 +5,7 @@ import Adminheader from './Adminheader';
 import { useEffect, useState } from 'react';
 import AdminApi from '../../api/AdminApi';
 import Loading from '../../utill/Loading';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 const Adcontainer = styled.div`
 display: flex;
@@ -25,7 +25,7 @@ justify-content: center;
 
 function AdminBoardList() {
 
- 
+  const navigate = useNavigate();
   const params = useParams().studyId;
   const [adstudyboard, setAdstudyboard] = useState([]); // 스터디게시판 조회
   const [loading, setLoading] = useState(false);
@@ -39,14 +39,14 @@ function AdminBoardList() {
   const clickDelBoard = async (e) => {
     console.log("삭제 버튼 클릭");
     const response = await AdminApi.deleteStudyBoard(e);
-    setLoading(true);
-    setDeleteAdBoard(true)
-    // console.log(response.data);
-    // if (response.data) {
-    //   setLoading(true);
-    //   setDeleteAdBoard(true);
-    // } else setDeleteAdBoard(false);
-    // setLoading(false);
+    console.log(response.data);
+    if (response.data) {
+      setLoading(true);
+      setDeleteAdBoard(true);
+      // navigate("/AdminBoardList")
+      window.location.replace("/AdminBoardList");
+    } else setDeleteAdBoard(false);
+    setLoading(false);
   };
 
 
@@ -61,6 +61,7 @@ function AdminBoardList() {
         console.log(e);
       }
       setLoading(false);
+      
     };
 
     BoardData();

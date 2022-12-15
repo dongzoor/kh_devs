@@ -15,24 +15,25 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class StudyController {
 
     private final StudyService studyService;
     private final StudyRepository studyRepository;
 
-    @GetMapping("/api/studies")
+    @GetMapping("/studies")
     public ResponseEntity<List<Study>> studyList(){
         List<Study> list = studyService.getStudyList();
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    @GetMapping("/api/study/{studyId}")
-    public ResponseEntity<Study> study(@PathVariable Long studyId) {
-        Optional<Study> study = studyService.getStudy(studyId);
+    @GetMapping("/study/{studyId}")
+    public ResponseEntity<StudyDTO> studyDTO(@PathVariable Long studyId) {
+        Study study = studyService.getStudy(studyId);
         return new ResponseEntity(study, HttpStatus.OK);
     }
 
-    @PostMapping("/api/study/write")
+    @PostMapping("/study/write")
     public ResponseEntity<StudyDTO> writeStudy(@RequestBody StudyDTO studyDTO) {
 //        로그인 파트에서 세션으로 주면 받아올 예정
         boolean result = studyService.writeStudy(studyDTO);
@@ -47,7 +48,7 @@ public class StudyController {
 
     }
 
-    @PutMapping("/api/study/edit/{studyId}")
+    @PutMapping("/study/edit/{studyId}")
     public void updateStudy(@PathVariable Long studyId, @RequestBody StudyDTO studyDTO) {
 //        로그인 파트에서 세션으로 주면 받아올 예정
         studyService.updateStudy(studyId, studyDTO);
@@ -55,11 +56,11 @@ public class StudyController {
 //        return "redirect:/study/" + studyId;
     }
 
-    @GetMapping("/api/study/edit/{studyId}")
-    public ResponseEntity<Study> getUpdateStudy(@PathVariable Long studyId) {
-        Optional<Study> study = studyService.getStudy(studyId);
-        return new ResponseEntity(study, HttpStatus.OK);
-    }
+//    @GetMapping("/study/edit/{studyId}")
+//    public ResponseEntity<Study> getUpdateStudy(@PathVariable Long studyId) {
+//        Optional<Study> study = studyService.getStudy(studyId);
+//        return new ResponseEntity(study, HttpStatus.OK);
+//    }
 
 
     @DeleteMapping("study/{studyId}")

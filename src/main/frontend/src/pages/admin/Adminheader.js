@@ -16,10 +16,10 @@ function Adminheader() {
             <Nav.Link href="#link">게시판보기</Nav.Link>
             <NavDropdown title="관리도구" id="basic-nav-dropdown">
               <NavDropdown.Item href="/AdminMemberList">회원 관리&nbsp;<i class="fi fi-rr-user"></i> </NavDropdown.Item>
-              <NavDropdown.Item href="/AdminBoarList">
+              <NavDropdown.Item href="/AdminBoardList">
                 스터디게시판 관리&nbsp;<i class="fi fi-rr-document"></i>
               </NavDropdown.Item>
-              <NavDropdown.Item href="/AdminScBoarList">자유게시판 관리&nbsp;<i class="fi fi-rr-document"></i> </NavDropdown.Item>
+              <NavDropdown.Item href="/AdminScBoardList">자유게시판 관리&nbsp;<i class="fi fi-rr-document"></i> </NavDropdown.Item>
               {/* <NavDropdown.Divider />
               <NavDropdown.Item href="#action/3.4">
                 Separated link
