@@ -6,6 +6,7 @@ import { storageService } from "../../lib/api/fbase";
 import StudyApi from "../../lib/api/StudyApi";
 import { Badge, Button, Form, InputGroup } from "react-bootstrap";
 import { useEffect } from "react";
+import {useNavigate} from "react-router-dom";
 
 const Box = styled.div`
   margin: 0;
@@ -28,6 +29,8 @@ const StudyWrite = (studyObj) => {
   const [content, setContent] = useState("");
   const [hashtag, setHashtag] = useState("");
   const [hashtags, setHashtags] = useState([]);
+
+  const navigate = useNavigate();
 
   let attachmentUrl = "";
   //사진 첨부 없이 텍스트만 트윗하고 싶을 때도 있으므로 기본 값을 ""로 해야한다.
@@ -90,14 +93,15 @@ const StudyWrite = (studyObj) => {
       userNickname,
       title,
       content,
-      attachmentUrl
+      hashtags,
+      attachmentUrl,
     );
     console.log(studyReg);
 
     console.log(studyReg.statusText);
     if (studyReg.statusText === "OK")
       window.confirm("스터디 모집이 시작되었습니다.");
-    window.location.replace("/studies");
+    navigate("/studies");
   };
 
   // const onDelete = async () => {
@@ -121,6 +125,17 @@ const StudyWrite = (studyObj) => {
   const addHashtag = (e) => {
     setHashtags([...hashtags, hashtag]);
     setHashtag('');
+  }
+
+  const onDeleteHash = (e) => {
+    const {
+      target: target
+    } = e;
+
+    hashtags.pop(target.innerHTML);
+    console.log(hashtags);
+    target.innerHTML = "";
+
   }
 
   return (
@@ -150,7 +165,7 @@ const StudyWrite = (studyObj) => {
           </InputGroup>
         </div>
         <div className="hashtag-container">
-          {hashtags.map(e => <Badge bg="info" style={{ "marginRight": "0.5vw" }}>{e} </Badge>)}
+          {hashtags.map(e => <Badge bg="info" style={{ "marginRight": "0.5vw" }} onClick={onDeleteHash}>{e} </Badge>)}
         </div>
         <div className="mb-3">
           <label htmlFor="formFile" className="form-label">Upload Image</label>

@@ -1,7 +1,11 @@
 package com.kh.devs.service;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.kh.devs.constant.ApplyStatus;
 import com.kh.devs.dao.StudyRepository;
+import com.kh.devs.dto.SocialDTO;
 import com.kh.devs.dto.StudyDTO;
+import com.kh.devs.entity.Social;
 import com.kh.devs.entity.Study;
 import com.kh.devs.exception.NotFoundStudyException;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +32,7 @@ public class StudyService {
                 .cnt(0)
                 .writer(studyDTO.getWriter())
                 .imgUrl(studyDTO.getImgUrl())
+                .hashtags(studyDTO.getHashtags())
                 .build();
         Study rst = studyRepository.save(study);
         log.warn(rst.toString());
@@ -37,9 +42,25 @@ public class StudyService {
         return studyRepository.findAll();
     }
 
-    public Optional<Study> getStudy(Long id) {
-        Study study = studyRepository.findById(id).orElseThrow(() -> new NotFoundStudyException("study is not Found!"));
-        return Optional.ofNullable(study);
+    @JsonSetter
+    public Study getStudy(Long id) {
+//        Study study = studyRepository.findById(id).get();
+//        StudyDTO studyDTO = new StudyDTO();
+//        studyDTO.setStudyId(study.getId());
+//        studyDTO.setWriter(study.getWriter());
+//        studyDTO.setTitle((study.getTitle()));
+//        studyDTO.setContent(study.getContent());
+//        studyDTO.setImgUrl(study.getImgUrl());
+//        if(study.getApplyStatus() == ApplyStatus.ING) studyDTO.setStudyApply(true);
+//        else studyDTO.setStudyApply(false);
+//        studyDTO.setReadCount(study.getCnt());
+//        log.warn(studyDTO.toString());
+//        Study study = studyRepository.findById(id).orElseThrow(() -> new NotFoundStudyException("study is not Found!"));
+
+        Study study = studyRepository.findById(id).get();
+
+
+        return study;
     }
 
     @Transactional
