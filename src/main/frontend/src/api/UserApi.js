@@ -8,7 +8,7 @@ const UserApi = {
     const idCheck = {
       userEmail: id,
     };
-    return await axios.post("/duplCheck", idCheck);
+    return await axios.post("/api/duplCheck", idCheck);
   },
 
   // 전화번호 중복체크
