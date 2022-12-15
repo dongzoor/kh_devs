@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import AdminBoardList from "./pages/admin/AdminBoardList";
 import AdminEditUser from "./pages/admin/AdminEditUser";
@@ -30,38 +30,38 @@ import StudyUpdate from "./pages/study/StudyUpdate";
 // import Admin from "./pages/admin/Admin";
 function App() {
   return (
-      <Router>
-        <Nav />
-        <Routes>
-          {/* <Route path="/Admin" element={<Admin />} /> */}
-          <Route path="/AdminLogin" element={<AdminLogin />} />
-          <Route path="/AdminScBoardList" element={<AdminScBoardList />} />
-          <Route path="/AdminBoardList" element={<AdminBoardList />} />
-          <Route path="/AdminMemberList" element={<AdminMemberList />} />
-          <Route exact path="/AdminMember/:userId" element={<AdminEditUser />} />
-          <Route path="/" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/Terms" element={<Terms />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/FindInfo" element={<FindInfo />} />
-          <Route path="/EditInfo" element={<EditInfo />} />
-          <Route path="/CheckPwd" element={<CheckPwd />} />
-          <Route path="/studies" element={<StudyList />} />
-          <Route path="/study/write" element={<StudyWrite />} />
-          <Route exact path="/study/:studyId" element={<StudyDetail />} />
-          <Route exact path="/study/edit/:studyId" element={<StudyUpdate />} />
-          <Route path="/Socket" element={<SocketTest />} />
-          <Route path="/social" element={<SocialList />} />
-          <Route exact path="/social/:socialId" element={<SocialDetail />} />
-          <Route
-              exact
-              path="/social/:socialId/update"
-              element={<SocialUpdate />}
-          />
-          <Route path="/social/write" element={<SocialWrite />} />
-        </Routes>
-        {/* <Admin></Admin> */}
-      </Router>
+    <Router>
+      <Nav />
+      <Routes>
+        {/* <Route path="/Admin" element={<Admin />} /> */}
+        <Route path="/AdminLogin" element={<AdminLogin />} />
+        <Route path="/AdminScBoardList" element={<AdminScBoardList />} />
+        <Route path="/AdminBoardList" element={<AdminBoardList />} />
+        <Route path="/AdminMemberList" element={<AdminMemberList />} />
+        <Route exact path="/AdminMember/:userId" element={<AdminEditUser />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/Terms" element={<Terms />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/FindInfo" element={<FindInfo />} />
+        <Route path="/EditInfo" element={<EditInfo />} />
+        <Route path="/CheckPwd" element={<CheckPwd />} />
+        <Route path="/studies" element={<StudyList />} />
+        <Route path="/study/write" element={<StudyWrite />} />
+        <Route exact path="/study/:studyId" element={<StudyDetail />} />
+        <Route exact path="/study/edit/:studyId" element={<StudyUpdate />} />
+        <Route path="/Socket" element={<SocketTest />} />
+        <Route path="/social" element={<SocialList />} />
+        <Route exact path="/social/:socialId" element={<SocialDetail />} />
+        <Route
+          exact
+          path="/social/:socialId/update"
+          element={<SocialUpdate />}
+        />
+        <Route path="/social/write" element={<SocialWrite />} />
+      </Routes>
+      {/* <Admin></Admin> */}
+    </Router>
   );
 }
 

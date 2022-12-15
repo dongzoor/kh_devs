@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import StudyApi from "../../lib/api/StudyApi";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import ChatApi from "../../lib/api/ChatApi";
 import UserApi from "../../api/UserApi";
 import Button from 'react-bootstrap/Button';
@@ -21,6 +21,7 @@ const StudyDetail = () => {
   const params = useParams().studyId;
   const [studyDetail, setStudyDetail] = useState("");
   // const [userId, SetUserId] = useState("");
+  const navigate = useNavigate();
   const userId = "로그인한 회원 Id";
   const userNickname = sessionStorage.getItem("userNickname");
 
@@ -43,14 +44,14 @@ const StudyDetail = () => {
       const res = await ChatApi.chatRoomOpen(params);
       console.log(res.data);
       window.localStorage.setItem("chatRoomId", res.data);
-      window.location.replace("/Socket");
+      navigate("/Socket");
     } catch {
       console.log("error");
     }
   }
   const goToUpdate = () => {
     // <Link to={`/study/${parseInt(params)}`} style={{ "textDecoration": "none" }}></Link>
-    window.location.replace(`/study/edit/${parseInt(params)}`)
+    navigate(`/study/edit/${parseInt(params)}`)
   }
 
   return (

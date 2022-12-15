@@ -7,6 +7,8 @@ import StudyApi from "../../lib/api/StudyApi";
 import { Badge, Button, Form, InputGroup } from "react-bootstrap";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Addr from "./Addr";
+
 
 const Box = styled.div`
   margin: 0;
@@ -144,6 +146,10 @@ const StudyWrite = (studyObj) => {
     target.innerHTML = "";
   }
 
+  const getAddr = (addr) => {
+    console.log(addr);
+  }
+
   // const handleKeyPress = (e) => {
   //   if (e.key === 'Enter') {
   //     setHashtags([...hashtags, hashtag]);
@@ -162,7 +168,7 @@ const StudyWrite = (studyObj) => {
 
         <div className="mb-3" style={{}}>
           <label htmlFor="content-textarea" className="form-label">Content</label>
-          <textarea className="form-control" id="content-textarea" rows="12" placeholder="내용을 입력하세요." onChange={contentChange}></textarea>
+          <textarea className="form-control" id="content-textarea" rows="9" placeholder="내용을 입력하세요." onChange={contentChange}></textarea>
         </div>
 
         <div className="hastag-contianer">
@@ -186,16 +192,24 @@ const StudyWrite = (studyObj) => {
             <Badge bg="info" style={{ "marginRight": "0.5vw" }} onClick={onDeleteHash}>{e}</Badge>)}
         </div>
 
-        <div>
-          <label htmlFor="memberCount" className="form-label">인원</label>
-          <Form.Select aria-label="memberCount" style={{ "width": "5vw", "marginBottom": "2vh" }}>
-            <option>인원 수</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-          </Form.Select>
+        <div style={{ "display": "flex" }}>
+          <div>
+            <label htmlFor="memberCount" className="form-label">인원</label>
+            <Form.Select aria-label="memberCount" style={{ "width": "5vw", "marginBottom": "2vh" }}>
+              <option>인원 수</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+            </Form.Select>
+          </div>
+          <div style={{ "marginLeft": "15vw" }}>
+            <label htmlFor="addr" className="addr-label">스터디 지역</label>
+            <div className="addr" >
+              <Addr propFunction={getAddr} />
+            </div>
+          </div>
         </div>
 
         <div className="mb-3">
