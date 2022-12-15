@@ -60,12 +60,25 @@ function OffcanvasExample() {
                     <NavDropdown.Item href="#action3">
                       내 정보 수정
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="#action4">
-                      일정 등록
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item href="/myPage/myCalendar">
+                      캘린더
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="/myPage/myStudy">
+                      나의 스터디
                     </NavDropdown.Item>
                     <NavDropdown.Divider />
-                    <NavDropdown.Item href="#action5">
-                      내 스터디 보기
+                    <NavDropdown.Item href="/myPage/mySocial">
+                      내가 쓴 글
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="/myPage/myComment">
+                      내가 쓴 댓글
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="/myPage/myLike">
+                      내가 좋아요한 글
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="/myPage/myHashtag">
+                      나의 관심 #글
                     </NavDropdown.Item>
                   </NavDropdown>
                   <Nav.Link href="/studies">스터디</Nav.Link>
