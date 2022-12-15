@@ -100,8 +100,8 @@ public class UserController {
     @PostMapping("/findId")
     public ResponseEntity<User> findUserEmail(@RequestBody Map<String, String> findData) {
         String phone = findData.get("phone");
-        Optional<Optional<User>> list = userService.getUserEmail(phone);
-        return new ResponseEntity(list, HttpStatus.OK);
+        User user = userService.getUserEmail(phone);
+        return new ResponseEntity(user, HttpStatus.OK);
     }
 
     // 회원정보 찾기 - 비밀번호 찾기

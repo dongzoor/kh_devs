@@ -66,9 +66,9 @@ public class UserService {
     }
 
     // 회원정보 찾기 - 아이디 찾기
-    public Optional<Optional<User>> getUserEmail(String phone) {
-        Optional<User> user = userRepository.findByPhone(phone);
-        return Optional.ofNullable(user);
+    public User getUserEmail(String phone) {
+        List<User> user = userRepository.findByPhone(phone);
+        return user.get(0);
     }
 
     // 회원정보 찾기 - 비밀번호 찾기
