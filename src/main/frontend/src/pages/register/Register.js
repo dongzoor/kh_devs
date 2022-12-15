@@ -1,7 +1,7 @@
 import "./Register.css";
 
 import React, { useRef, useState } from "react";
-import { ref, uploadString } from "@firebase/storage";
+import { getDownloadURL, ref, uploadString } from "@firebase/storage";
 
 import { Link } from "react-router-dom";
 import { MdArrowBack } from "react-icons/md";
@@ -246,6 +246,7 @@ function Register() {
 
     if (true) {
       let profileImage = null;
+      let profileImagePath = null;
 
       // 이미지가 존재하는 경우
       if (imgFile !== "") {
@@ -256,6 +257,8 @@ function Register() {
         const attachmentRef = ref(storageService, `/USER/${profileImage}`);
         //storage 참조 경로로 파일 업로드 하기
         await uploadString(attachmentRef, imgFile, "data_url");
+        //storage 참조 경로로 파일경로 가져오기
+        profileImagePath = await getDownloadURL(attachmentRef);
       }
 
       // 필수 입력항목 미입력 시 에러메세지
@@ -305,7 +308,8 @@ function Register() {
         password,
         userNickname,
         phone,
-        profileImage
+        profileImage,
+        profileImagePath
       );
 
       // 회원가입 성공 여부 메시지

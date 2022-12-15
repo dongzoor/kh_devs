@@ -57,8 +57,10 @@ public class UserController {
         String getPassword = regData.get("password");
         String getPhone = regData.get("phone");
         String getProfileImage = regData.get("profileImage");
+        String getProfileImagePath = regData.get("profileImagePath");
 
-        boolean result = userService.regUser(getUserEmail, getUserNickname, getPassword, getPhone, getProfileImage);
+
+        boolean result = userService.regUser(getUserEmail, getUserNickname, getPassword, getPhone, getProfileImage, getProfileImagePath);
         if (result) {
             return new ResponseEntity(true, HttpStatus.OK);
         } else {
@@ -93,6 +95,7 @@ public class UserController {
         String userNickname = updateData.get("userNickname");
         String phone = updateData.get("phone");
         String profileImage = updateData.get("profileImage");
+        String profileImagePath = updateData.get("profileImagePath");
 
         List<User> result = userService.userSearch(userEmail);
 
@@ -102,9 +105,12 @@ public class UserController {
             result.get(0).setUserNickname(userNickname);
             result.get(0).setPhone(phone);
             result.get(0).setProfileImage(profileImage);
+            result.get(0).setProfileImagePath(profileImagePath);
+
             if (!"".equals(password)) {
                 result.get(0).setPassword(password);
             }
+
             rst = userService.UserUpdate(result.get(0));
         }
 

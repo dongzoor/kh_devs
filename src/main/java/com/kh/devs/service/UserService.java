@@ -24,7 +24,7 @@ public class UserService {
     }
 
     //회원가입
-    public boolean regUser(String userEmail, String userNickname, String password, String phone, String profileImage) {
+    public boolean regUser(String userEmail, String userNickname, String password, String phone, String profileImage, String profileImagePath) {
         // User Entity와 연결
         User user = new User();
         user.setUserEmail(userEmail);
@@ -32,6 +32,7 @@ public class UserService {
         user.setPassword(password);
         user.setPhone(phone);
         user.setProfileImage(profileImage);
+        user.setProfileImagePath(profileImagePath);
         user.setCreateDate(LocalDateTime.now());
         user.setUserRole(UserRole.ROLE_USER);
         User rst = userRepository.save(user);
@@ -61,6 +62,7 @@ public class UserService {
         userDb.setPassword(user.getPassword());
         userDb.setPhone(user.getPhone());
         userDb.setProfileImage(user.getProfileImage());
+        userDb.setProfileImagePath(user.getProfileImagePath());
         userDb.setModifyDate(LocalDateTime.now());
         userRepository.save(userDb);
         return user.getUserEmail();
