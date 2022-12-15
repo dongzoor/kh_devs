@@ -7,22 +7,30 @@ import StudyApi from "../../lib/api/StudyApi";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Badge, Button, Form, InputGroup } from "react-bootstrap";
+import Addr from "./Addr";
 
 const Box = styled.div`
   margin: 0;
   padding: 0;
   font-family: Raleway, Pretendard Std;
   background: linear-gradient(90deg, #ffe7e8, #8da4d0);
+  
+  .hashtag-container {
+  height: 2vh;
+  margin: -0.8vh 0.2vh 1vh 0;
+  }
+
+  .inputContainer {
+    width: 50vw;
+    height: 90vh;
+    margin: 0 auto;
+    padding: 15px;
+    background-color: #FFF;
+    box-shadow: 0px 0px 24px #5c5696;
+    border-radius: 25px;
+  }
 `;
-const InputContainer = styled.div`
-  width: 40vw;
-  height: 80vh;
-  margin: 0 auto;
-  padding: 15px;
-  background-color: #FFF;
-  box-shadow: 0px 0px 24px #5c5696;
-  border-radius: 25px;
-`;
+
 const StudyWrite = (studyObj) => {
   const [attachment, setAttachment] = useState("");
   const [title, setTitle] = useState("");
@@ -108,29 +116,29 @@ const StudyWrite = (studyObj) => {
         const attachmentRef = ref(storageService, `/STUDY/${uuidv4()}`); //const fileRef = ref(storageService, `${ studyObj.studyId } / ${ uuidv4() }`);
         //storage 참조 경로로 파일 업로드 하기                                            위의 거로 바꿔주어야 스터디 아이디에 맞게 저장됨
         const response = await uploadString(
-            attachmentRef,
-            attachment,
-            "data_url"
+          attachmentRef,
+          attachment,
+          "data_url"
         );
         //storage 참조 경로에 있는 파일의 URL을 다운로드해서 attachmentUrl 변수에 넣어서 업데이트
         attachmentUrl = await getDownloadURL(response.ref);
 
         const studyUpdate = await StudyApi.studyUpdate(
-            params,
-            title,
-            content,
-            attachmentUrl,
-            hashtags
+          params,
+          title,
+          content,
+          attachmentUrl,
+          hashtags
         );
         console.log(studyUpdate);
         navigate("/studies");
       } else { //첨부한게 없을 때 (이미지 유지)
 
         const studyUpdate = await StudyApi.studyUpdate(
-            params,
-            title,
-            content,
-            preImgUrl
+          params,
+          title,
+          content,
+          preImgUrl
         );
         console.log(studyUpdate);
         window.location.replace("/studies");
@@ -141,19 +149,19 @@ const StudyWrite = (studyObj) => {
         const attachmentRef = ref(storageService, `/STUDY/${uuidv4()}`); //const fileRef = ref(storageService, `${ studyObj.studyId } / ${ uuidv4() }`);
         //storage 참조 경로로 파일 업로드 하기                                            위의 거로 바꿔주어야 스터디 아이디에 맞게 저장됨
         const response = await uploadString(
-            attachmentRef,
-            attachment,
-            "data_url"
+          attachmentRef,
+          attachment,
+          "data_url"
         );
         //storage 참조 경로에 있는 파일의 URL을 다운로드해서 attachmentUrl 변수에 넣어서 업데이트
         attachmentUrl = await getDownloadURL(response.ref);
       }
       const studyUpdate = await StudyApi.studyUpdate(
-          params,
-          title,
-          content,
-          attachmentUrl,
-          hashtags
+        params,
+        title,
+        content,
+        attachmentUrl,
+        hashtags
       );
       console.log(studyUpdate);
       window.location.replace("/studies");
@@ -197,44 +205,65 @@ const StudyWrite = (studyObj) => {
   }
 
   return (
-      <Box>
-        <InputContainer style={{ "marginTop": "5vh" }}>
-          <div className="mb-3">
-            <label htmlFor="title-input" className="form-label">Title</label>
-            <input type="email" className="form-control" id="title-input" placeholder="제목을 입력하세요." onChange={titleChange} defaultValue={studyDetail.title} />
+    <Box>
+      <div className="inputContainer">
+        <div className="mb-3">
+          <label htmlFor="title-input" className="form-label">Title</label>
+          <input type="email" className="form-control" id="title-input" placeholder="제목을 입력하세요." onChange={titleChange} defaultValue={studyDetail.title} />
+        </div>
+        <div className="mb-3" style={{}}>
+          <label htmlFor="content-textarea" className="form-label">Content</label>
+          <textarea className="form-control" id="content-textarea" rows="12" placeholder="내용을 입력하세요." onChange={contentChange} defaultValue={studyDetail.content}></textarea>
+        </div>
+        <div className="hastag-contianer">
+          <label htmlFor="hashtag-input" className="form-label">Hashtag</label>
+          <InputGroup className="mb-3" onChange={onChangeHashtag}>
+            <Form.Control
+              placeholder="태그를 입력하세요."
+              aria-label="태그를 입력하세요."
+              aria-describedby="basic-addon2"
+              id="hashtag-input"
+              value={hashtag}
+            />
+            <Button variant="outline-secondary" id="button-addon2" onClick={addHashtag}>
+              추가
+            </Button>
+          </InputGroup>
+        </div>
+        <div className="hashtag-container">
+          {hashtags.map(e => <Badge bg="info" style={{ "marginRight": "0.5vw" }} onClick={onDeleteHash}>{e} </Badge>)}
+        </div>
+
+        <div style={{ "display": "flex" }}>
+          <div>
+            <label htmlFor="memberCount" className="form-label">인원</label>
+            <Form.Select aria-label="memberCount" style={{ "width": "5vw", "marginBottom": "2vh" }}>
+              <option>인원 수</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+            </Form.Select>
           </div>
-          <div className="mb-3" style={{}}>
-            <label htmlFor="content-textarea" className="form-label">Content</label>
-            <textarea className="form-control" id="content-textarea" rows="20" placeholder="내용을 입력하세요." onChange={contentChange} defaultValue={studyDetail.content}></textarea>
+          <div style={{ "marginLeft": "15vw" }}>
+            <label htmlFor="addr" className="addr-label">스터디 지역</label>
+            <div className="addr" >
+              <Addr />
+            </div>
           </div>
-          <div className="hastag-contianer">
-            <label htmlFor="hashtag-input" className="form-label">Hashtag</label>
-            <InputGroup className="mb-3" onChange={onChangeHashtag}>
-              <Form.Control
-                  placeholder="태그를 입력하세요."
-                  aria-label="태그를 입력하세요."
-                  aria-describedby="basic-addon2"
-                  id="hashtag-input"
-                  value={hashtag}
-              />
-              <Button variant="outline-secondary" id="button-addon2" onClick={addHashtag}>
-                추가
-              </Button>
-            </InputGroup>
-          </div>
-          <div className="hashtag-container">
-            {hashtags.map(e => <Badge bg="info" style={{ "marginRight": "0.5vw" }} onClick={onDeleteHash}>{e} </Badge>)}
-          </div>
-          <div className="mb-3">
-            <label htmlFor="formFile" className="form-label">Upload Image</label>
-            <input className="form-control" type="file" id="formFile" onChange={imgChange} defaultValue={studyDetail.imgUrl} />
-          </div>
-          <img src={studyDetail.imgUrl} alt="no image" style={{ "width": "5vw", "height": "5vh" }} />
-          <button type="button" className="btn btn-light" style={{ "float": "right" }} onClick={onSubmit}>
-            Update
-          </button>
-        </InputContainer>
-      </Box>
+        </div>
+
+        <div className="mb-3">
+          <label htmlFor="formFile" className="form-label">Upload Image</label>
+          <input className="form-control" type="file" id="formFile" onChange={imgChange} defaultValue={studyDetail.imgUrl} />
+        </div>
+        <img src={studyDetail.imgUrl} alt="no image" style={{ "width": "5vw", "height": "5vh" }} />
+        <button type="button" className="btn btn-light" style={{ "float": "right" }} onClick={onSubmit}>
+          Update
+        </button>
+      </div>
+    </Box>
   )
 }
 export default StudyWrite;

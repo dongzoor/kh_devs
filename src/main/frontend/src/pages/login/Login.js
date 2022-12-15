@@ -6,10 +6,8 @@ import { FaLock, FaUser } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { SiGithub, SiGoogle, SiKakaotalk } from "react-icons/si";
-import { getDownloadURL, ref } from "@firebase/storage";
 
 import UserApi from "../../api/UserApi";
-import { storageService } from "../../lib/api/fbase";
 import styled from "styled-components";
 
 const Box = styled.div`
@@ -60,20 +58,9 @@ function Login() {
     // 로그인을 성공하는 경우
     if (res.data !== false) {
       // 사람정보에 이미지가 존재하는 경우
-      if (res.data.profileImage !== null) {
-        //FireBase에서 이미지를 불러올 경로 참고 생성
-        let attachmentUrl = ref(
-          storageService,
-          `/USER/${res.data.profileImage}`
-        );
 
-        // 경로 참고를 가지고 이미지 경로를 불러온다.
-        let profileImagePath = await getDownloadURL(attachmentUrl);
-
-        sessionStorage.setItem("profileImage", res.data.profileImage);
-        sessionStorage.setItem("profileImagePath", profileImagePath);
-      }
-
+      sessionStorage.setItem("profileImage", res.data.profileImage);
+      sessionStorage.setItem("profileImagePath", res.data.profileImagePath);
       sessionStorage.setItem("userEmail", res.data.userEmail);
       sessionStorage.setItem("userNickname", res.data.userNickname);
       sessionStorage.setItem("phone", res.data.phone);

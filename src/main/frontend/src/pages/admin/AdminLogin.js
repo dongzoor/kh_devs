@@ -2,12 +2,7 @@ import "../login/Login.css";
 
 import { FaLock, FaUser } from "react-icons/fa";
 import React, { useState } from "react";
-import { SiGithub, SiGoogle, SiKakaotalk } from "react-icons/si";
-import { getDownloadURL, ref } from "@firebase/storage";
-
 import { Link, useNavigate } from "react-router-dom";
-import UserApi from "../../api/UserApi";
-import { storageService } from "../../lib/api/fbase";
 import styled from "styled-components";
 import AdminApi from "../../api/AdminApi";
 
@@ -50,7 +45,7 @@ function AdminLogin() {
     
     // 로그인을 성공하는 경우
     if (res.data !== false) {
-      navigate("/AdminScBoarList")
+      navigate("/AdminScBoardList")
       } else if (res.data === false) {
         window.alert("이메일이나 비밀번호를 확인해주세요.");
       }

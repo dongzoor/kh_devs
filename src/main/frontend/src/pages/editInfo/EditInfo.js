@@ -146,6 +146,8 @@ function EditInfo() {
 
   // 회원정보 수정
   const onClickEdit = async () => {
+    let profileImagePath = null;
+
     if (userNickname === "") {
       window.alert("닉네임을 입력해주세요.");
       return;
@@ -170,46 +172,53 @@ function EditInfo() {
           profileImage = nowProfileImage;
         }
 
+        if (imgFile !== "") {
+          // 기존 이미지가 존재하는 경우
+          if (nowProfileImage !== "null") {
+            // 이미지가 바뀌는 경우
+            if (changeImgFile !== "") {
+              const attachmentRefDelete = ref(
+                storageService,
+                `/USER/${nowProfileImage}`
+              );
+              //storage 참조 경로로 기존 이미지 삭제
+              await deleteObject(attachmentRefDelete);
+
+              // 바꿀 이미지 업로드
+              const attachmentRefUpload = ref(
+                storageService,
+                `/USER/${profileImage}`
+              );
+              await uploadString(attachmentRefUpload, imgFile, "data_url");
+
+              //storage 참조 경로로 파일경로 가져오기
+              profileImagePath = await getDownloadURL(attachmentRefUpload);
+            }
+          } else {
+            if (changeImgFile !== "") {
+              // 바꿀 이미지 업로드
+              const attachmentRefUpload = ref(
+                storageService,
+                `/USER/${profileImage}`
+              );
+              await uploadString(attachmentRefUpload, imgFile, "data_url");
+
+              //storage 참조 경로로 파일경로 가져오기
+              profileImagePath = await getDownloadURL(attachmentRefUpload);
+            }
+          }
+        }
+
         const userUpdate = await UserApi.userUpdate(
           userEmail,
           password,
           userNickname,
           phone,
-          profileImage
+          profileImage,
+          profileImagePath
         );
 
         if (userUpdate.data !== false) {
-          if (imgFile !== "") {
-            // 기존 이미지가 존재하는 경우
-            if (nowProfileImage !== null) {
-              // 이미지가 바뀌는 경우
-              if (changeImgFile !== "") {
-                const attachmentRefDelete = ref(
-                  storageService,
-                  `/USER/${nowProfileImage}`
-                );
-                //storage 참조 경로로 기존 이미지 삭제
-                await deleteObject(attachmentRefDelete);
-
-                // 바꿀 이미지 업로드
-                const attachmentRefUpload = ref(
-                  storageService,
-                  `/USER/${profileImage}`
-                );
-                await uploadString(attachmentRefUpload, imgFile, "data_url");
-              }
-            } else {
-              if (changeImgFile !== "") {
-                // 바꿀 이미지 업로드
-                const attachmentRefUpload = ref(
-                  storageService,
-                  `/USER/${profileImage}`
-                );
-                await uploadString(attachmentRefUpload, imgFile, "data_url");
-              }
-            }
-          }
-
           window.alert("회원정보 수정이 완료되었습니다.");
           if (userUpdate.data.profileImage !== null) {
             let attachmentUrl = ref(
@@ -263,7 +272,7 @@ function EditInfo() {
               <img
                 className="profile-img"
                 src={
-                  imgFile
+                  imgFile !== "null"
                     ? imgFile
                     : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
                 }

@@ -20,13 +20,21 @@ const UserApi = {
   },
 
   //회원가입
-  userReg: async function (id, pwd, nickname, phone, profileImage) {
+  userReg: async function (
+    id,
+    pwd,
+    nickname,
+    phone,
+    profileImage,
+    profileImagePath
+  ) {
     const userObj = {
       userEmail: id,
       password: pwd,
       userNickname: nickname,
       phone: phone,
       profileImage: profileImage,
+      profileImagePath: profileImagePath,
     };
     return await axios.post("register", userObj);
   },
@@ -41,13 +49,21 @@ const UserApi = {
   },
 
   //회원정보 수정
-  userUpdate: async function (id, pwd, nickname, phone, profileImage) {
+  userUpdate: async function (
+    id,
+    pwd,
+    nickname,
+    phone,
+    profileImage,
+    profileImagePath
+  ) {
     const UpdateObj = {
       userEmail: id,
       password: pwd,
       userNickname: nickname,
       phone: phone,
       profileImage: profileImage,
+      profileImagePath: profileImagePath,
     };
     return await axios.put("update", UpdateObj);
   },
