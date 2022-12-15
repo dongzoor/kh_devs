@@ -90,6 +90,17 @@ function FindInfo() {
     setPhone(e.target.value);
   };
 
+  const onClickFindId = async () => {
+    const res = await UserApi.findId(phone);
+    if (res.data !== null) {
+      console.log(res.data);
+      // window.alert("test");
+      window.alert(`아이디는 ${res.data.userEmail} 입니다.`);
+    } else {
+      window.alert("입력하신 정보를 확인해주세요.");
+    }
+  };
+
   // 비밀번호 찾기 - 휴대폰 번호 오토하이픈
   const onChangePwPhone = (e) => {
     const value = phonePwRef.current.value.replace(/\D+/g, "");
@@ -114,17 +125,6 @@ function FindInfo() {
     }
     phonePwRef.current.value = result;
     setPwPhone(e.target.value);
-  };
-
-  const onClickFindId = async () => {
-    const res = await UserApi.findId(phone);
-    if (res.data !== null) {
-      console.log(res.data);
-      // window.alert("test");
-      window.alert(`아이디는 ${res.data.userEmail} 입니다.`);
-    } else {
-      window.alert("입력하신 정보를 확인해주세요.");
-    }
   };
 
   const onClickFindPwd = async () => {

@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-//@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @Slf4j
 public class UserController {
@@ -23,6 +21,31 @@ public class UserController {
 
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    // ID(Email) 중복체크
+    @PostMapping("duplCheck")
+    public ResponseEntity<Map<String, String>> duplCheck(@RequestBody Map<String, String> findData) {
+        String userEmail = findData.get("userEmail");
+        List<User> user = userService.userSearch(userEmail);
+
+        if (user.size() > 0) {
+            return new ResponseEntity(false, HttpStatus.OK);
+        } else {
+            return new ResponseEntity(true, HttpStatus.OK);
+        }
+    }
+
+    // 전화번호 중복체크 (수정중)
+    @PostMapping("phoneDuplCheck")
+    public ResponseEntity<Map<String, String>> phoneDuplCheck(@RequestBody Map<String, String> findPhoneData) {
+        String phone = findPhoneData.get("phone");
+        User user = userService.getUserEmail(phone);
+        if (user != null) {
+            return new ResponseEntity(false, HttpStatus.OK);
+        } else {
+            return new ResponseEntity(true, HttpStatus.OK);
+        }
     }
 
     // 회원가입
@@ -144,18 +167,6 @@ public class UserController {
         }
     }
 
-    // ID(Email) 중복체크
-    @PostMapping("duplCheck")
-    public ResponseEntity<Map<String, String>> duplCheck(@RequestBody Map<String, String> findData) {
-        String userEmail = findData.get("userEmail");
-        List<User> user = userService.userSearch(userEmail);
-
-        if (user.size() > 0) {
-            return new ResponseEntity(false, HttpStatus.OK);
-        } else {
-            return new ResponseEntity(true, HttpStatus.OK);
-        }
-    }
 
     // 회원탈퇴
     @DeleteMapping("/delete/{userEmailDb}")

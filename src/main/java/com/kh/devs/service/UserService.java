@@ -39,11 +39,12 @@ public class UserService {
         return true;
     }
 
-    // 회원 조회
+    // 회원 조회(이메일로 조회)
     public List<User> userSearch(String userEmail) {
         List<User> user = userRepository.findByUserEmail(userEmail);
         return user;
     }
+
 
     // 로그인 체크
     public List<User> loginCheck(String userEmail, String password) {

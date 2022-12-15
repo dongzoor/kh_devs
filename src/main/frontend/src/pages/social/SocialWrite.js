@@ -1,20 +1,14 @@
-import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import Form from "react-bootstrap/Form";
-import styled from "styled-components";
+import { getDownloadURL, ref, uploadString } from "@firebase/storage";
+
 import SocialApi from "../../api/SocialApi";
 import { storageService } from "../../lib/api/fbase";
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import {
-  ref,
-  uploadString,
-  getDownloadURL,
-  deleteObject,
-} from "@firebase/storage";
 
 const SocialWrite = () => {
-  const getUserId = "3";
+  const getUserId = "1";
   const navigate = useNavigate();
   // const userNickname = sessionStorage.getItem("userNickname");
   // const getUserId = window.sessionStorage.getItem("userId");

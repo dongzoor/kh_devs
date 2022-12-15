@@ -98,6 +98,8 @@ function Register() {
   const [isChecked, setIsChecked] = useState(false);
   const [isDuplCheck, setIsDuplCheck] = useState(true);
   const [isDuplCheckYn, setIsDuplCheckYn] = useState(false);
+  const [isPhoneDuplCheck, setIsPhoneDuplCheck] = useState(true);
+  const [isPhoneDuplCheckYn, setIsPhoneDuplCheckYn] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
 
   //프로필 이미지 firebase 저장 및 미리 보여주기
@@ -118,6 +120,7 @@ function Register() {
     reader.readAsDataURL(theFile);
   };
 
+  // 회원가입 항목체크
   const onChangeId = (e) => {
     const idCheck = e.target.value;
     setUserEmail(idCheck);
@@ -172,6 +175,11 @@ function Register() {
     }
     phoneRef.current.value = result;
     setPhone(e.target.value);
+    if (phone.valueOf().length === 12) {
+      setIsPhoneDuplCheck(false);
+    } else {
+      setIsPhoneDuplCheck(true);
+    }
   };
 
   // 비밀번호 일치여부
@@ -195,13 +203,31 @@ function Register() {
     }
 
     const duplCheck = await UserApi.duplCheck(userEmail);
-
+    console.log(duplCheck.data);
     if (duplCheck.data === true) {
       window.confirm("사용 가능한 ID(EMAIL)입니다.");
       setIsDuplCheckYn(true);
     } else {
       window.confirm("중복된 ID(EMAIL)입니다.");
       setIsDuplCheckYn(false);
+    }
+  };
+
+  // 핸드폰번호 중복체크
+  const onPhoneDuplCheck = async () => {
+    if (phone === "") {
+      window.alert("전화번호를 입력해주세요.");
+      return;
+    }
+
+    const duplPhoneCheck = await UserApi.phoneDuplCheck(phone);
+    console.log(duplPhoneCheck.data);
+    if (duplPhoneCheck.data === true) {
+      window.confirm("사용 가능한 전화번호입니다.");
+      setIsPhoneDuplCheckYn(true);
+    } else {
+      window.confirm("중복된 전화번호입니다.");
+      setIsPhoneDuplCheckYn(false);
     }
   };
 
@@ -260,6 +286,11 @@ function Register() {
 
       if (phone === "") {
         window.alert("전화번호를 입력해주세요.");
+        return;
+      }
+
+      if (isPhoneDuplCheckYn === false) {
+        window.alert("전화번호 중복 여부를 체크해주세요.");
         return;
       }
 
@@ -366,13 +397,22 @@ function Register() {
               >
                 {conPwMessage}
               </span>
-              <input
-                type="text"
-                placeholder="PHONE NUMBER"
-                ref={phoneRef}
-                value={phone}
-                onChange={onChangePhone}
-              />
+              <IdContainer>
+                <input
+                  type="text"
+                  placeholder="PHONE NUMBER"
+                  ref={phoneRef}
+                  value={phone}
+                  onChange={onChangePhone}
+                />
+                <button
+                  type="button"
+                  onClick={onPhoneDuplCheck}
+                  disabled={isPhoneDuplCheck}
+                >
+                  중복확인
+                </button>
+              </IdContainer>
               <div>
                 <input
                   type="checkbox"
