@@ -16,7 +16,7 @@ const StudyApi = {
       content: content,
       imgUrl: imgUrl,
       writer: userNickname,
-      hashtags: hashtags
+      hashtag: hashtags
     }
     return await axios.post("/api/study/write", studyObj)
   },

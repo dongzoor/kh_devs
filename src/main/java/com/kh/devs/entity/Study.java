@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.kh.devs.constant.ApplyStatus;
+import com.kh.devs.controller.StringListConverter;
 import lombok.*;
 
 import javax.persistence.*;
@@ -48,23 +49,24 @@ public class Study {
 
     private String coordinate;
 
+//    @ElementCollection(fetch = FetchType.LAZY)
+    @Convert(converter = StringListConverter.class)
+    private List<String> hashtag;
+
     @Enumerated(EnumType.STRING)
     private ApplyStatus applyStatus;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")  // user_id FK 설정
     private User user;
 
-    @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
-    private List<Hashtag> hashtags = new ArrayList<>();
 //
 //    public void createdByUser(User user) {
 //        this.user = user;
 //    }
     @Builder
     public Study(Long id, String title, String content, String writer, String imgUrl, int cnt, LocalDateTime regTime,
-                 LocalDateTime updateTime, LocalDateTime goalTime, String coordinate, List<Hashtag> hashtags) {
+                 LocalDateTime updateTime, LocalDateTime goalTime, String coordinate, List<String> hashtag) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -75,7 +77,7 @@ public class Study {
         this.updateTime = updateTime;
         this.goalTime = goalTime;
         this.coordinate = coordinate;
-        this.hashtags = hashtags;
+        this.hashtag = hashtag;
     }
 
 }

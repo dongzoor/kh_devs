@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import StudyApi from "../../lib/api/StudyApi";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import {Badge} from "react-bootstrap";
 
 const Box = styled.div`
   margin: -50px;
@@ -66,7 +67,12 @@ const Study = () => {
                             <h6 className="card-subtitle mb-2 text-muted" style={{ "float": "right" }}>{`${list.writer}`}</h6>
                             <br />
                             <p className="card-text">{`${list.content}`}</p>
+                              {`${list.hashtag}` &&
+                                  list.hashtag.map((e) => <Badge bg="info" style={{ "marginRight": "0.5vw" }} > {e} </Badge>)}
                           </div>
+                            <div className="hashtag-container">
+
+                            </div>
                         </div>
                       </div>
                     </div>
@@ -85,7 +91,8 @@ const Study = () => {
                         <h6 className="card-subtitle mb-2 text-muted" style={{ "float": "right" }}>{`${list.writer}`}</h6>
                         <br />
                         <p className="card-text"> {`${list.content}`}</p>
-                        <p style={{ "float": "right" }}><FontAwesomeIcon icon={faHeart} /></p>
+                          {`${list.hashtag}` &&
+                              list.hashtag.map((e) => <Badge bg="info" style={{ "marginRight": "0.5vw" }} > {e} </Badge>)}
                       </div>
                     </div>
                   </CardContainer>

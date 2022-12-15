@@ -6,6 +6,7 @@ import ChatApi from "../../lib/api/ChatApi";
 import UserApi from "../../api/UserApi";
 import Button from 'react-bootstrap/Button';
 import { async } from "@firebase/util";
+import { Badge } from "react-bootstrap";
 
 
 const DetailContainer = styled.div`
@@ -62,6 +63,8 @@ const StudyDetail = () => {
             <h6 className="card-subtitle mb2 text-muted" style={{ "float": "right" }}>{`${studyDetail.writer}`}</h6>
             <br />
             <p className="card-text">{`${studyDetail.content}`}</p>
+            {`${studyDetail.hashtag}` &&
+              studyDetail.hashtag.map((e) => <Badge bg="info" style={{ "marginRight": "0.5vw" }} > {e} </Badge>)}
           </div>
           <div>
             <Button variant="light" style={{ "width": "10vw", "float": "right" }} onClick={chatTest}>채팅</Button>
