@@ -68,7 +68,7 @@ function App() {
         <Route path="/myPage/myCalendar" element={<MyCalendar />} />
         <Route path="/myPage/myStudy" element={<MyStudy />} />
         <Route path="/myPage/myHashtag" element={<MyHashtag />} />
-        <Route path="/myPage/mySocial" element={<MySocial />} />
+        <Route path="/myPage/mySocial/:userId" element={<MySocial />} />
         <Route path="/myPage/myComment" element={<MyComment />} />
         <Route path="/myPage/MyLike" element={<MyLike />} />
         </Routes>

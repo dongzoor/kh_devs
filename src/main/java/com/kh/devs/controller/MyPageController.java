@@ -1,7 +1,7 @@
 package com.kh.devs.controller;
 
 import com.kh.devs.dto.SocialDTO;
-import com.kh.devs.service.SocialService;
+import com.kh.devs.service.MyPageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +15,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MyPageController {
 
-    private final SocialService socialService; // Controller 는 넘어온 요청을 처리하기 위해 Service 를 호출한다.
+    private final MyPageService socialService; // Controller 는 넘어온 요청을 처리하기 위해 Service 를 호출한다.
 
+    // 로그인한 회원의 작성글 조회
     @GetMapping("/api/myPage/mySocial/{userId}")
-    public ResponseEntity<List<SocialDTO>> socialList(@PathVariable("userId") Long userId) {
-        List<SocialDTO> list = socialService.getSocialList();
+    public ResponseEntity<List<SocialDTO>> socialList(@PathVariable Long userId) {
+        List<SocialDTO> list = socialService.getSocialList(userId);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 }

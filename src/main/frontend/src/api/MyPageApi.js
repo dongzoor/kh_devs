@@ -7,7 +7,7 @@ const MyPageApi = {
     // const mySocialListObj = {
     //   userId: userId
     // };
-    return await axios.get(`/api/myPage/mySocial${userId}`);
+    return await axios.get(`/api/myPage/mySocial/${userId}`);
   },
 
   // 작성글 선택 삭제

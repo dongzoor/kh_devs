@@ -9,6 +9,8 @@ import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
 
 function OffcanvasExample() {
+
+  const userId = sessionStorage.getItem("userId");
   const [userEmail, setUserEmail] = useState("");
   // 초기값 설정
   useEffect(() => {
@@ -61,23 +63,23 @@ function OffcanvasExample() {
                       내 정보 수정
                     </NavDropdown.Item>
                     <NavDropdown.Divider />
-                    <NavDropdown.Item href="/myPage/myCalendar">
+                    <NavDropdown.Item href={`/myPage/myCalendar/${userId}`}>
                       캘린더
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="/myPage/myStudy">
+                    <NavDropdown.Item href={`/myPage/myStudy/${userId}`}>
                       나의 스터디
                     </NavDropdown.Item>
                     <NavDropdown.Divider />
-                    <NavDropdown.Item href="/myPage/mySocial">
+                    <NavDropdown.Item href={`/myPage/mySocial/${userId}`}>
                       내가 쓴 글
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="/myPage/myComment">
+                    <NavDropdown.Item href={`/myPage/myComment/${userId}`}>
                       내가 쓴 댓글
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="/myPage/myLike">
+                    <NavDropdown.Item href={`/myPage/myLike/${userId}`}>
                       내가 좋아요한 글
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="/myPage/myHashtag">
+                    <NavDropdown.Item href={`/myPage/myHashtag/${userId}`}>
                       나의 관심 #글
                     </NavDropdown.Item>
                   </NavDropdown>

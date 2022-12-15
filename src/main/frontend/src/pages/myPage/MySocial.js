@@ -7,19 +7,22 @@ import './MyPage.css'
 
 const MySocial = () => {
 
+  // 로그인 시 세션 스토리지에 설정한 userId 가져오기
+  const userId = sessionStorage.getItem("userId");
+
   // 작성글(소셜 게시판) 조회
-  const [mySocialboard, setMySocialboard] = useState();
+  const [mySocialList, setMySocialList] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const MySocialDate = async () => {
         setLoading(true);
         try {
-          // 로그인 시 세션 스토리지에 설정한 userId를 가져와서 해당 userId로 작성된 글 조회
-          const getUserId = sessionStorage.getItem("userId")
-          const response = await MyPageApi.mySocialList(getUserId)
-          setMySocialboard(response.data);  
-          console.log(response.data);
+          console.log("User Id : " + userId);
+          // 로그인된 userId로 작성된 글 조회
+          const response = await MyPageApi.mySocialList(userId)
+          setMySocialList(response.data);  
+          console.log("작성글 리스트" + response.data);
         } catch (e) {
           console.log(e);
         }
@@ -32,7 +35,7 @@ const MySocial = () => {
     return <p>∘✧₊⁺ 𝑳𝒐𝒅𝒊𝒏𝒈... ⁺₊✧∘</p>
   }
 
-  // 삭제 확인 모달 추가 예정
+  // 삭제 확인 모달 변경 예정
   const onClickDelete = async (e) => {
     const res = await MyPageApi.mySocialDelete(e);
     console.log("삭제 버튼 클릭");
@@ -74,7 +77,7 @@ const MySocial = () => {
                 </tr>
               </thead>
               <tbody>
-                {mySocialboard && mySocialboard.map((list) => (
+                {mySocialList && mySocialList.map((list) => (
                   <tr key={list.socialId}>
                     <td>
                       <button onClick={()=>onClickDelete(list.socialId)}>삭제</button>
