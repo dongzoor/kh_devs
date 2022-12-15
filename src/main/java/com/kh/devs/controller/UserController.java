@@ -145,7 +145,7 @@ public class UserController {
     }
 
     // ID(Email) 중복체크
-    @PostMapping("/duplCheck")
+    @PostMapping("duplCheck")
     public ResponseEntity<Map<String, String>> duplCheck(@RequestBody Map<String, String> findData) {
         String userEmail = findData.get("userEmail");
         List<User> user = userService.userSearch(userEmail);

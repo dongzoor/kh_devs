@@ -77,12 +77,24 @@ public class UserService {
         return user.get(0);
     }
 
-    // 회원 탈퇴
+     //회원 탈퇴
     @Transactional
     public boolean userDelete(String userEmail) {
         List<User> user = userRepository.findByUserEmail(userEmail);
         userRepository.delete(user.get(0));
         return true;
+    }
+
+//    @Transactional
+//    public boolean userAdDelete(Long userId) {
+//        List<User> user = userRepository.findByUserId(userId);
+//        socialRepository.deleteById(socialId); // 오류가 터지면 익센셥 타서 신경 노노
+//        return true;
+//    }
+    @Transactional
+    public String deleteAdUser(Long userId) {
+        userRepository.deleteById(userId); // 오류가 터지면 익센셥 타서 신경 노노
+        return "ok";
     }
 
 
