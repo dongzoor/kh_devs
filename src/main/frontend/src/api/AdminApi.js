@@ -23,7 +23,8 @@ const AdminApi = {
   admemberDetail: async function (userId) {
     return await axios.get("/api/adUserList/" + userId);
   },
-
+// 어드민 유저멤버 수정 
+// 
   AdUserUpdate: async function ( userid , userNickname, password, phone, profileImage) {
     const updateObj = {
     
@@ -31,6 +32,7 @@ const AdminApi = {
       password: password,
       phone: phone,
       profileImage: profileImage,
+      // ImgId:ImgId
     };
     return await axios.put(
     "/api/adUserList/" + userid + "/update",
