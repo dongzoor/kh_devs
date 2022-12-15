@@ -41,8 +41,8 @@ function App() {
         <Routes>
           {/* <Route path="/Admin" element={<Admin />} /> */}
           <Route path="/AdminLogin" element={<AdminLogin />} />
-          <Route path="/AdminScBoarList" element={<AdminScBoardList />} />
-          <Route path="/AdminBoarList" element={<AdminBoardList />} />
+          <Route path="/AdminScBoardList" element={<AdminScBoardList />} />
+          <Route path="/AdminBoardList" element={<AdminBoardList />} />
           <Route path="/AdminMemberList" element={<AdminMemberList />} />
           <Route exact path="/AdminMember/:userId" element={<AdminEditUser />} />
           <Route path="/" element={<Login />} />

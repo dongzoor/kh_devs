@@ -3,6 +3,22 @@ import axios from "axios";
 // const HEADER = { "Content-type": "application/json; charset=UTF-8" };
 
 const UserApi = {
+  // ID(Email) 중복체크
+  duplCheck: async function (id) {
+    const idCheck = {
+      userEmail: id,
+    };
+    return await axios.post("/duplCheck", idCheck);
+  },
+
+  // 전화번호 중복체크
+  phoneDuplCheck: async function (phone) {
+    const phoneCheck = {
+      phone: phone,
+    };
+    return await axios.post("/phoneDuplCheck", phoneCheck);
+  },
+
   //회원가입
   userReg: async function (id, pwd, nickname, phone, profileImage) {
     const userObj = {
@@ -51,14 +67,6 @@ const UserApi = {
       phone: phone,
     };
     return await axios.post("findPwd", AccountInfo);
-  },
-
-  // ID(Email) 중복체크
-  duplCheck: async function (id) {
-    const idCheck = {
-      userEmail: id,
-    };
-    return await axios.post("duplCheck", idCheck);
   },
 
   // 회원탈퇴

@@ -6,6 +6,7 @@ import ChatApi from "../../lib/api/ChatApi";
 import UserApi from "../../api/UserApi";
 import Button from 'react-bootstrap/Button';
 import { async } from "@firebase/util";
+import { Badge } from "react-bootstrap";
 
 
 const DetailContainer = styled.div`
@@ -26,7 +27,7 @@ const StudyDetail = () => {
   useEffect(() => {
     const StudyData = async () => {
       try {
-        const response = await StudyApi.studyUpdateDetail(parseInt(params));
+        const response = await StudyApi.studyDetail(parseInt(params));
         // const SetUserId = await UserApi.~~~//api로 정보 가져와야함
         setStudyDetail(response.data);
         console.log(response.data);
@@ -62,6 +63,8 @@ const StudyDetail = () => {
             <h6 className="card-subtitle mb2 text-muted" style={{ "float": "right" }}>{`${studyDetail.writer}`}</h6>
             <br />
             <p className="card-text">{`${studyDetail.content}`}</p>
+            {`${studyDetail.hashtag}` &&
+              studyDetail.hashtag.map((e) => <Badge bg="info" style={{ "marginRight": "0.5vw" }} > {e} </Badge>)}
           </div>
           <div>
             <Button variant="light" style={{ "width": "10vw", "float": "right" }} onClick={chatTest}>채팅</Button>

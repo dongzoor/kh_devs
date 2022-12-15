@@ -1,5 +1,6 @@
 package com.kh.devs.service;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.kh.devs.dao.StudyRepository;
 import com.kh.devs.dto.StudyDTO;
 import com.kh.devs.entity.Study;
@@ -11,13 +12,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class StudyService {
     private final StudyRepository studyRepository;
+    private final UserService userService;
 
     public Boolean writeStudy(StudyDTO studyDTO) {
         Study study = Study.builder()
@@ -28,6 +30,7 @@ public class StudyService {
                 .cnt(0)
                 .writer(studyDTO.getWriter())
                 .imgUrl(studyDTO.getImgUrl())
+                .hashtag(studyDTO.getHashtag())
                 .build();
         Study rst = studyRepository.save(study);
         log.warn(rst.toString());
@@ -37,9 +40,25 @@ public class StudyService {
         return studyRepository.findAll();
     }
 
-    public Optional<Study> getStudy(Long id) {
-        Study study = studyRepository.findById(id).orElseThrow(() -> new NotFoundStudyException("study is not Found!"));
-        return Optional.ofNullable(study);
+    @JsonSetter
+    public Study getStudy(Long id) {
+//        Study study = studyRepository.findById(id).get();
+//        StudyDTO studyDTO = new StudyDTO();
+//        studyDTO.setStudyId(study.getId());
+//        studyDTO.setWriter(study.getWriter());
+//        studyDTO.setTitle((study.getTitle()));
+//        studyDTO.setContent(study.getContent());
+//        studyDTO.setImgUrl(study.getImgUrl());
+//        if(study.getApplyStatus() == ApplyStatus.ING) studyDTO.setStudyApply(true);
+//        else studyDTO.setStudyApply(false);
+//        studyDTO.setReadCount(study.getCnt());
+//        log.warn(studyDTO.toString());
+//        Study study = studyRepository.findById(id).orElseThrow(() -> new NotFoundStudyException("study is not Found!"));
+
+        Study study = studyRepository.findById(id).get();
+
+
+        return study;
     }
 
     @Transactional
@@ -55,6 +74,12 @@ public class StudyService {
         studyRepository.deleteById(studyId); // 오류가 터지면 익센셥 타서 신경 노노
         return "OK";
     }
+
+
+//    @Transactional
+//    public Long save(Long userId, StudyDTO studyDTO) {
+//        Study saveStudy = StudyRepository.save();
+//    }
 
 //    public List<StudyDTO> getStudyList(){
 //        List<StudyDTO> studyDTOS = new ArrayList<>();

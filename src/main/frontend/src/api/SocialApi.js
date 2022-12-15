@@ -6,23 +6,23 @@ import axios from "axios";
 const SocialApi = {
   // 게시글 전체 조회
   socialList: async function () {
-    return await axios.get("/api/social");
+    return await axios.get(`api/social`);
   },
   // 게시글 상세 조회
   socialDetail: async function (socialId) {
     return await axios.get(`/api/social/${socialId}`);
   },
   // 게시글 작성
-  socialWrite: async function (user, title, content, tag, image, imageId) {
+  socialWrite: async function (userEmail, title, content, tag, image, imageId) {
     const writeObj = {
-      userid: user, // 유저 id(PK)
+      userEmail: userEmail, // 유저 id(PK)
       title: title,
       content: content,
       tag: tag,
       image: image,
       imageId: imageId,
     };
-    return await axios.post("/api/social/write", writeObj);
+    return await axios.post(`/api/social/write`, writeObj);
   },
   // 게시글 수정
   socialUpdate: async function (socialId, title, content, tag, image, imageId) {

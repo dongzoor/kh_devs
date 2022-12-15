@@ -95,6 +95,24 @@ public class AdminController {
             return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
         }
     }
+    //유저 삭제
+//    @DeleteMapping("/AdMemberDelete/{userEmailDb}")
+//    public ResponseEntity<User> deleteUser(@PathVariable("userEmailDb") String userEmailDb) {
+//        String userEmail = userEmailDb;
+//
+//        boolean result = userService.userDelete(userEmail);
+//        if (result) {
+//            return new ResponseEntity(true, HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity(false, HttpStatus.OK);
+//        }
+//    }
+
+    // 유저 아이디 삭제
+    @DeleteMapping("/api/User/{id}")
+    public ResponseEntity<?> deleteByUserId(@PathVariable Long id ) {
+        return new ResponseEntity<>(userService.deleteAdUser(id), HttpStatus.OK);
+    }
 
     // 소셜게시판 리스트 불러오기
     @GetMapping("/api/adSocialList2")
