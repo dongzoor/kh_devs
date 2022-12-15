@@ -4,14 +4,11 @@ import com.kh.devs.dao.SocialRepository;
 import com.kh.devs.dao.UserRepository;
 import com.kh.devs.dto.SocialDTO;
 import com.kh.devs.entity.Social;
-import com.kh.devs.entity.Study;
 import com.kh.devs.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,13 +17,12 @@ import java.util.Objects;
 
 // Service 의 역할은 DAO(Repository)가 DB 에서 받아온 데이터를 전달받아 가공하는 것
 @Slf4j
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class SocialService {
-    @Autowired
     private final SocialRepository socialRepository;
-    @Autowired
     private final UserRepository userRepository;
+
 
     // Social 전체 조회
     public List<SocialDTO> getSocialList() {
@@ -73,9 +69,6 @@ public class SocialService {
     public boolean regSocial(Long userId, String title, String content, String tag, String image, String imageId) throws Exception { // 결과값은 성공,실패만 알려주면 되니까 boolean
         try{
             User user = userRepository.findById(userId).get(); // 객체로 user 정보를 다시 찾아와서 넣어주기 위함
-            System.out.println("#############################");
-            System.out.println(user);
-            System.out.println("#############################");
             Social social = new Social();
             social.setUser(user);
             social.setTitle(title);
@@ -128,5 +121,4 @@ public class SocialService {
     public List<Social> getAdSocialList2() {
         return socialRepository.findAll();
     }
-
 }
