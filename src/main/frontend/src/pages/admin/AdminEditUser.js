@@ -53,7 +53,8 @@ function AdminEditUser() {
   const [inputConPw, setInputConPw] = useState(""); // 비밀번호 확인
   const [phone, setPhone] = useState("");
   const phoneRef = useRef();
-
+  
+  const [imgId, setIimgId] = useState("");
   const [imgFile, setImgFile] = useState("");
   const [changeImgFile, setChangeImgFile] = useState("");
   const imgRef = useRef();
@@ -80,9 +81,8 @@ console.log("이메일 확인 : " , originEmail )
       setUserEmail(originEmail);
       setUserNickname(originNickname);
       setPhone(originPhone);
-      // 원래 설정한 이미지를 세션 스토리지에서 가져옴
-      setImgFile(profileImagePath);
-    
+      setImgFile(profileImagePath);   
+      setIimgId(profileImagePath);
         console.log(response.data);
       } catch (e) {
         console.log(e);
@@ -91,32 +91,168 @@ console.log("이메일 확인 : " , originEmail )
     MemberData();
   }, []);
 
-  const saveImgFile = (e) => {
+   // 회원정보 수정
+   const onClickEdit = async () => {   
+  
+    if (userNickname === "") {
+      window.alert("닉네임을 입력해주세요.");
+      return;
+    }
+
+    if (phone === "") {
+      window.alert("전화번호를 입력해주세요.");
+      return;
+    }
+      if (imgId !== "") {
+      // 파이어베이스 상 파일주소 지정
+      const attachmentRef = ref(storageService, `/USER/${imgId}`);
+      // 참조경로로 firebase 이미지 삭제
+      await deleteObject(attachmentRef)
+        .then(() => {
+          console.log("Firebase File deleted successfully !");
+        })
+        .catch((error) => {
+          console.log("Uh-oh, File Delete error occurred!");
+        });
+    }
+ // 1-2. 기존에 이미지 없었는데 생겼다? firebase, db에 모두 저장
+ if (changeImgFile !== "") {
+  // 파일 참조 경로 지정
+  var changeImgFileUrl = null;
+  var imageid = uuidv4(); // 이미지 UUID
+  const changeImgRef = ref(storageService, `/USER/${imageid}`);
+  // 참조경로로 storage에 저장
+  const response = await uploadString(
+    changeImgRef,
+    changeImgFile,
+    "data_url"
+  );
+  console.log("changeImgFile :", changeImgFile);
+  changeImgFileUrl = await getDownloadURL(response.ref);
+  console.log("이미지 주소 : " + changeImgFileUrl);
+  console.log("이미지 ID : " + imageid);
+}
+const userUpdate = await AdminApi.AdUserUpdate(
+  params,
+  userNickname,
+  password,
+  phone,
+  changeImgFileUrl,
+  //imageName,
+);
+console.log("수정 버튼 클릭");
+if (userUpdate.data === true) {
+            window.location.replace("/AdminMemberList");
+            alert("수정 완료 !");
+  
+} else {
+  alert(" 수정 실패 ");
+  console.log(userUpdate.data);
+}
+};
+
+ // 회원정보 수정
+//  const onClickEdit2 = async () => {
+//   if (userNickname === "") {
+//     window.alert("닉네임을 입력해주세요.");
+//     return;
+//   }
+
+//   if (phone === "") {
+//     window.alert("전화번호를 입력해주세요.");
+//     return;
+//   }
+
+//   if (window.confirm("회원정보를 수정하시겠습니까?")) {
+//     if (true) {
+//       let profileImage = null;
+//       let nowProfileImage = imgFile;
+
+//       // 이미지가 바뀌는 경우
+//       if (changeImgFile !== "") {
+//         //새로운 파일이름 생성
+//         profileImage = uuidv4();
+//       } else {
+//         //기존이미지이름 넣기
+//         profileImage = nowProfileImage;
+//       }
+
+//       const userUpdate = await AdminApi.AdUserUpdate(
+//         userEmail,
+//         password,
+//         userNickname,
+//         phone,
+//         profileImage
+//       );
+
+//       if (userUpdate.data !== false) {
+//         if (imgFile !== "") {
+//           // 기존 이미지가 존재하는 경우
+//           if (nowProfileImage !== null) {
+//             // 이미지가 바뀌는 경우
+//             if (changeImgFile !== "") {
+//               const attachmentRefDelete = ref(
+//                 storageService,
+//                 `/USER/${nowProfileImage}`
+//               );
+//               //storage 참조 경로로 기존 이미지 삭제
+//               await deleteObject(attachmentRefDelete);
+
+//               // 바꿀 이미지 업로드
+//               const attachmentRefUpload = ref(
+//                 storageService,
+//                 `/USER/${profileImage}`
+//               );
+//               await uploadString(attachmentRefUpload, imgFile, "data_url");
+//             }
+//           } else {
+//             if (changeImgFile !== "") {
+//               // 바꿀 이미지 업로드
+//               const attachmentRefUpload = ref(
+//                 storageService,
+//                 `/USER/${profileImage}`
+//               );
+//               await uploadString(attachmentRefUpload, imgFile, "data_url");
+//             }
+//           }
+//         }
+//         window.alert("회원정보 수정이 완료되었습니다.");
+//         window.location.replace("/AdminMemberList");
+//       }
+//     }
+//   } else {
+//     return;
+//   }
+// };
+
+////////////////////////// 온체인지 
+
+const onChangeImage = (e) => {
+  const {
+    target: { files },
+  } = e;
+  const theFile = files[0];
+  console.log(theFile);
+
+  const reader = new FileReader();
+  reader.onloadend = (finishedEvent) => {
     const {
-      target: { files },
-    } = e;
-    const theFile = files[0];
-    console.log(theFile);
-
-    const reader = new FileReader();
-    reader.onloadend = (finishedEvent) => {
-      const {
-        currentTarget: { result },
-      } = finishedEvent;
-      setImgFile(result);
-      setChangeImgFile(result);
-    };
-    reader.readAsDataURL(theFile);
+      currentTarget: { result },
+    } = finishedEvent;
+    setChangeImgFile(result);
+    setImgFile(result);
   };
+  reader.readAsDataURL(theFile);
+};
 
-  const onChangeNickname = (e) => {
-    console.log("닉네임 확인" , userNickname)
-    setUserNickname(e.target.value);
-  };
+const onChangeNickname = (e) => {
+  console.log("닉네임 확인" , userNickname)
+  setUserNickname(e.target.value);
+};
 
-  const onChangePassword = (e) => {
-    setPassword(e.target.value);
-  };
+const onChangePassword = (e) => {
+  setPassword(e.target.value);
+};
 
   // 휴대폰 번호 오토하이픈 추가
   const onChangePhone = (e) => {
@@ -157,138 +293,6 @@ console.log("이메일 확인 : " , originEmail )
     }
   };
 
-  const onClickEdit2 = async () => {
-    const userUpdate = await AdminApi.AdUserUpdate(
-      params,  
-      userNickname,
-      password,
-      phone,
-      
-    );
-    console.log("확인",userUpdate)
-    console.log("수정 버튼 클릭");
-    if (userUpdate.data === true) {
-
-      console.log("수정 완료 !!");
-      alert("Social 게시글 수정 완료 !");
-    } else {
-      console.log("수정 실패 ");
-      console.log(userUpdate.data);
-    }
-  };
-
-
-   // 회원정보 수정
-   const onClickEdit = async () => {
-   
-  
-    if (userNickname === "") {
-      window.alert("닉네임을 입력해주세요.");
-      return;
-    }
-
-    if (phone === "") {
-      window.alert("전화번호를 입력해주세요.");
-      return;
-    }
-
-    if (window.confirm("회원정보를 수정하시겠습니까?")) {
-      if (true) {
-        let profileImagenow = sessionStorage.setItem("profileImage" , imgFile) 
-        let profileImage = null;
-        let nowProfileImage = profileImagenow
-        console.log("이미지파일 : " , imgFile)
-      
-        // 이미지가 바뀌는 경우
-        if (changeImgFile !== "") {
-          //새로운 파일이름 생성
-          profileImage = uuidv4();
-        } else {
-          //기존이미지이름 넣기
-          profileImage = nowProfileImage;
-        }
-
-        const userUpdate = await AdminApi.AdUserUpdate(
-          params,
-          userNickname,
-          password,
-          phone,
-          profileImage
-        );
-
-        if (userUpdate.data !== false) {
-          if (imgFile !== "") {
-            // 기존 이미지가 존재하는 경우
-            if (nowProfileImage !== null) {
-              // 이미지가 바뀌는 경우
-              if (changeImgFile !== "") {
-                const attachmentRefDelete = ref(
-                  storageService,
-                  `/USER/${nowProfileImage}`
-                );
-                //storage 참조 경로로 기존 이미지 삭제
-                await deleteObject(attachmentRefDelete);
-
-                // 바꿀 이미지 업로드
-                const attachmentRefUpload = ref(
-                  storageService,
-                  `/USER/${profileImage}`
-                );
-                await uploadString(attachmentRefUpload, imgFile, "data_url");
-              }
-            } else {
-              if (changeImgFile !== "") {
-                // 바꿀 이미지 업로드
-                const attachmentRefUpload = ref(
-                  storageService,
-                  `/USER/${profileImage}`
-                );
-                await uploadString(attachmentRefUpload, imgFile, "data_url");
-              }
-            }
-          }
-
-          window.alert("회원정보 수정이 완료되었습니다.");
-          if (userUpdate.data.profileImage !== null) {
-            let attachmentUrl = ref(
-              storageService,
-              `/USER/${userUpdate.data.profileImage}`
-            );
-            // 이미지 불러오기
-            let profileImageNow = await getDownloadURL(attachmentUrl);
-            // 불러온 이미지 이름 저장
-            sessionStorage.setItem(
-              "profileImage",
-              userUpdate.data.profileImage
-            );
-            // 불러온 이미지 경로 세션에 저장
-            sessionStorage.setItem("profileImagePath", profileImageNow);
-          }
-          sessionStorage.setItem("userEmail", userUpdate.data.userEmail);
-          sessionStorage.setItem("userNickname", userUpdate.data.userNickname);
-          sessionStorage.setItem("phone", userUpdate.data.phone);
-          window.location.replace("/AdminMemberList");
-        }
-      }
-    } else {
-      return;
-    }
-  };
-
-
-  // 회원정보 탈퇴
-   const onDeleteUser = async () => {
-    if (window.confirm("탈퇴하시겠습니까?")) {
-      const deleteUser = await AdminApi.delete(userEmail);
-
-      if (deleteUser.data === true) {
-        window.confirm("탈퇴를 완료하였습니다.");
-        sessionStorage.clear();
-        window.location.replace("/");
-      }
-    }
-  };
-
   return (
     <Box>
       <Container>
@@ -320,7 +324,7 @@ console.log("이메일 확인 : " , originEmail )
                 type="file"
                 accept="image/*"
                 id="profileImg"
-                onChange={saveImgFile}
+                onChange={onChangeImage}
                 ref={imgRef}
               />
               <input
@@ -374,7 +378,7 @@ console.log("이메일 확인 : " , originEmail )
               <button
                 type="button"
                 className="submit_btn"
-                onClick={onClickEdit}
+                onClick={onClickEdit} 
               >
                 Submit
               </button>
