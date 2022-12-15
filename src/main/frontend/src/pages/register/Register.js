@@ -221,7 +221,7 @@ function Register() {
     }
 
     const duplPhoneCheck = await UserApi.phoneDuplCheck(phone);
-    console.log(duplPhoneCheck.data);
+
     if (duplPhoneCheck.data === true) {
       window.confirm("사용 가능한 전화번호입니다.");
       setIsPhoneDuplCheckYn(true);

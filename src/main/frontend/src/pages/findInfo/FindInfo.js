@@ -92,7 +92,7 @@ function FindInfo() {
 
   const onClickFindId = async () => {
     const res = await UserApi.findId(phone);
-    if (res.data !== null) {
+    if (res.data !== false) {
       console.log(res.data);
       // window.alert("test");
       window.alert(`아이디는 ${res.data.userEmail} 입니다.`);
@@ -129,9 +129,8 @@ function FindInfo() {
 
   const onClickFindPwd = async () => {
     const res = await UserApi.findPwd(userEmail, pwPhone);
-    if (res.data !== null) {
+    if (res.data === true) {
       console.log(res.data);
-      // window.alert("test");
       window.alert(
         "입력하신 메일로 임시 비밀번호를 전송하였습니다. \n새로운 비밀번호로 로그인 해주세요."
       );

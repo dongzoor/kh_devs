@@ -67,15 +67,13 @@ public class UserService {
     }
 
     // 회원정보 찾기 - 아이디 찾기
-    public User getUserEmail(String phone) {
-        List<User> user = userRepository.findByPhone(phone);
-        return user.get(0);
+    public List<User> getUserEmail(String phone) {
+        return userRepository.findByPhone(phone);
     }
 
     // 회원정보 찾기 - 비밀번호 찾기
-    public User getPwd(String userEmail, String phone) {
-        List<User> user = userRepository.findByUserEmailAndPhone(userEmail, phone);
-        return user.get(0);
+    public List<User> getPwd(String userEmail, String phone) {
+        return userRepository.findByUserEmailAndPhone(userEmail, phone);
     }
 
      //회원 탈퇴
