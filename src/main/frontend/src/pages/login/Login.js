@@ -64,6 +64,8 @@ function Login() {
       sessionStorage.setItem("userEmail", res.data.userEmail);
       sessionStorage.setItem("userNickname", res.data.userNickname);
       sessionStorage.setItem("phone", res.data.phone);
+      // 마이페이지에서 사용
+      sessionStorage.setItem("userId", res.data.userId);
       window.location.replace("/Profile");
     } else if (res.data === false) {
       window.alert("이메일이나 비밀번호를 확인해주세요.");
