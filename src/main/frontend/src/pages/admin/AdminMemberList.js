@@ -4,14 +4,12 @@ import { useEffect, useState } from "react";
 
 import AdminApi from "../../api/AdminApi";
 import Adminheader from "./Adminheader";
+import JwModal from "../../utill/JwModal";
 import { Link } from "react-router-dom";
 import Loading from "../../utill/Loading";
 import Pagination from "react-js-pagination";
 import Table from "react-bootstrap/Table";
 import styled from "styled-components";
-
-// import JwModal from '../../utill/JwModal';
-
 
 const Adcontainer = styled.div`
   display: flex;
@@ -161,7 +159,17 @@ function AdminMemberList() {
                         <button className="adbutton delete" onClick={openModal}>
                           삭제
                         </button>
-                        {/* {modalOpen && <JwModal open={modalOpen} confirm={() => confirmMemModal(list.userId)} close={closeModal} type={true} header="확인">정말 삭제하시겠습니까?</JwModal>} */}
+                        {modalOpen && (
+                          <JwModal
+                            open={modalOpen}
+                            confirm={() => confirmMemModal(list.userId)}
+                            close={closeModal}
+                            type={true}
+                            header="확인"
+                          >
+                            정말 삭제하시겠습니까?
+                          </JwModal>
+                        )}
                       </>
                       <Link
                         to={"/Profile"}
