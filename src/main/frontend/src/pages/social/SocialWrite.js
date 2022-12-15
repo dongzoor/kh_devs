@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { getDownloadURL, ref, uploadString } from "@firebase/storage";
-
 import SocialApi from "../../api/SocialApi";
 import { storageService } from "../../lib/api/fbase";
 import styled from "styled-components";
@@ -62,6 +61,15 @@ const SocialWrite = () => {
         console.log("★ 이미지 주소 : " + attachmentUrl);
         console.log("★ 이미지 UUID : " + imageName);
       }
+      console.log("###############################");
+      console.log(getUserId);
+      console.log(titleInput);
+      console.log(contentInput);
+      console.log(tagInput);
+      console.log(attachmentUrl);
+      console.log(imageName);
+      console.log("★ 이미지 주소 : " + attachmentUrl);
+      console.log("★ 이미지 UUID : " + imageName);
       const res = await SocialApi.socialWrite(
         getUserId,
         titleInput,

@@ -14,8 +14,8 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-@RequiredArgsConstructor
 @RequestMapping("/api/social")
+@RequiredArgsConstructor
 public class SocialController {
     private final SocialService socialService; // Controller 는 넘어온 요청을 처리하기 위해 Service 를 호출한다.
 
@@ -36,13 +36,14 @@ public class SocialController {
     // social 작성(등록)
     @PostMapping("/write")
     public ResponseEntity<Boolean> socialWrite(@RequestBody Map<String, String> regData) throws Exception { // RequestBody로 받음
-        Long userid = Long.valueOf(regData.get("userid"));
+        Long userId = Long.valueOf(regData.get("userid"));
         String title = regData.get("title");
         String content = regData.get("content");
         String tag = regData.get("tag");
         String image = regData.get("image");
         String imageId = regData.get("imageId");
-        boolean result = socialService.regSocial(userid, title, content, tag, image, imageId);
+        System.out.println(userId + title + content + tag + image + imageId );
+        boolean result = socialService.regSocial(userId, title, content, tag, image, imageId);
         if (result) {
             return new ResponseEntity<>(true, HttpStatus.OK);  // 프론트의 res.data 값(true)으로 넘어온다!!!
         } else {
