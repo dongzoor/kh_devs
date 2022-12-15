@@ -26,7 +26,7 @@ const StudyDetail = () => {
   useEffect(() => {
     const StudyData = async () => {
       try {
-        const response = await StudyApi.studyUpdateDetail(parseInt(params));
+        const response = await StudyApi.studyDetail(parseInt(params));
         // const SetUserId = await UserApi.~~~//api로 정보 가져와야함
         setStudyDetail(response.data);
         console.log(response.data);

@@ -10,12 +10,13 @@ const StudyApi = {
     return await axios.get("/api/studies");
   },
 
-  studyWrite: async function (userNickname, title, content, imgUrl) {
+  studyWrite: async function (userNickname, title, content, imgUrl, hashtags) {
     const studyObj = {
       title: title,
       content: content,
       imgUrl: imgUrl,
-      writer: userNickname
+      writer: userNickname,
+      hashtags: hashtags
     }
     return await axios.post("/api/study/write", studyObj)
   },
@@ -29,9 +30,9 @@ const StudyApi = {
     return await axios.put("/api/study/edit/" + studyId, studyObj)
   },
 
-  studyUpdateDetail: async function (studyId) {
-    return await axios.get("/api/study/edit/" + studyId);
-  },
+  // studyUpdateDetail: async function (studyId) {
+  //   return await axios.get("/api/study/edit/" + studyId);
+  // },
 }
 
 export default StudyApi;

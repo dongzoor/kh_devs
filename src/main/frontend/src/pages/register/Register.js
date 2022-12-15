@@ -179,10 +179,10 @@ function Register() {
     const passwordCurrent = e.target.value;
     setInputConPw(passwordCurrent);
     if (passwordCurrent !== password) {
-      setConPwMessage("비밀 번호가 일치하지 않습니다.");
+      setConPwMessage("비밀번호가 일치하지 않습니다.");
       setIsConPw(false);
     } else {
-      setConPwMessage("비밀 번호가 일치 합니다.");
+      setConPwMessage("비밀번호가 일치합니다.");
       setIsConPw(true);
     }
   };

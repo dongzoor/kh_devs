@@ -65,9 +65,7 @@ function AdminScBoardList() {
             
           console.log("삭제 완료!");
           setLoading(true);
-        //   navigate("/AdminScBoarList")
-        //   alert("삭제 완료");
-        // window.location.reload();
+        window.location.reload();
         } else {
           console.log("삭제 실패 ");
           console.log(res.data.result);

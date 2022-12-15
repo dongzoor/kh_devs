@@ -7,6 +7,7 @@ import Adminheader from './Adminheader';
 import AdminApi from '../../api/AdminApi';
 import { Link } from 'react-router-dom';
 import UserApi from '../../api/UserApi';
+import Loading from '../../utill/Loading';
 
 
 const Adcontainer = styled.div`
@@ -23,6 +24,7 @@ function AdminMemberList() {
 
   const [members, setMembers] = useState([]); // 멤버조회
   const [deleteadmem, setDeleteadmem] = useState(false); //멤버삭제
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const MemberData = async () => {
@@ -39,15 +41,24 @@ function AdminMemberList() {
   }, []);
 
   const clickDelMem = async (e) => {
-    console.log("멤버 삭제 버튼 클릭");
-    const response = await AdminApi.deleteAdmem(e);
-    console.log(response.data.result);
-    if (response.data.result === "OK") {
-      setDeleteadmem(true);
-    } else setDeleteadmem(false);
+    if (window.confirm("삭제하시겠습니까?")) {
+      const deleteUser = await AdminApi.admemberdelete(e);
+      console.log(deleteUser.data.userId);
+      if (deleteUser.data) {
+        setLoading(true);
+        setDeleteadmem(true);
+        window.confirm("삭제되었습니다.")
+        window.location.replace("/AdminMemberList");
+      } else setDeleteadmem(false);
+      setLoading(false);
+       
+      
+    }
   };
   
-
+  if (loading) {
+    return <Loading></Loading>;
+  }
 
 
 
@@ -79,7 +90,7 @@ function AdminMemberList() {
                     <td>{list.userNickname}</td>
                     <td>{list.phone}</td>
                     <td>{list.createDate}</td>
-                    <td><button className='adbutton delete' onClick={clickDelMem}>삭제</button>
+                    <td><button className='adbutton delete' onClick={()=>clickDelMem(list.userId)}>삭제</button>
                     <Link to={'/Profile'} style={{ textDecoration: "none" , color : "inherit"}}><button className='adbutton serch' >조회</button></Link>
                     <Link to={`/AdminMember/${list.userId}`} style={{ textDecoration: "none" , color : "inherit"}} ><button className='adbutton edit'>수정</button> </Link>
                       <button className='adbutton delete'>미정</button>
