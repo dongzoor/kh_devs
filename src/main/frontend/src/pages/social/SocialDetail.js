@@ -20,7 +20,7 @@ const SocialDetail = () => {
   const params = useParams().socialId; // router에서 지정한 :social 을 붙여줘야함!!
   const [socialDetail, setSocialDetail] = useState("");
   const [loading, setLoading] = useState(false);
-  const getUserId = window.sessionStorage.getItem("userId");
+  const userEmail = window.sessionStorage.getItem("userEmail");
   // 게시글 ID session Set
   const setSocialId = window.sessionStorage.setItem(
     "social_id",
@@ -71,6 +71,8 @@ const SocialDetail = () => {
         const response = await SocialApi.socialDetail(params);
         setSocialDetail(response.data);
         console.log("★ 게시글 내용 ", response.data);
+        console.log("★ 게시글 내용 ", response.data.userNickName);
+        console.log("★ 게시글 내용 ", response.data.userEmail);
       } catch (e) {
         console.log(e);
       }
@@ -91,7 +93,7 @@ const SocialDetail = () => {
             <div className="post-info">
               <div className="publisher-info">
                 <img className="photos" src={Photo} alt="프로필 사진"></img>
-                <span className="nickName">{socialDetail.user}</span>
+                <span className="nickName">{socialDetail.userNickName}</span>
                 <span className="date">| {socialDetail.postDate}</span>
               </div>
               <div className="icon-box">
@@ -112,12 +114,17 @@ const SocialDetail = () => {
             <div className="hashtag-box">
               <span className="hashtag">{socialDetail.tag}</span>
             </div>
-            <button className="deleteBt" onClick={onClickDelete}>
-              삭제
-            </button>
-            <button className="updateBt" onClick={onClickUpdate}>
-              수정
-            </button>
+            {userEmail == socialDetail.userEmail && (
+              <>
+                <button className="deleteBt" onClick={onClickDelete}>
+                  삭제
+                </button>
+                <button className="updateBt" onClick={onClickUpdate}>
+                  수정
+                </button>
+              </>
+            )}
+
             <hr />
             {/*<CommentWriter />*/}
             {/*<CommentList />*/}

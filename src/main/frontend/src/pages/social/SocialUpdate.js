@@ -17,7 +17,7 @@ import { async } from "@firebase/util";
 const SocialUpdate = () => {
   const navigate = useNavigate();
   const params = useParams().socialId;
-  const getUserId = window.sessionStorage.getItem("userId");
+  const userEmail = window.sessionStorage.getItem("userEmail");
   const getImageId = window.sessionStorage.getItem("social_image");
   const imageId = sessionStorage.getItem("social_image");
 
