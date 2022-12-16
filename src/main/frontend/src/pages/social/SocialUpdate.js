@@ -16,21 +16,19 @@ import { async } from "@firebase/util";
 
 const SocialUpdate = () => {
   const navigate = useNavigate();
-  const params = useParams().socialId;
-  const userEmail = window.sessionStorage.getItem("userEmail");
-  const getImageId = window.sessionStorage.getItem("social_image");
-  const imageId = sessionStorage.getItem("social_image");
-
   const [loading, setLoading] = useState(false);
-  const [socialDetail, setSocialDetail] = useState(""); // 기존 데이터 가져옴
+  const params = useParams().socialId;
+  const imageId = sessionStorage.getItem("social_image");
+  // 기존 데이터 가져옴
+  const [socialDetail, setSocialDetail] = useState("");
   // 기존 데이터를 넣어줄 곳
   const [titleInput, setTitleInput] = useState("");
   const [contentInput, setContentInput] = useState("");
   const [tagInput, setTagInput] = useState("");
-  const [attachment, setAttachment] = useState(""); //이미지의 string 으로 변환한 값
-
-  // 사진을 안올릴 경우 들어갈 수 있도록 빈 값 지정
-  let attachmentUrl = " ";
+  const [attachment, setAttachment] = useState(""); // 이미지를 string 으로 변환한 값
+  // firebase 참조 주소(파일주소)
+  const [attachmentRef, setAttachmentRef] = useState("");
+  const [inputVal, setInputVal] = useState("");
 
   const onChangeTitle = (title) => setTitleInput(title.target.value);
   const onChangeContent = (content) => setContentInput(content.target.value);
@@ -53,55 +51,129 @@ const SocialUpdate = () => {
       console.log(attachment);
     };
     reader.readAsDataURL(theFile);
+    setInputVal(e.target.value);
+    console.log(inputVal);
   };
 
-  // [수정] 버튼 클릭 시
   const onClickEdit = async () => {
-    // 1-1. 일단 기존 사진ID가 있으면 firebase에서 삭제하고(db는 덮어쓰기 하니까 노신경)
-    if (imageId !== null) {
-      // 파이어베이스 상 파일주소 지정
-      const attachmentRef = ref(storageService, `/SOCIAL/${imageId}`);
-      // 참조경로로 firebase 이미지 삭제
-      await deleteObject(attachmentRef)
-        .then(() => {
-          console.log("Firebase File deleted successfully !");
-        })
-        .catch((error) => {
-          console.log("Uh-oh, File Delete error occurred!");
-        });
-    }
-    // 1-2. 기존에 이미지 없었는데 생겼다? firebase, db에 모두 저장
-    if (attachment !== "") {
-      // 파일 참조 경로 지정
-      var attachmentUrl = null;
-      var imageName = uuidv4(); // 이미지 UUID
-      const attachmentRef = ref(storageService, `/SOCIAL/${imageName}`);
-      // 참조경로로 storage에 저장
-      const response = await uploadString(
-        attachmentRef,
-        attachment,
-        "data_url"
-      );
-      console.log("★ attachment(이미지의 string 형태) :", attachment);
-      attachmentUrl = await getDownloadURL(response.ref);
-      console.log("★ 이미지 주소 : " + attachmentUrl);
-      console.log("★ 이미지 ID : " + imageName);
-    }
-    const res = await SocialApi.socialUpdate(
-      params,
-      titleInput,
-      contentInput,
-      tagInput,
-      attachmentUrl,
-      imageName
-    );
     console.log("수정 버튼 클릭");
-    if (res.data === true) {
-      navigate(`/social/${params}`); //수정된 게시글로 이동
-      alert("Social 게시글 수정 완료 !");
+    // ※ 1. 기존 이미지가 있을 때
+    if (imageId !== "null") {
+      // ※※ 1-1. 새로 이미지가 생겼을 때
+      // if (attachment !== null) {
+      if (inputVal !== null) {
+        console.log(attachment);
+        console.log("1-1. 새로 이미지가 생겼을 때");
+        // 파이어베이스 상 파일주소 지정
+        // =============== 기존 이미지 삭제 =================
+        setAttachmentRef(ref(storageService, `/SOCIAL/${imageId}`));
+        // 참조경로로 firebase 이미지 삭제
+        await deleteObject(attachmentRef)
+          .then(() => {
+            console.log("Firebase File deleted successfully !");
+          })
+          .catch((error) => {
+            console.log("Uh-oh, File Delete error occurred!");
+          });
+        // =============== 신규 이미지 저장 =================
+        var attachmentUrl = null; // 이미지 URL
+        var imageName = uuidv4(); // 이미지 UUID
+        // 참조경로로 storage에 저장
+        setAttachmentRef(ref(storageService, `/SOCIAL/${imageName}`));
+        const response = await uploadString(
+          attachmentRef,
+          attachment,
+          "data_url"
+        );
+        attachmentUrl = await getDownloadURL(response.ref);
+        // api 전송
+        const res = await SocialApi.socialUpdate(
+          params,
+          titleInput,
+          contentInput,
+          tagInput,
+          attachmentUrl,
+          imageName
+        );
+        window.sessionStorage.setItem("social_image", imageName);
+        if (res.data === true) {
+          navigate(`/social/${params}`); //수정된 게시글로 이동
+          alert("Social 게시글 수정 완료 !");
+        } else {
+          alert("Social 게시글 수정 실패 ");
+          console.log(res.data);
+        }
+      } else if (attachment == null) {
+        // ※※ 1-2. 기존 이미지 그대로 유지할 때
+        console.log("1-2. 기존 이미지 그대로 유지할 때");
+        const res = await SocialApi.socialUpdate(
+          params,
+          titleInput,
+          contentInput,
+          tagInput
+        );
+        if (res.data === true) {
+          navigate(`/social/${params}`); // 수정된 게시글로 이동
+          alert("Social 게시글 수정 완료 !");
+        } else {
+          alert("Social 게시글 수정 실패 ");
+          console.log(res.data);
+        }
+      }
     } else {
-      alert("Social 게시글 수정 실패 ");
-      console.log(res.data);
+      // ※ 2. 기존 이미지가 없을 때
+      // ※※ 2-1. 새로 이미지가 생겼을 때
+      if (inputVal !== null) {
+        console.log("2-1. 새로 이미지가 생겼을 때");
+        // 파일 참조 경로 지정
+        attachmentUrl = null;
+        imageName = uuidv4(); // 이미지 UUID
+        const attachmentRef = ref(storageService, `/SOCIAL/${imageName}`);
+        // 참조경로로 storage에 저장
+        const response = await uploadString(
+          attachmentRef,
+          attachment,
+          "data_url"
+        );
+        attachmentUrl = await getDownloadURL(response.ref);
+        // api 전송
+        const res = await SocialApi.socialUpdate(
+          params,
+          titleInput,
+          contentInput,
+          tagInput,
+          attachmentUrl,
+          imageName
+        );
+        window.sessionStorage.setItem("social_image", imageName);
+
+        if (res.data === true) {
+          navigate(`/social/${params}`); //수정된 게시글로 이동
+          alert("Social 게시글 수정 완료 !");
+        } else {
+          alert("Social 게시글 수정 실패 ");
+          console.log(res.data);
+        }
+      } else if (inputVal == null) {
+        // ※ 2-2. 계속 이미지가 없을 때
+        console.log("2-2. 계속 이미지가 없을 때");
+        // api 전송
+        attachmentUrl = null;
+        const res = await SocialApi.socialUpdate(
+          params,
+          titleInput,
+          contentInput,
+          tagInput,
+          attachmentUrl
+        );
+        if (res.data === true) {
+          navigate(`/social/${params}`); //수정된 게시글로 이동
+          alert("Social 게시글 수정 완료 !");
+        } else {
+          alert("Social 게시글 수정 실패 ");
+          console.log(res.data);
+        }
+      }
     }
   };
 
@@ -153,6 +225,7 @@ const SocialUpdate = () => {
         <div className="image-box">
           <input
             className="form-control"
+            value={inputVal}
             type="file"
             id="formFile"
             accept="image/*"

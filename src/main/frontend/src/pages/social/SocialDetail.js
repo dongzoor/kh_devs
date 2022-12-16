@@ -28,8 +28,12 @@ const SocialDetail = () => {
   );
   // 이미지 UUID session Set
   const setImageId = window.sessionStorage.setItem(
-    "social_image",
+    "social_imageId",
     socialDetail.imageId
+  );
+  const setImageUrl = window.sessionStorage.setItem(
+    "social_imageUrl",
+    socialDetail.image
   );
   // 게시글 수정 화면으로 전환
   const onClickUpdate = async () => {
@@ -71,8 +75,6 @@ const SocialDetail = () => {
         const response = await SocialApi.socialDetail(params);
         setSocialDetail(response.data);
         console.log("★ 게시글 내용 ", response.data);
-        console.log("★ 게시글 내용 ", response.data.userNickName);
-        console.log("★ 게시글 내용 ", response.data.userEmail);
       } catch (e) {
         console.log(e);
       }
@@ -114,6 +116,7 @@ const SocialDetail = () => {
             <div className="hashtag-box">
               <span className="hashtag">{socialDetail.tag}</span>
             </div>
+            {/* 게시글 작성자 email = 로그인한 유저 email 이면 출력 */}
             {userEmail == socialDetail.userEmail && (
               <>
                 <button className="deleteBt" onClick={onClickDelete}>

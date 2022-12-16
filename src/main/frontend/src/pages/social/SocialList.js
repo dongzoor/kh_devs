@@ -40,17 +40,6 @@ const Social = () => {
         const response = await SocialApi.socialList();
         setSocialList(response.data);
         console.log("★ Social List ", response.data);
-
-        // if (response.data.userImage !== null) {
-        //   let attachmentUrl = ref(
-        //     // 참조경로
-        //     storageService,
-        //     `/USER/${response.data.userImage}`
-        //   );
-        //   console.log(response.data[0].userImage);
-        //   // 경로 참고를 가지고 이미지 경로를 불러온다.
-        //   setUserImageUrl = await getDownloadURL(attachmentUrl);
-        // }
       } catch (e) {
         console.log(e);
       }
