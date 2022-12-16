@@ -15,7 +15,7 @@ public interface SocialRepository extends JpaRepository<Social, Long> {// <엔�
 
     List<Social> findAll();
 
-    // 마이페이지 작성글 조회용
+    // HN) 마이페이지 작성글 조회용
     @Query(value = "SELECT * FROM SOCIAL WHERE USER_ID = :userId ORDER BY SOCIAL_CREATE DESC", nativeQuery = true)
     List<Social> findAllByUserId(Long userId);
 }

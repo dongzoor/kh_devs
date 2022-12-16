@@ -32,9 +32,10 @@ public class SocialService {
         for (Social e : socialList) {
             SocialDTO socialDTO = new SocialDTO();
             socialDTO.setSocialId(e.getSocialId());
-            socialDTO.setUserEmail(e.getUser().getUserEmail());         // 작성자 이메일
-            socialDTO.setUserNickName(e.getUser().getUserNickname());   // 작성자 닉네임
-            socialDTO.setUserImage(e.getUser().getProfileImage());      // 작성자 사진
+            socialDTO.setUserEmail(e.getUser().getUserEmail());             // 작성자 이메일
+            socialDTO.setUserNickName(e.getUser().getUserNickname());       // 작성자 닉네임
+            socialDTO.setUserImageId(e.getUser().getProfileImage());        // 작성자 사진 ID
+            socialDTO.setUserImageUrl(e.getUser().getProfileImagePath());   // 작성자 사진 URL
             socialDTO.setTitle(e.getTitle());
             socialDTO.setContent(e.getContent());
             socialDTO.setTag(e.getTag());
@@ -52,10 +53,11 @@ public class SocialService {
 //        Social social = socialRepository.findBySocialId(socialId);
         Social social = socialRepository.findById(socialId).get();
         SocialDTO socialDTO = new SocialDTO();
-        socialDTO.setSocialId(social.getSocialId());    // 게시글 id
-        socialDTO.setUserEmail(social.getUser().getUserEmail());   // 작성자 이메일
-        socialDTO.setUserNickName(social.getUser().getUserNickname());   // 작성자 닉네임
-        socialDTO.setUserImage(social.getUser().getProfileImage());
+        socialDTO.setSocialId(social.getSocialId()); // 게시글 id
+        socialDTO.setUserEmail(social.getUser().getUserEmail());            // 작성자 이메일
+        socialDTO.setUserNickName(social.getUser().getUserNickname());      // 작성자 닉네임
+        socialDTO.setUserImageId(social.getUser().getProfileImage());       // 작성자 사진 ID
+        socialDTO.setUserImageUrl(social.getUser().getProfileImagePath());  // 작성자 사진 URL
         socialDTO.setTitle(social.getTitle());
         socialDTO.setContent(social.getContent());
         socialDTO.setTag(social.getTag());
