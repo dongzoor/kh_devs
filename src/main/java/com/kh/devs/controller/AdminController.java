@@ -88,8 +88,8 @@ public class AdminController {
         String password = editData.get("password");
         String phone = editData.get("phone");
         String profileImage = editData.get("profileImage");
-//       String imageId = editData.get("imageId");
-        boolean result = userService.updateAdUser(userId, userNickname, password, phone, profileImage);
+        String profileImagePath = editData.get("profileImagePath");
+        boolean result = userService.updateAdUser(userId, userNickname, password, phone, profileImage,profileImagePath);
         if (result) {
             return new ResponseEntity<>(true, HttpStatus.OK);  // 프론트의 res.data 값(true)으로 넘어옴
         } else {

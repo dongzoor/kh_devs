@@ -70,6 +70,7 @@ function AdminBoardList() {
   const [loading, setLoading] = useState(false);
   const [deleteAdBoard, setDeleteAdBoard] = useState(false); //멤버삭제
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalData, setModalData] = useState(0);
   /// 페이지 네그네이션
   const [page, setPage] = useState(1);
   const [items, setItems] = useState(10); // 페이지별 목록 개수
@@ -115,7 +116,8 @@ function AdminBoardList() {
     setLoading(false);
   };
 
-  const openModal = () => {
+  const openModal = (e) => {
+    setModalData(e);
     setModalOpen(true);
   };
 
@@ -161,13 +163,13 @@ function AdminBoardList() {
                     <td>{list.coordinate}</td>
                     <td>
                       <>
-                        <button className="adbutton delete" onClick={openModal}>
+                        <button className="adbutton delete" onClick={() => openModal(list.id)}>
                           삭제
                         </button>
                         {modalOpen && (
                           <JwModal
                             open={modalOpen}
-                            confirm={() => confirmModal(list.id)}
+                            confirm={() => confirmModal(modalData)}
                             close={closeModal}
                             type={true}
                             header="확인"
