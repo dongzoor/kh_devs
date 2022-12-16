@@ -2,8 +2,6 @@ import { useNavigate } from "react-router-dom";
 import React from "react";
 import styled from "styled-components";
 import Photo from "./pic/pic.gif";
-import CommentList from "./components/CommentList";
-import CommentWriter from "./components/CommentWriter";
 import { useState, useEffect } from "react";
 import SocialApi from "../../api/SocialApi";
 import { useParams } from "react-router-dom";
@@ -14,6 +12,98 @@ import {
   IoHeartOutline,
   IoChatboxOutline,
 } from "react-icons/io5";
+
+const DetailBox = styled.div`
+  & > * {
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+  }
+  margin: 0px auto;
+  /* background-color: rgba(211, 188, 230, 0.25); */
+  .subtitle {
+    font-family: "Alfa Slab One", cursive;
+    text-align: center;
+    font-size: 25px;
+    padding: 10px;
+    margin: 20px;
+  }
+  .parentBox {
+    font-family: "Song Myung", serif;
+    width: 1024px;
+    margin: 0px auto;
+    padding: 5px;
+    /* border: 1px solid black; */
+    background-color: rgba(211, 188, 230, 0.25);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+  }
+  .content-title {
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin: 5px;
+    background-color: white;
+    font-size: 25px;
+  }
+  hr {
+    width: 98%;
+    height: 1px;
+    border: 0;
+    background-color: rgba(209, 209, 209, 0.8);
+  }
+  .content-text {
+    padding: 10px;
+    // text 개행 처리 !
+    white-space: pre-wrap;
+  }
+  .post-info {
+    display: flex;
+    justify-content: space-between;
+  }
+  .publisher-info {
+    display: flex;
+    align-items: center;
+  }
+  .icon-box {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+  }
+  .userImage {
+    margin: 5px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+  }
+  .date {
+    color: grey;
+    margin: 0 5px;
+  }
+  .count {
+    padding: 5px;
+  }
+  .hashtag-box {
+    margin: 10px;
+  }
+  .hashtag {
+    margin: 0px 3px;
+    padding: 8px;
+    font-style: italic;
+    background-color: rgba(219, 219, 219, 0.5);
+    border-radius: 10px;
+  }
+  // 첨부 사진 최대 크기 조정
+  .preview {
+    max-width: 95%;
+  }
+  // 첨부 사진 가운데 정렬
+  .attachedImg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
 
 const SocialDetail = () => {
   const navigate = useNavigate();
@@ -94,7 +184,15 @@ const SocialDetail = () => {
             <div className="content-title">{socialDetail.title}</div>
             <div className="post-info">
               <div className="publisher-info">
-                <img className="photos" src={Photo} alt="프로필 사진"></img>
+                <img
+                  className="userImage"
+                  alt="프로필 사진"
+                  src={
+                    socialDetail.userImageUrl
+                      ? socialDetail.userImageUrl
+                      : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                  }
+                ></img>
                 <span className="nickName">{socialDetail.userNickName}</span>
                 <span className="date">| {socialDetail.postDate}</span>
               </div>
@@ -127,7 +225,6 @@ const SocialDetail = () => {
                 </button>
               </>
             )}
-
             <hr />
             {/*<CommentWriter />*/}
             {/*<CommentList />*/}
@@ -138,95 +235,4 @@ const SocialDetail = () => {
   );
 };
 
-const DetailBox = styled.div`
-  & > * {
-    margin: 0;
-    padding: 0;
-    font-size: 20px;
-  }
-  margin: 0px auto;
-  /* background-color: rgba(211, 188, 230, 0.25); */
-  .subtitle {
-    font-family: "Alfa Slab One", cursive;
-    text-align: center;
-    font-size: 25px;
-    padding: 10px;
-    margin: 20px;
-  }
-  .parentBox {
-    font-family: "Song Myung", serif;
-    width: 1024px;
-    margin: 0px auto;
-    padding: 5px;
-    /* border: 1px solid black; */
-    background-color: rgba(211, 188, 230, 0.25);
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-  }
-  .content-title {
-    border-radius: 5px;
-    padding: 5px 10px;
-    margin: 5px;
-    background-color: white;
-    font-size: 25px;
-  }
-  hr {
-    width: 98%;
-    height: 1px;
-    border: 0;
-    background-color: rgba(209, 209, 209, 0.8);
-  }
-  .content-text {
-    padding: 10px;
-    // text 개행 처리 !
-    white-space: pre-wrap;
-  }
-  .post-info {
-    display: flex;
-    justify-content: space-between;
-  }
-  .publisher-info {
-    display: flex;
-    align-items: center;
-  }
-  .icon-box {
-    display: flex;
-    align-items: center;
-    margin-right: 15px;
-  }
-  .photos {
-    margin: 5px;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-  }
-  .date {
-    color: grey;
-    margin: 0 5px;
-  }
-  .count {
-    padding: 5px;
-  }
-  .hashtag-box {
-    margin: 10px;
-  }
-  .hashtag {
-    margin: 0px 3px;
-    padding: 8px;
-    font-style: italic;
-    background-color: rgba(219, 219, 219, 0.5);
-    border-radius: 10px;
-  }
-  // 첨부 사진 최대 크기 조정
-  .preview {
-    max-width: 95%;
-  }
-  // 첨부 사진 가운데 정렬
-  .attachedImg {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-`;
 export default SocialDetail;

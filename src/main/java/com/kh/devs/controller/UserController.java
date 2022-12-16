@@ -24,7 +24,7 @@ public class UserController {
     }
 
     // ID(Email) 중복체크
-    @PostMapping("duplCheck")
+    @PostMapping("/api/duplCheck")
     public ResponseEntity<Map<String, String>> duplCheck(@RequestBody Map<String, String> findData) {
         String userEmail = findData.get("userEmail");
         List<User> user = userService.userSearch(userEmail);
@@ -36,12 +36,12 @@ public class UserController {
         }
     }
 
-    // 전화번호 중복체크 (수정중)
+    // 전화번호 중복체크
     @PostMapping("phoneDuplCheck")
     public ResponseEntity<Map<String, String>> phoneDuplCheck(@RequestBody Map<String, String> findPhoneData) {
         String phone = findPhoneData.get("phone");
-        User user = userService.getUserEmail(phone);
-        if (user != null) {
+        List<User> user = userService.getUserEmail(phone);
+        if (user.size() > 0) {
             return new ResponseEntity(false, HttpStatus.OK);
         } else {
             return new ResponseEntity(true, HttpStatus.OK);
@@ -57,8 +57,10 @@ public class UserController {
         String getPassword = regData.get("password");
         String getPhone = regData.get("phone");
         String getProfileImage = regData.get("profileImage");
+        String getProfileImagePath = regData.get("profileImagePath");
 
-        boolean result = userService.regUser(getUserEmail, getUserNickname, getPassword, getPhone, getProfileImage);
+
+        boolean result = userService.regUser(getUserEmail, getUserNickname, getPassword, getPhone, getProfileImage, getProfileImagePath);
         if (result) {
             return new ResponseEntity(true, HttpStatus.OK);
         } else {
@@ -93,6 +95,7 @@ public class UserController {
         String userNickname = updateData.get("userNickname");
         String phone = updateData.get("phone");
         String profileImage = updateData.get("profileImage");
+        String profileImagePath = updateData.get("profileImagePath");
 
         List<User> result = userService.userSearch(userEmail);
 
@@ -102,9 +105,12 @@ public class UserController {
             result.get(0).setUserNickname(userNickname);
             result.get(0).setPhone(phone);
             result.get(0).setProfileImage(profileImage);
+            result.get(0).setProfileImagePath(profileImagePath);
+
             if (!"".equals(password)) {
                 result.get(0).setPassword(password);
             }
+
             rst = userService.UserUpdate(result.get(0));
         }
 
@@ -123,8 +129,13 @@ public class UserController {
     @PostMapping("/findId")
     public ResponseEntity<User> findUserEmail(@RequestBody Map<String, String> findData) {
         String phone = findData.get("phone");
-        User user = userService.getUserEmail(phone);
-        return new ResponseEntity(user, HttpStatus.OK);
+        List<User> user = userService.getUserEmail(phone);
+
+        if (user.size() > 0) {
+            return new ResponseEntity(user.get(0), HttpStatus.OK);
+        } else {
+            return new ResponseEntity(false, HttpStatus.OK);
+        }
     }
 
     // 회원정보 찾기 - 비밀번호 찾기
@@ -134,9 +145,11 @@ public class UserController {
         String phone = findData.get("phone");
 
         // 사용자 정보 조회
-        User user = userService.getPwd(userEmail, phone);
+        List<User> user = userService.getPwd(userEmail, phone);
 
-        if (user != null) {
+        if (user.size() > 0) {
+
+            User userInfo = user.get(0);
 
             // 비밀번호 랜덤생성
             String newPw = null;
@@ -147,20 +160,18 @@ public class UserController {
             newPw = String.valueOf(intRanNum);
 
             // 랜덤생성한 비밀번호 저장
-            user.setPassword(newPw);
-            userService.UserUpdate(user);
+            userInfo.setPassword(newPw);
+            userService.UserUpdate(userInfo);
 
             // 메일생성
             SendMail sendmail = new SendMail();
             MailDTO mail = new MailDTO();
 
             mail.setContent(newPw);
-            mail.setSender(user.getUserEmail());
-            mail.setTitle("[DevS]" + user.getUserNickname() + "님의 비밀번호 찾기 메일입니다.");
+            mail.setSender(userInfo.getUserEmail());
+            mail.setTitle("[DevS]" + userInfo.getUserNickname() + "님의 비밀번호 찾기 메일입니다.");
             sendmail.sendMail(mail);
-        }
 
-        if (user != null) {
             return new ResponseEntity(true, HttpStatus.OK);
         } else {
             return new ResponseEntity(false, HttpStatus.OK);

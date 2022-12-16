@@ -25,6 +25,12 @@ import StudyList from "./pages/study/StudyList";
 import StudyWrite from "./pages/study/StudyWrite";
 import Terms from "./pages/register/Terms";
 import StudyUpdate from "./pages/study/StudyUpdate";
+import MyCalendar from "./pages/myPage/MyCalendar";
+import MyStudy from "./pages/myPage/MyStudy";
+import MyHashtag from "./pages/myPage/MyHashtag";
+import MySocial from "./pages/myPage/MySocial";
+import MyComment from "./pages/myPage/MyComment";
+import MyLike from "./pages/myPage/MyLike";
 
 
 // import Admin from "./pages/admin/Admin";
@@ -59,6 +65,12 @@ function App() {
               element={<SocialUpdate />}
           />
           <Route path="/social/write" element={<SocialWrite />} />
+        <Route path="/myPage/myCalendar" element={<MyCalendar />} />
+        <Route path="/myPage/myStudy" element={<MyStudy />} />
+        <Route path="/myPage/myHashtag" element={<MyHashtag />} />
+        <Route path="/myPage/mySocial/:userId" element={<MySocial />} />
+        <Route path="/myPage/myComment" element={<MyComment />} />
+        <Route path="/myPage/MyLike" element={<MyLike />} />
         </Routes>
         {/* <Admin></Admin> */}
       </Router>

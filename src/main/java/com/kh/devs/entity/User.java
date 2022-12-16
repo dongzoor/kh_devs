@@ -17,7 +17,8 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @Table(name = "Users") //User가 예약어라 에러 발생 -> 수정
-public class User {
+public class User
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
@@ -36,6 +37,9 @@ public class User {
 
     @Column(name = "profileImage")
     private String profileImage;
+
+    @Column(name = "profileImagePath")
+    private String profileImagePath;
 
     // user-role enum type : user/admin 추가
     // default는 user로 하고, admin 계정은 미리 서버에 넣어두는걸로 하기
