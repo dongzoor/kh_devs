@@ -9,7 +9,6 @@ import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
 
 function OffcanvasExample() {
-
   const userId = sessionStorage.getItem("userId");
   const [userEmail, setUserEmail] = useState("");
   // 초기값 설정
@@ -59,7 +58,7 @@ function OffcanvasExample() {
                     title="마이페이지"
                     id={`offcanvasNavbarDropdown-expand-${expand}`}
                   >
-                    <NavDropdown.Item href="#action3">
+                    <NavDropdown.Item href="/CheckPwd">
                       내 정보 수정
                     </NavDropdown.Item>
                     <NavDropdown.Divider />

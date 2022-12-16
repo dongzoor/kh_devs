@@ -15,6 +15,7 @@ import java.util.Map;
 
 @RestController
 @Slf4j
+@RequestMapping("/api")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -24,7 +25,7 @@ public class UserController {
     }
 
     // ID(Email) 중복체크
-    @PostMapping("/api/duplCheck")
+    @PostMapping("/duplCheck")
     public ResponseEntity<Map<String, String>> duplCheck(@RequestBody Map<String, String> findData) {
         String userEmail = findData.get("userEmail");
         List<User> user = userService.userSearch(userEmail);
@@ -37,7 +38,7 @@ public class UserController {
     }
 
     // 전화번호 중복체크
-    @PostMapping("phoneDuplCheck")
+    @PostMapping("/phoneDuplCheck")
     public ResponseEntity<Map<String, String>> phoneDuplCheck(@RequestBody Map<String, String> findPhoneData) {
         String phone = findPhoneData.get("phone");
         List<User> user = userService.getUserEmail(phone);
@@ -180,8 +181,8 @@ public class UserController {
 
 
     // 회원탈퇴
-    @DeleteMapping("/delete/{userEmailDb}")
-    public ResponseEntity<User> deleteUser(@PathVariable("userEmailDb") String userEmailDb) {
+    @DeleteMapping("/delete/{userEmail}")
+    public ResponseEntity<User> deleteUser(@PathVariable("userEmail") String userEmailDb) {
         String userEmail = userEmailDb;
 
         boolean result = userService.userDelete(userEmail);
