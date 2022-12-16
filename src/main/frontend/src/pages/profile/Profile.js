@@ -45,7 +45,7 @@ function Profile() {
         </div>
         <div className="user_container">
           <h2 className="userName">{sessionStorage.getItem("userNickname")}</h2>
-          <Link to="/CheckPwd">
+          <Link to="/user/check">
             <FaRegEdit size="30" style={{ marginLeft: "5" }} />
           </Link>
         </div>

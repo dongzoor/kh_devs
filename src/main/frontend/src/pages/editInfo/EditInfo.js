@@ -238,7 +238,7 @@ function EditInfo() {
           sessionStorage.setItem("userEmail", userUpdate.data.userEmail);
           sessionStorage.setItem("userNickname", userUpdate.data.userNickname);
           sessionStorage.setItem("phone", userUpdate.data.phone);
-          window.location.replace("/Profile");
+          window.location.replace("/user/profile");
         }
       }
     } else {
