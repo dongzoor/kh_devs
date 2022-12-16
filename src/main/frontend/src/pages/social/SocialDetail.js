@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import React from "react";
 import styled from "styled-components";
 import Photo from "./pic/pic.gif";
@@ -225,6 +225,7 @@ const SocialDetail = () => {
                 </button>
               </>
             )}
+            <Link to="/social"><button>목록보기</button></Link>
             <hr />
             {/*<CommentWriter />*/}
             {/*<CommentList />*/}

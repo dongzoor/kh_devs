@@ -232,7 +232,7 @@ const Social = () => {
                               : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
                           }
                         />
-                        <span className="nickName">{social.user}</span>
+                        <span className="nickName">{social.userNickName}</span>
                         <span className="date">| {social.postDate}</span>
                       </div>
                       <div className="icon-box">
@@ -266,7 +266,7 @@ const Social = () => {
                               : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
                           }
                         />
-                        <span className="nickName">{social.user}</span>
+                        <span className="nickName">{social.userNickName}</span>
                         <span className="date">| {social.postDate}</span>
                       </div>
                       <div className="icon-box">
