@@ -46,6 +46,48 @@ const Content = styled.div`
   box-shadow: 0px 0px 24px #5c5696;
 `;
 
+const IdContainer = styled.div`
+  position: relative;
+
+  input {
+    border: none;
+    border-bottom: 1px solid black;
+    outline: none;
+    width: 100%;
+    margin: 8px 0;
+    padding: 10px 0;
+  }
+  button {
+    position: absolute;
+    top: 15px;
+    right: 5px;
+    background: #fff;
+    font-size: 14px;
+    border-radius: 26px;
+    border: 1px solid #d4d3e8;
+    text-transform: uppercase;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    width: 13%;
+    color: #4c489d;
+    box-shadow: 0px 2px 2px #5c5696;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  button:hover,
+  button:focus,
+  button:active {
+    border-color: #6a679e;
+    outline: none;
+  }
+
+  button:disabled {
+    background: lightgray;
+  }
+`;
+
 function EditInfo() {
   const [userEmail, setUserEmail] = useState("");
   const [userNickname, setUserNickname] = useState("");
@@ -63,6 +105,10 @@ function EditInfo() {
 
   const [isConPw, setIsConPw] = useState(false);
   const [conPwMessage, setConPwMessage] = useState("");
+
+  const [isPhoneDuplCheck, setIsPhoneDuplCheck] = useState(true);
+  const [isPhoneDuplCheckYn, setIsPhoneDuplCheckYn] = useState(true);
+  const [isPhoneUpdateYn, setIsPhoneUpdateYn] = useState(false);
 
   // 초기값 설정
   useEffect(() => {
@@ -129,6 +175,11 @@ function EditInfo() {
     }
     phoneRef.current.value = result;
     setPhone(e.target.value);
+    if (phone.valueOf().length === 12) {
+      setIsPhoneDuplCheck(false);
+    } else {
+      setIsPhoneDuplCheck(true);
+    }
   };
 
   // 비밀번호 일치 여부 검사
@@ -144,6 +195,30 @@ function EditInfo() {
     }
   };
 
+  // 핸드폰번호 중복체크
+  const onPhoneDuplCheck = async () => {
+    if (phone === "") {
+      window.alert("전화번호를 입력해주세요.");
+      return;
+    }
+
+    const duplPhoneCheck = await UserApi.phoneDuplCheck(phone);
+
+    if (duplPhoneCheck.data === true) {
+      window.confirm("사용 가능한 전화번호입니다.");
+      setIsPhoneDuplCheckYn(true);
+    } else {
+      window.confirm("중복된 전화번호입니다.");
+      setIsPhoneDuplCheckYn(false);
+    }
+  };
+
+  // 핸드폰번호 수정
+  const onPhoneUpdate = async () => {
+    setIsPhoneDuplCheckYn(false);
+    setIsPhoneUpdateYn(true);
+  };
+
   // 회원정보 수정
   const onClickEdit = async () => {
     let profileImagePath = null;
@@ -155,6 +230,11 @@ function EditInfo() {
 
     if (phone === "") {
       window.alert("전화번호를 입력해주세요.");
+      return;
+    }
+
+    if (isPhoneDuplCheckYn === false) {
+      window.alert("전화번호 중복 여부를 체크해주세요.");
       return;
     }
 
@@ -330,17 +410,37 @@ function EditInfo() {
               >
                 {conPwMessage}
               </span>
-              {/* <input type="text" placeholder="CODE" />  */}
-              {/* 휴대폰이나 이메일 인증 기능 구현 시 사용 예정 */}
 
-              <input
-                type="text"
-                placeholder="PHONE NUMBER"
-                ref={phoneRef}
-                value={phone}
-                onChange={onChangePhone}
-              />
-              <div></div>
+              {isPhoneUpdateYn === false ? (
+                <IdContainer>
+                  <input
+                    type="text"
+                    value={phone}
+                    style={{ background: "#F2F3F4" }}
+                    readOnly
+                  />
+                  <button type="button" onClick={onPhoneUpdate}>
+                    수정
+                  </button>
+                </IdContainer>
+              ) : (
+                <IdContainer>
+                  <input
+                    type="text"
+                    placeholder="PHONE NUMBER"
+                    ref={phoneRef}
+                    value={phone}
+                    onChange={onChangePhone}
+                  />
+                  <button
+                    type="button"
+                    onClick={onPhoneDuplCheck}
+                    disabled={isPhoneDuplCheck}
+                  >
+                    중복확인
+                  </button>
+                </IdContainer>
+              )}
               <button
                 type="button"
                 className="submit_btn"
