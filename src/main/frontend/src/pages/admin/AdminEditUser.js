@@ -76,13 +76,14 @@ function AdminEditUser() {
         const originEmail = response.data.userEmail;
         const originNickname = response.data.userNickname;
         const originPhone = response.data.phone;
-        const profileImagePath = response.data.profileImage;
+        const profileImagePath = response.data.profileImagePath;
+        const profileImage = response.data.profileImage
 console.log("이메일 확인 : " , originEmail )
       setUserEmail(originEmail);
       setUserNickname(originNickname);
       setPhone(originPhone);
       setImgFile(profileImagePath);   
-      setIimgId(profileImagePath);
+      setIimgId(profileImage);
         console.log(response.data);
       } catch (e) {
         console.log(e);
@@ -137,8 +138,9 @@ const userUpdate = await AdminApi.AdUserUpdate(
   userNickname,
   password,
   phone,
+  imageid,
   changeImgFileUrl,
-  //imageName,
+  
 );
 console.log("수정 버튼 클릭");
 if (userUpdate.data === true) {

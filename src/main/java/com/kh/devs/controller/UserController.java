@@ -2,6 +2,7 @@ package com.kh.devs.controller;
 
 import com.kh.devs.dto.MailDTO;
 import com.kh.devs.entity.User;
+import com.kh.devs.exception.NotFoundUserException;
 import com.kh.devs.sendMail.SendMail;
 import com.kh.devs.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -52,14 +53,13 @@ public class UserController {
     // 회원가입
     @PostMapping("/register")
     @ResponseBody
-    public ResponseEntity<Map<String, String>> userRegister(@RequestBody Map<String, String> regData) {
+    public ResponseEntity<Map<String, String>> userRegister(@RequestBody Map<String, String> regData) throws Exception{
         String getUserEmail = regData.get("userEmail");
         String getUserNickname = regData.get("userNickname");
         String getPassword = regData.get("password");
         String getPhone = regData.get("phone");
         String getProfileImage = regData.get("profileImage");
         String getProfileImagePath = regData.get("profileImagePath");
-
 
         boolean result = userService.regUser(getUserEmail, getUserNickname, getPassword, getPhone, getProfileImage, getProfileImagePath);
         if (result) {
