@@ -2,13 +2,13 @@ package com.kh.devs.controller;
 
 import com.kh.devs.dto.MailDTO;
 import com.kh.devs.entity.User;
-import com.kh.devs.exception.NotFoundUserException;
 import com.kh.devs.sendMail.SendMail;
 import com.kh.devs.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +18,9 @@ import java.util.Map;
 @Slf4j
 @RequestMapping("/api")
 public class UserController {
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private UserService userService;
 
@@ -56,7 +59,7 @@ public class UserController {
     public ResponseEntity<Map<String, String>> userRegister(@RequestBody Map<String, String> regData) throws Exception{
         String getUserEmail = regData.get("userEmail");
         String getUserNickname = regData.get("userNickname");
-        String getPassword = regData.get("password");
+        String getPassword = bCryptPasswordEncoder.encode(regData.get("password"));
         String getPhone = regData.get("phone");
         String getProfileImage = regData.get("profileImage");
         String getProfileImagePath = regData.get("profileImagePath");
@@ -76,11 +79,18 @@ public class UserController {
 
         String userEmail = loginData.get("userEmail");
         String password = loginData.get("password");
-        List<User> users = userService.loginCheck(userEmail,password);
+        List<User> users = userService.userSearch(userEmail);
 
-        if (users.size() > 0) {
+        // 아이디가 틀린경우
+        if (users.size() == 0) {
+            return new ResponseEntity(false, HttpStatus.OK);
+        }
+
+        Boolean result = bCryptPasswordEncoder.matches(password, users.get(0).getPassword());
+
+        if (result == true) {
             return new ResponseEntity(users.get(0), HttpStatus.OK);
-        } else if (users.size() == 0) {
+        } else if (result == false) {
             return new ResponseEntity(false, HttpStatus.OK);
         } else {
             return new ResponseEntity(false, HttpStatus.BAD_REQUEST);
@@ -109,7 +119,7 @@ public class UserController {
             result.get(0).setProfileImagePath(profileImagePath);
 
             if (!"".equals(password)) {
-                result.get(0).setPassword(password);
+                result.get(0).setPassword(bCryptPasswordEncoder.encode(password));
             }
 
             rst = userService.UserUpdate(result.get(0));
@@ -161,7 +171,7 @@ public class UserController {
             newPw = String.valueOf(intRanNum);
 
             // 랜덤생성한 비밀번호 저장
-            userInfo.setPassword(newPw);
+            userInfo.setPassword(bCryptPasswordEncoder.encode(newPw));
             userService.UserUpdate(userInfo);
 
             // 메일생성

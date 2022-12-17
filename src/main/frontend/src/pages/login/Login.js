@@ -56,6 +56,12 @@ function Login() {
     setInputPw(passwordCurrent);
   };
 
+  const onEnterDown = (e) => {
+    if (e.key === "Enter") {
+      onClickLogin();
+    }
+  };
+
   const onClickLogin = async () => {
     // 로그인을 위한 axios 호출
     const res = await UserApi.userLogin(inputId, inputPw);
@@ -93,6 +99,7 @@ function Login() {
                   placeholder="Email"
                   value={inputId}
                   onChange={onChangeId}
+                  onKeyDown={onEnterDown}
                 />
               </div>
               <div className="login__field">
@@ -103,6 +110,7 @@ function Login() {
                   placeholder="Password"
                   value={inputPw}
                   onChange={onChangePw}
+                  onKeyDown={onEnterDown}
                 />
               </div>
 

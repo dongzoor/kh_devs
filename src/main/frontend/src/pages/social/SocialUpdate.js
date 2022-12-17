@@ -1,17 +1,16 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import styled from "styled-components";
-import { storageService } from "../../lib/api/fbase";
-import { v4 as uuidv4 } from "uuid";
-import SocialApi from "../../api/SocialApi";
+import React, { useEffect, useState } from "react";
 import {
+  deleteObject,
+  getDownloadURL,
   ref,
   uploadString,
-  getDownloadURL,
-  deleteObject,
 } from "@firebase/storage";
+import { useNavigate, useParams } from "react-router-dom";
+
+import SocialApi from "../../api/SocialApi";
+import { storageService } from "../../lib/api/fbase";
+import styled from "styled-components";
+import { v4 as uuidv4 } from "uuid";
 
 const WriteBox = styled.div`
   & > * {
@@ -107,7 +106,7 @@ const SocialUpdate = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const params = useParams().socialId;
-  const imageId = sessionStorage.getItem("social_image");
+  const imageId = sessionStorage.getItem("social_imageId");
   // 기존 데이터 가져옴
   const [socialDetail, setSocialDetail] = useState("");
   // 기존 데이터를 넣어줄 곳

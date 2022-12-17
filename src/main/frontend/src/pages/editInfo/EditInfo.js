@@ -106,8 +106,11 @@ function EditInfo() {
   const [isConPw, setIsConPw] = useState(false);
   const [conPwMessage, setConPwMessage] = useState("");
 
+  // 버튼활성화 체크
   const [isPhoneDuplCheck, setIsPhoneDuplCheck] = useState(true);
+  // 중복체크여부 체크
   const [isPhoneDuplCheckYn, setIsPhoneDuplCheckYn] = useState(true);
+  // 전화번호 바꿀지 여부 체크
   const [isPhoneUpdateYn, setIsPhoneUpdateYn] = useState(false);
 
   // 초기값 설정
@@ -221,6 +224,7 @@ function EditInfo() {
 
   // 회원정보 수정
   const onClickEdit = async () => {
+    // 변경할 이미지 경로
     let profileImagePath = null;
 
     if (userNickname === "") {
@@ -240,22 +244,21 @@ function EditInfo() {
 
     if (window.confirm("회원정보를 수정하시겠습니까?")) {
       if (true) {
-        let profileImage = null;
-        let nowProfileImage = sessionStorage.getItem("profileImage");
+        let profileImage = null; // 이미지를 수정할 경우 넣을 이미지 파일명
+        let nowProfileImage = sessionStorage.getItem("profileImage"); // 현재 이미지 파일명
 
-        // 이미지가 바뀌는 경우
+        // 이미지가 바뀌는 경우 -> 새로운 파일 이름 생성 후 이미지 이름 업데이트
         if (changeImgFile !== "") {
-          //새로운 파일이름 생성
           profileImage = uuidv4();
         } else {
-          //기존이미지이름 넣기
           profileImage = nowProfileImage;
         }
 
-        if (imgFile !== "") {
+        // 세션에 이미지 정보가 있는 경우 -> 1. 그대로 냅두기 or 2. 변경하기
+        if (imgFile !== "null") {
           // 기존 이미지가 존재하는 경우
           if (nowProfileImage !== "null") {
-            // 이미지가 바뀌는 경우
+            // 2. 변경하는 경우
             if (changeImgFile !== "") {
               const attachmentRefDelete = ref(
                 storageService,
@@ -273,6 +276,8 @@ function EditInfo() {
 
               //storage 참조 경로로 파일경로 가져오기
               profileImagePath = await getDownloadURL(attachmentRefUpload);
+            } else {
+              profileImagePath = sessionStorage.getItem("profileImagePath");
             }
           } else {
             if (changeImgFile !== "") {
@@ -283,7 +288,7 @@ function EditInfo() {
               );
               await uploadString(attachmentRefUpload, imgFile, "data_url");
 
-              //storage 참조 경로로 파일경로 가져오기
+              //storage 참조 경로로 파일경로 가져오기 -> 변수에 넣고 DB에도 반영시킴
               profileImagePath = await getDownloadURL(attachmentRefUpload);
             }
           }
@@ -300,20 +305,19 @@ function EditInfo() {
 
         if (userUpdate.data !== false) {
           window.alert("회원정보 수정이 완료되었습니다.");
-          if (userUpdate.data.profileImage !== null) {
-            let attachmentUrl = ref(
-              storageService,
-              `/USER/${userUpdate.data.profileImage}`
-            );
-            // 이미지 불러오기
-            let profileImageNow = await getDownloadURL(attachmentUrl);
+          sessionStorage.clear();
+          // 이미지가 존재하는 경우
+          if (userUpdate.data.profileImage !== "null") {
             // 불러온 이미지 이름 저장
             sessionStorage.setItem(
               "profileImage",
               userUpdate.data.profileImage
             );
             // 불러온 이미지 경로 세션에 저장
-            sessionStorage.setItem("profileImagePath", profileImageNow);
+            sessionStorage.setItem(
+              "profileImagePath",
+              userUpdate.data.profileImagePath
+            );
           }
           sessionStorage.setItem("userEmail", userUpdate.data.userEmail);
           sessionStorage.setItem("userNickname", userUpdate.data.userNickname);
