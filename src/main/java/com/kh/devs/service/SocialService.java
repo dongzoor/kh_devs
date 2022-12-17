@@ -1,14 +1,18 @@
 package com.kh.devs.service;
 
+import com.kh.devs.dao.CommentRepository;
 import com.kh.devs.dao.SocialRepository;
 import com.kh.devs.dao.UserRepository;
+import com.kh.devs.dto.CommentDTO;
 import com.kh.devs.dto.SocialDTO;
+import com.kh.devs.entity.Comment;
 import com.kh.devs.entity.Social;
 import com.kh.devs.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,7 +26,7 @@ import java.util.Objects;
 public class SocialService {
     private final SocialRepository socialRepository;
     private final UserRepository userRepository;
-
+    private final CommentRepository commentRepository;
 
     // Social 전체 조회
     public List<SocialDTO> getSocialList() {
@@ -48,9 +52,9 @@ public class SocialService {
         }
         return socialDTOS;
     }
+
     // Social 상세 조회
     public SocialDTO getSocialList(Long socialId) {
-//        Social social = socialRepository.findBySocialId(socialId);
         Social social = socialRepository.findById(socialId).get();
         SocialDTO socialDTO = new SocialDTO();
         socialDTO.setSocialId(social.getSocialId()); // 게시글 id
@@ -67,13 +71,27 @@ public class SocialService {
         socialDTO.setView(social.getView());
         socialDTO.setComment(social.getComment());
         socialDTO.setPostDate(social.getPostDate());
+        // 댓글 list 조회
+        List<Comment> list = commentRepository.findBySocial_SocialId(socialId);
+        List<CommentDTO> CommentDTOs = new ArrayList<>();
+        for (Comment e : list) {
+            CommentDTO commentDTO = new CommentDTO();
+            commentDTO.setId(e.getId());
+            commentDTO.setContent(e.getContent());
+            commentDTO.setPostDate(e.getPostDate());
+            commentDTO.setUserId(e.getUser().getUserId());
+            commentDTO.setUserNickName(e.getUser().getUserNickname());
+            commentDTO.setUserImageUrl(e.getUser().getProfileImagePath());
+            CommentDTOs.add(commentDTO);    // CommentDTOs list에 값을 담는다
+        }
+        socialDTO.setComments(CommentDTOs); // 모든 댓글 list 값을 socialDTO에 담기
         log.warn(socialDTO.toString()); // 터미널 창에 찍으려구
-        System.out.println(socialDTO);
         return socialDTO;
     }
+
     // Social Write 등록
     public boolean regSocial(String userEmail, String title, String content, String tag, String image, String imageId) throws Exception { // 결과값은 성공,실패만 알려주면 되니까 boolean
-        try{
+        try {
             User user = (userRepository.findByUserEmail(userEmail)).get(0); // 객체로 user 정보를 다시 찾아와서 넣어주기 위함
             Social social = new Social();
             social.setUser(user);
@@ -86,14 +104,15 @@ public class SocialService {
             Social rst = socialRepository.save(social);
             log.warn(rst.toString()); // 터미널 창에 찍으려구
             return true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw new Exception(e);
         }
     }
+
     @Transactional  // 수정
-    public boolean updateSocial(Long socialId,String title, String content, String tag, String image, String imageId) {
+    public boolean updateSocial(Long socialId, String title, String content, String tag, String image, String imageId) {
         Social social = socialRepository.findById(socialId)
-                .orElseThrow(()->{
+                .orElseThrow(() -> {
                     return new IllegalArgumentException("글 찾기 실패: 아이디를 찾을 수 없습니다.");
                 });
         social.setTitle(title);
@@ -104,26 +123,25 @@ public class SocialService {
         social.setUpDate(LocalDateTime.now());  // 수정일 정보 자동 기입
         return true;
     }
+
     @Transactional // 삭제
     public int delSocial(Long socialId) {
         Social social = socialRepository.findById(socialId).get();
         if (!Objects.isNull(social)) {
             socialRepository.deleteById(social.getSocialId());
             return 1;
-        }else {
+        } else {
             return 0;
         }
     }
-//    @Transactional
-//    public List<Social> getAdSocialList() {
-//        return socialRepository.findAll();
-//    }
-//
+
+    // JW) admin service
     @Transactional
     public String deleteSocial(Long socialId) {
         socialRepository.deleteById(socialId); // 오류가 터지면 익센셥 타서 신경 노노
         return "ok";
     }
+
     public List<Social> getAdSocialList2() {
         return socialRepository.findAll();
     }

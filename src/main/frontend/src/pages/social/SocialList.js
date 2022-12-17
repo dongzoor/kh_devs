@@ -131,7 +131,7 @@ const ListBlock = styled.div`
     display: flex;
     align-items: center;
   }
-  .photos {
+  .userImage {
     margin: 5px;
     border-radius: 50%;
     width: 40px;
@@ -224,7 +224,7 @@ const Social = () => {
                     <div className="flex-box3">
                       <div className="publisher-info">
                         <img
-                          className="photos"
+                          className="userImage"
                           alt="프로필 사진"
                           src={
                             social.userImageUrl
@@ -258,7 +258,7 @@ const Social = () => {
                     <div className="flex-box3">
                       <div className="publisher-info">
                         <img
-                          className="photos"
+                          className="userImage"
                           alt="프로필 사진"
                           src={
                             social.userImageUrl

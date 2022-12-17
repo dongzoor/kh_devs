@@ -1,12 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
 import React from "react";
 import styled from "styled-components";
-import Photo from "./pic/pic.gif";
 import { useState, useEffect } from "react";
 import SocialApi from "../../api/SocialApi";
 import { useParams } from "react-router-dom";
 import { storageService } from "../../lib/api/fbase";
 import { ref, deleteObject } from "@firebase/storage";
+import CommentList from "./comment/CommentList";
+import CommentWriter from "./comment/CommentWriter";
 import {
   IoEyeOutline,
   IoHeartOutline,
@@ -225,10 +226,12 @@ const SocialDetail = () => {
                 </button>
               </>
             )}
-            <Link to="/social"><button>목록보기</button></Link>
+            <Link to="/social">
+              <button>목록보기</button>
+            </Link>
             <hr />
-            {/*<CommentWriter />*/}
-            {/*<CommentList />*/}
+            <CommentWriter />
+            <CommentList />
           </div>
         </div>
       </DetailBox>

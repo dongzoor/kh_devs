@@ -167,7 +167,7 @@ const SocialWrite = () => {
       console.log("제출 버튼 클릭");
       if (res.data === true) {
         window.alert("Social 게시글 작성 완료 !");
-        navigate(`/social/`);
+        navigate(`/social`);
       } else {
         window.alert("Social 게시글 작성 실패 ㅜ");
         console.log(res.data);
