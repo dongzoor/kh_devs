@@ -3,7 +3,7 @@
 .screen {
   background: linear-gradient(90deg, #5d54a4, #7c78b8);
   position: relative;
-  height: 60vh;
+  height: 70vh;
   width: 40vw;
   box-shadow: 0px 0px 24px #5c5696;
 }
@@ -141,7 +141,7 @@
   position: absolute;
   width: 160px;
   text-align: center;
-  bottom: 0px;
+  bottom: 20px;
   right: 0px;
   color: #fff;
 }
@@ -152,18 +152,13 @@
   justify-content: center;
 }
 
-.kakaoIcon,
-.googleIcon,
-.githubIcon {
-  padding: 20px 10px;
+.kakaoIcon {
   color: #fff;
   text-decoration: none;
   text-shadow: 0px 0px 8px #7875b5;
 }
 
-.kakaoIcon:hover,
-.googleIcon:hover,
-.githubIcon:hover {
-  transform: scale(1.3);
+.kakaoIcon:hover {
+  transform: scale(1.1);
   color: #8e8caf;
 }

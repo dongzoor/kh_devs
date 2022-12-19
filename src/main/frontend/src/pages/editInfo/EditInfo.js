@@ -347,7 +347,7 @@ function EditInfo() {
     <Box>
       <Container>
         <Content>
-          <Link to="/Profile">
+          <Link to="/user/profile">
             <MdArrowBack size="24" style={{ margin: 10 }} />
           </Link>
           <h1 class="form-title">Edit Account Information</h1>
