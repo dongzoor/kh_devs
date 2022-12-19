@@ -1,6 +1,7 @@
 package com.kh.devs.service;
 
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.kh.devs.constant.ApplyStatus;
 import com.kh.devs.dao.StudyRepository;
 import com.kh.devs.dto.StudyDTO;
 import com.kh.devs.entity.Study;
@@ -26,11 +27,14 @@ public class StudyService {
                 .title(studyDTO.getTitle())
                 .content(studyDTO.getContent())
                 .regTime(LocalDateTime.now())
-                .goalTime(LocalDateTime.now())
+                .goalTime(studyDTO.getGoalTime())
                 .cnt(0)
                 .writer(studyDTO.getWriter())
                 .imgUrl(studyDTO.getImgUrl())
                 .hashtag(studyDTO.getHashtag())
+                .addr(studyDTO.getAddr())
+                .goalPeople(studyDTO.getGoalPeople())
+                .applyStatus(ApplyStatus.ING)
                 .build();
         Study rst = studyRepository.save(study);
         log.warn(rst.toString());
