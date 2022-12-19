@@ -73,7 +73,7 @@ public class UserController {
     }
 
 
-    // 로그인
+    // 일반 로그인
     @PostMapping("/login")
     public ResponseEntity<User> memberLogin(@RequestBody Map<String, String> loginData) {
 
@@ -91,6 +91,24 @@ public class UserController {
         if (result == true) {
             return new ResponseEntity(users.get(0), HttpStatus.OK);
         } else if (result == false) {
+            return new ResponseEntity(false, HttpStatus.OK);
+        } else {
+            return new ResponseEntity(false, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // 카카오 로그인
+    @PostMapping("/kakaoLogin")
+    public ResponseEntity<User> kakaoLogin(@RequestBody Map<String, String> loginData) {
+
+        String userEmail = loginData.get("userEmail");
+        String userNickname = loginData.get("userNickname");
+        List<User> users = userService.userSearch(userEmail);
+
+        // 이미 가입된 정보가 있는 경우
+        if (users.size() > 0) {
+            return new ResponseEntity(users.get(0), HttpStatus.OK);
+        } else if(users.size() == 0) {
             return new ResponseEntity(false, HttpStatus.OK);
         } else {
             return new ResponseEntity(false, HttpStatus.BAD_REQUEST);

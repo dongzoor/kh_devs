@@ -1,18 +1,17 @@
-import { Link, useNavigate } from "react-router-dom";
-import React from "react";
-import styled from "styled-components";
-import { useState, useEffect } from "react";
-import SocialApi from "../../api/SocialApi";
-import { useParams } from "react-router-dom";
-import { storageService } from "../../lib/api/fbase";
-import { ref, deleteObject } from "@firebase/storage";
-import CommentList from "./comment/CommentList";
-import CommentWriter from "./comment/CommentWriter";
 import {
+  IoChatboxOutline,
   IoEyeOutline,
   IoHeartOutline,
-  IoChatboxOutline,
 } from "react-icons/io5";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { deleteObject, ref } from "@firebase/storage";
+
+import CommentList from "./comment/CommentList";
+import CommentWriter from "./comment/CommentWriter";
+import SocialApi from "../../api/SocialApi";
+import { storageService } from "../../lib/api/fbase";
+import styled from "styled-components";
 
 const DetailBox = styled.div`
   & > * {

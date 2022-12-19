@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import "../login/Login.css";
@@ -5,9 +6,10 @@ import "../login/Login.css";
 import { FaLock, FaUser } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { SiGithub, SiGoogle, SiKakaotalk } from "react-icons/si";
 
+import KakaoLogin from "react-kakao-login";
 import UserApi from "../../api/UserApi";
+import kakaoimages from "./images/kakao_login_small.png";
 import styled from "styled-components";
 
 const Box = styled.div`
@@ -26,13 +28,6 @@ const Container = styled.div`
 `;
 
 function Login() {
-  // 카카오 로그인 구현 중...
-  const CLIENT_ID = "24bba33b64eb6b8ac36e9334aa20f2b7";
-  const REDIRECT_URI =
-    "http://localhost:8211/oauth" || "http://localhost:3000/oauth";
-
-  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -82,6 +77,50 @@ function Login() {
       window.location.replace("/user/profile");
     } else if (res.data === false) {
       window.alert("이메일이나 비밀번호를 확인해주세요.");
+    }
+  };
+
+  //카카오 로그인 성공 시
+  const socialLoginSuccess = (res) => {
+    kakaoLoginInfo(
+      res.profile.kakao_account.email,
+      res.profile.kakao_account.profile.nickname
+    );
+  };
+
+  // 카카오 로그인 실패
+  const socialLoginFail = (res) => {
+    console.log("카카오 로그인 실패");
+    console.log(res);
+  };
+
+  // 카카오 로그인(카카오 API로 불러온 정보로 DB에 저장)
+  const kakaoLoginInfo = async (email, nickname) => {
+    // 로그인을 위한 axios 호출
+    const res = await UserApi.kakaoLogin(email, nickname);
+
+    console.log(res.data);
+
+    // 로그인을 성공하는 경우
+    if (res.data !== false) {
+      // 사람정보에 이미지가 존재하는 경우
+
+      sessionStorage.setItem("profileImage", res.data.profileImage);
+      sessionStorage.setItem("profileImagePath", res.data.profileImagePath);
+      sessionStorage.setItem("userEmail", res.data.userEmail);
+      sessionStorage.setItem("userNickname", res.data.userNickname);
+      sessionStorage.setItem("phone", res.data.phone);
+      // 마이페이지에서 사용
+      sessionStorage.setItem("userId", res.data.userId);
+      window.location.replace("/user/profile");
+    } else if (res.data === false) {
+      if (window.confirm("가입된 정보가 없습니다, 가입하시겠습니까?")) {
+        sessionStorage.setItem("kakaoEmail", email);
+        sessionStorage.setItem("kakaoNickname", nickname);
+        console.log(email);
+        console.log(nickname);
+        window.location.replace("/user/register");
+      }
     }
   };
 
@@ -148,16 +187,25 @@ function Login() {
             <div className="social-login">
               <h3>log in via</h3>
               <div className="social-icons">
-                <a href={KAKAO_AUTH_URL} className="kakaoIcon">
-                  <SiKakaotalk />
-                </a>
-                <a href="#" className="kakaoIcon">
+                <KakaoLogin
+                  // rest api 키가 아닌 js 키를 사용
+                  token="51ea48e71122b98e104d1afe6e741b1c"
+                  onSuccess={(res) => socialLoginSuccess(res)}
+                  onFail={(res) => socialLoginFail(res)}
+                  render={({ onClick }) => (
+                    <img
+                      src={kakaoimages}
+                      className="kakaoIcon"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onClick();
+                      }}
+                    />
+                  )}
+                ></KakaoLogin>
+                {/* <a href="#" className="kakaoIcon">
                   <SiGoogle />
-                </a>
-
-                <a href="#" className="githubIcon">
-                  <SiGithub />
-                </a>
+                </a> */}
               </div>
             </div>
           </div>

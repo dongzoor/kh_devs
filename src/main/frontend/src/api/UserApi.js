@@ -39,13 +39,22 @@ const UserApi = {
     return await axios.post("/api/register", userObj);
   },
 
-  //로그인
+  // 일반 로그인
   userLogin: async function (id, pwd) {
     const loginObj = {
       userEmail: id,
       password: pwd,
     };
     return await axios.post("/api/login", loginObj);
+  },
+
+  // 카카오 로그인
+  kakaoLogin: async function (email, nickname) {
+    const loginObj = {
+      userEmail: email,
+      userNickname: nickname,
+    };
+    return await axios.post("/api/kakaoLogin", loginObj);
   },
 
   //회원정보 수정

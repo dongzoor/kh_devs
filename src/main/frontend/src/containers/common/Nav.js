@@ -23,8 +23,26 @@ function OffcanvasExample() {
 
   const navigate = useNavigate();
   const onClickLogout = (e) => {
-    window.alert("로그아웃 되었습니다.");
     sessionStorage.clear();
+
+    // 카카오 로그아웃
+    KakaoLogout();
+    window.alert("로그아웃 되었습니다.");
+  };
+
+  const KakaoLogout = () => {
+    if (window.Kakao.Auth.getAccessToken()) {
+      window.Kakao.API.request({
+        url: "/v1/user/unlink",
+        success: function (response) {
+          console.log(response);
+        },
+        fail: function (error) {
+          console.log(error);
+        },
+      });
+      window.Kakao.Auth.setAccessToken(undefined);
+    }
   };
 
   return (

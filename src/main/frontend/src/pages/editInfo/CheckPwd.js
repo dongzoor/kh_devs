@@ -57,7 +57,7 @@ function PwdCheck() {
     <Box>
       <Container>
         <Content>
-          <Link to="/">
+          <Link to="/user/profile">
             <MdArrowBack size="24" style={{ margin: 10 }} />
           </Link>
           <div className="form-title">
