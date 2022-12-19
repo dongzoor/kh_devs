@@ -5,9 +5,12 @@ import { ref, uploadString, getDownloadURL, deleteObject } from "@firebase/stora
 import { storageService } from "../../lib/api/fbase";
 import StudyApi from "../../lib/api/StudyApi";
 import { Badge, Button, Form, InputGroup } from "react-bootstrap";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Addr from "./Addr";
+import { Calendar } from "react-calendar";
+import 'react-calendar/dist/Calendar.css';
+import moment from "moment";
+
 
 
 const Box = styled.div`
@@ -22,8 +25,8 @@ const Box = styled.div`
   }
 
   .inputContainer {
-    width: 50vw;
-    height: 90vh;
+    width: 60vw;
+    height: 115vh;
     margin: 0 auto;
     padding: 15px;
     background-color: #FFF;
@@ -38,6 +41,9 @@ const StudyWrite = (studyObj) => {
   const [content, setContent] = useState("");
   const [hashtag, setHashtag] = useState("");
   const [hashtags, setHashtags] = useState([]);
+  const [valueDate, setValueDate] = useState(new Date());
+  const [people, setPeople] = useState("");
+  const [addr, setAddr] = useState("");
 
   const navigate = useNavigate();
 
@@ -104,7 +110,11 @@ const StudyWrite = (studyObj) => {
       content,
       attachmentUrl,
       hashtags,
+      people,
+      addr,
+      valueDate
     );
+
     console.log(studyReg);
 
     console.log(studyReg.statusText);
@@ -146,8 +156,9 @@ const StudyWrite = (studyObj) => {
     target.innerHTML = "";
   }
 
-  const getAddr = (addr) => {
-    console.log(addr);
+  const getAddr = (e) => {
+    setAddr(e);
+    console.log(addr + " " + valueDate + " " + people);
   }
 
   // const handleKeyPress = (e) => {
@@ -195,7 +206,8 @@ const StudyWrite = (studyObj) => {
         <div style={{ "display": "flex" }}>
           <div>
             <label htmlFor="memberCount" className="form-label">인원</label>
-            <Form.Select aria-label="memberCount" style={{ "width": "5vw", "marginBottom": "2vh" }}>
+            <Form.Select aria-label="memberCount" style={{ "width": "7vw", "marginBottom": "2vh" }}
+              onChange={(e) => setPeople(e.target.value)}>
               <option>인원 수</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -204,10 +216,19 @@ const StudyWrite = (studyObj) => {
               <option value="6">6</option>
             </Form.Select>
           </div>
-          <div style={{ "marginLeft": "15vw" }}>
-            <label htmlFor="addr" className="addr-label">스터디 지역</label>
+
+          <div style={{ "marginLeft": "5vw" }}>
+            <label htmlFor="addr" className="addr-label" style={{ "marginBottom": "0.6vh" }}>스터디 지역</label>
             <div className="addr" >
               <Addr propFunction={getAddr} />
+            </div>
+          </div>
+
+          <div style={{ "marginLeft": "5vw" }}>
+            <label htmlFor="calendar" className="calendar-label" style={{ "marginBottom": "0.6vh" }}>스터디 시작 날짜</label>
+            <div className="calendar" >
+              <Calendar onChange={(e) => setValueDate(e)}
+                formatDay={(locale, date) => moment(date).format("DD")} />
             </div>
           </div>
         </div>
