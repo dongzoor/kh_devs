@@ -76,12 +76,12 @@ function OffcanvasExample() {
                     <NavDropdown.Item href={`/myPage/myComment/${userId}`}>
                       내가 쓴 댓글
                     </NavDropdown.Item>
-                    <NavDropdown.Item href={`/myPage/myLike/${userId}`}>
+                    {/* <NavDropdown.Item href={`/myPage/myLike/${userId}`}>
                       내가 좋아요한 글
                     </NavDropdown.Item>
                     <NavDropdown.Item href={`/myPage/myHashtag/${userId}`}>
                       나의 관심 #글
-                    </NavDropdown.Item>
+                    </NavDropdown.Item> */}
                   </NavDropdown>
                   <Nav.Link href="/studies">스터디</Nav.Link>
                   <Nav.Link href="/social">Social</Nav.Link>
