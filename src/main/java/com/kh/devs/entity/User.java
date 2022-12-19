@@ -8,21 +8,18 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.kh.devs.constant.UserRole;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@ToString(exclude = "social")
-@ToString(exclude = "study")
-@Table(name = "users") //User가 예약어라 에러 발생 -> 수정
+@Table(name = "users")
 public class User
 {
     @Id
@@ -64,4 +61,8 @@ public class User
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Social> socials;
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Study> studies;
 }
