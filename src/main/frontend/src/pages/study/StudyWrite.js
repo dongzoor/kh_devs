@@ -44,8 +44,11 @@ const StudyWrite = (studyObj) => {
   const [valueDate, setValueDate] = useState(new Date());
   const [people, setPeople] = useState("");
   const [addr, setAddr] = useState("");
+  const [applyPeople, setApplyPeople] = useState([]);
 
   const navigate = useNavigate();
+  const userEmail = sessionStorage.getItem("userEmail");
+  const userId = sessionStorage.getItem("userId");
 
   let attachmentUrl = "";
   //사진 첨부 없이 텍스트만 트윗하고 싶을 때도 있으므로 기본 값을 ""로 해야한다.
@@ -104,15 +107,19 @@ const StudyWrite = (studyObj) => {
       console.log(attachmentUrl);
     }
 
+
+
     const studyReg = await StudyApi.studyWrite(
-      userNickname,
+      userId,
+      userEmail,
       title,
       content,
       attachmentUrl,
       hashtags,
       people,
       addr,
-      valueDate
+      valueDate,
+      applyPeople
     );
 
     console.log(studyReg);
@@ -207,7 +214,10 @@ const StudyWrite = (studyObj) => {
           <div>
             <label htmlFor="memberCount" className="form-label">인원</label>
             <Form.Select aria-label="memberCount" style={{ "width": "7vw", "marginBottom": "2vh" }}
-              onChange={(e) => setPeople(e.target.value)}>
+              onChange={(e) => {
+                setPeople(e.target.value);
+                setApplyPeople([userId]);
+              }}>
               <option>인원 수</option>
               <option value="2">2</option>
               <option value="3">3</option>

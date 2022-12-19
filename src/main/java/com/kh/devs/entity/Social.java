@@ -1,5 +1,6 @@
 package com.kh.devs.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -20,8 +21,10 @@ public class Social {
     @Id
     @Column(name = "social_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long socialId;              // 게시글 id
-    @ManyToOne(fetch = FetchType.LAZY)
+    private Long socialId;// 게시글 id
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;            // 작성자 id
     @Column(name = "social_title", nullable = false)

@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -61,6 +62,13 @@ public class StudyController {
 //        return "redirect:/study/" + studyId;
     }
 
+    @PutMapping("/study/{studyId}")  // 스터디 신청
+    public void applyStudy(@PathVariable Long studyId, @RequestBody StudyDTO studyDTO) {
+//        로그인 파트에서 세션으로 주면 받아올 예정
+        studyService.applyStudy(studyId, studyDTO);
+
+//        return "redirect:/study/" + studyId;
+    }
 //    @GetMapping("/study/edit/{studyId}")
 //    public ResponseEntity<Study> getUpdateStudy(@PathVariable Long studyId) {
 //        Optional<Study> study = studyService.getStudy(studyId);

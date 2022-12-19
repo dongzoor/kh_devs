@@ -10,16 +10,18 @@ const StudyApi = {
     return await axios.get("/api/studies");
   },
 
-  studyWrite: async function (userNickname, title, content, imgUrl, hashtags, people, addr, valueDate) {
+  studyWrite: async function (userId, userEmail, title, content, imgUrl, hashtags, people, addr, valueDate, applyPeople) {
     const studyObj = {
+      userId: userId,
       title: title,
       content: content,
       imgUrl: imgUrl,
-      writer: userNickname,
+      writer: userEmail,
       hashtag: hashtags,
       goalPeople: people,
       addr: addr,
       goalTime: valueDate,
+      applyPeople: applyPeople,
     }
     return await axios.post("/api/study/write", studyObj)
   },
@@ -31,6 +33,14 @@ const StudyApi = {
       imgUrl: imgUrl,
     }
     return await axios.put("/api/study/edit/" + studyId, studyObj)
+  },
+
+  studyApply: async function (studyId, applyPeoples, applyCnts) {
+    const applyObj = {
+      applyPeople: applyPeoples,
+      applyCnt: applyCnts
+    }
+    return await axios.put("/api/study/" + studyId, applyObj)
   },
 
   // studyUpdateDetail: async function (studyId) {
