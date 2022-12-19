@@ -1,39 +1,165 @@
 @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
 
+/* 공통 부분 */
 .myPageContainer {
   font-family: 'Gowun Dodum', sans-serif;
-  /* 미디어쿼리 적용 예정 */
   width: 1024px;
   margin: auto;
   padding: 0;
   text-decoration: none;
+  
 }
 
-.myPageHeader {
-  display: flex;
-}
-
-.myPageBody {
-  display: flex;
+/* 미디어쿼리 적용 */
+@media (max-width: 1024px) {
+  .myPageContainer {
+    width: 100%;
+  }
 }
 
 .subTitle {
-  margin: 50px 0;
+  margin: 50px 0 50px 12px;
 }
 
-.allDeleteBox {
+.mp-nv-link {
+  color: black;
+  font-size: 1.2em;
+}
+
+.mp-nv-link:hover {
+  background-color: rgba(190, 100, 255, 0.5);
+  color:white;
+}
+
+.deleteButtonBox{
+  display: inline-block;
+}
+
+.titleBox{
+  display: inline-block;
+  margin: 0, 5px;
+}
+
+/* .allDeleteBox {
   display: flex;
   justify-content : right;
 }
 
-.allDeleteButton {
+.allDeleteButton{
+  margin-right: 12px;
   border: 0;
   border-radius: 3px;
   padding: 10px;
   font-weight: bold;
 }
 
-.allDeleteButton:hover {
+.allDeleteButton:hover{
   color: white;
+  font-weight: bold;
   background-color: rgba(190, 100, 255, 0.5);
+} */
+
+.deleteButton {
+  font-size: 0.8em;
+  border: 0;
+  border-radius: 3px;
+  margin: 0 5px;
+}
+
+.deleteButton:hover {
+  color: white;
+  font-weight: bold;
+  background-color: rgba(190, 100, 255, 0.5);
+}
+
+/* 작성글 페이지 */
+.myPageTable {
+  width: 100%;
+  font-size: 1em;
+}
+
+.ms-th-1 {
+  width: 70%;
+}
+
+/* .ms-td-1 {
+  overflow: hidden;
+  white-space: nowrap;
+} */
+
+.ms-td-1:hover {
+  font-weight: bold;
+}
+
+.ms-th-3 {
+  width: 50px;
+}
+
+.msc-td:hover {
+  font-weight: bold;
+}
+
+.commnetContent {
+  color: black;
+}
+
+.commnetCreate{
+  color: grey;
+}
+
+/* 캘린더 페이지 */
+
+/* 일요일 날짜: 빨간색 */
+.fc-day-sun a {
+  color: rgba(255, 0, 0, 0.548);
+}
+
+/* 토요일 날짜: 파란색 */
+.fc-day-sat a {
+  color: rgba(0, 0, 255, 0.537);
+}
+
+.calCreateButtonBox {
+  width: 100%;
+  display: flex;
+  justify-content : right;
+  padding: 0;
+}
+
+.calCreateButtonBox > button{
+  padding: 5px, 8px;
+  margin: 10px, 0;
+  margin-right: 12px;
+  border: 0;
+  border-radius: 3px;
+  font-weight: bold;
+  width: 60px;
+}
+
+.calendarBox {
+  display: block;
+  width: 100%
+}
+
+/* #calCreateButton{
+  padding: 5px, 8px;
+  margin: 10px, 0;
+  margin-right: 12px;
+  border: 0;
+  border-radius: 3px;
+  font-weight: bold;
+} */
+
+#calCreateButton:hover {
+  color: white;
+  font-weight: bold;
+  background-color: rgb(190, 100, 255, 0.5);
+}
+
+.fc-event-main {
+  background-color: rgba(208, 146, 253, 0.687);
+}
+
+.fc-header-toolbar {
+  margin-left: 18px;
 }

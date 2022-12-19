@@ -17,6 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 public class StudyDTO {
+    private String userId;
     private Long studyId;
     private String writer;
     private String title;
@@ -28,10 +29,12 @@ public class StudyDTO {
     private String imgUrl;
     private List<String> hashtag;
     private String addr; // 주소
+    private List<String> applyPeople;
     private int goalPeople; // 목표 참여인원
     private int readCount;
     private boolean studyApply;
-    private int studyApplyCount;
+    private int applyCnt; //지원자 수
+    
     @Enumerated(EnumType.STRING)
     private ApplyStatus applyStatus;
 }

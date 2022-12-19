@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import SocialApi from "../../../api/SocialApi";
 import { useParams } from "react-router-dom";
+import CommentWriter from "./CommentWriter";
 
 const BOX = styled.div`
   margin: 5px 20px;
@@ -27,6 +28,8 @@ const BOX = styled.div`
   .comment-text {
     padding: 0px 5px 20px;
     border-bottom: 1px dashed rgba(209, 209, 209, 0.8);
+    // text 개행 처리 !
+    white-space: pre-wrap;
   }
   .userImage {
     margin: 5px;
@@ -59,18 +62,21 @@ const CommentList = () => {
   }, [deleteComplete, inputContent]);
 
   // 삭제 버튼 클릭 시
-  const onClickButton = async (postId) => {
-    console.log("댓글 삭제 버튼 클릭");
-    console.log("postid: " + postId);
-    const res = await SocialApi.deleteComment(postId);
-    console.log(res.data.result);
-    if (res.data.result === "OK") {
+  const onClickButton = async (commentId) => {
+    console.log(commentId + "번 댓글 삭제 버튼 클릭");
+    const res = await SocialApi.commentDelete(commentId);
+    console.log(res);
+    if (res.data === "SUCCESS") {
       setDeleteComplete(true);
     } else setDeleteComplete(false);
   };
 
   return (
     <BOX>
+      <CommentWriter
+        inputContent={inputContent}
+        setInputContent={setInputContent}
+      />
       <div className="comment-box">
         {commentList &&
           commentList.map((comment) => (

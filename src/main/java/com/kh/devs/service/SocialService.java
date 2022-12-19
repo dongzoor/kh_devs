@@ -135,7 +135,7 @@ public class SocialService {
         }
     }
 
-    // JW) admin service
+    // JW admin service
     @Transactional
     public String deleteSocial(Long socialId) {
         socialRepository.deleteById(socialId); // 오류가 터지면 익센셥 타서 신경 노노
@@ -144,5 +144,12 @@ public class SocialService {
 
     public List<Social> getAdSocialList2() {
         return socialRepository.findAll();
+    }
+
+    //마이페이지 작성글 전체 삭제용
+    @Transactional
+    public String allDeleteMySocial(Long userId) {
+        socialRepository.deleteById(userId); // 오류가 터지면 익센셥 타서 신경 노노
+        return "ok";
     }
 }

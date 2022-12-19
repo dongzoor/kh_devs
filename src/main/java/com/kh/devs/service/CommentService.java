@@ -20,14 +20,15 @@ import java.util.Objects;
 public class CommentService {
     private final CommentRepository commentRepository;
     private final SocialRepository socialRepository;
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 //    private ObjectMapper objectMapper;
 
     // 댓글 작성
-    public boolean regComment(Long socialId, String content, String userEmail) throws Exception {
+    public boolean regComment(String socialId, String content, String userEmail) throws Exception {
         try {
             User user = (userRepository.findByUserEmail(userEmail)).get(0); // 객체로 user 정보를 다시 찾아와서 넣어주기 위함
-            Social social = (socialRepository.findBySocialId(socialId).get(0));
+            Long id = (Long.parseLong(socialId));
+            Social social = (socialRepository.findBySocialId(id).get(0));
             Comment comment = new Comment();
             comment.setUser(user);
             comment.setSocial(social);
@@ -46,11 +47,10 @@ public class CommentService {
     public int delComment(Long commentId) {
         Comment comment = commentRepository.findById(commentId).get();
         if (!Objects.isNull(comment)) {
-            socialRepository.deleteById(comment.getId());
+            commentRepository.deleteById(comment.getId());
             return 1;
         } else {
             return 0;
         }
     }
-
 }

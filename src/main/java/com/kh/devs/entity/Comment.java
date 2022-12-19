@@ -1,14 +1,21 @@
 package com.kh.devs.entity;
 
-import lombok.Data;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "comment")
-@Data
+@Getter
+@Setter
 public class Comment {
+
     @Id
     @Column(name = "comment_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,9 +25,12 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;              // 댓글 작성자
-    @Column(name = "comment_create")
-    private LocalDateTime postDate; // 댓글 작성일
     @ManyToOne
     @JoinColumn(name = "social_id")
     private Social social;          // 게시글 번호
+
+    @Column(name = "comment_create")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    private LocalDateTime postDate; // 댓글 작성일
 }

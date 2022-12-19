@@ -229,7 +229,6 @@ const SocialDetail = () => {
               <button>목록보기</button>
             </Link>
             <hr />
-            <CommentWriter />
             <CommentList />
           </div>
         </div>

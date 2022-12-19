@@ -12,12 +12,6 @@ import CheckPwd from "./pages/editInfo/CheckPwd";
 import EditInfo from "./pages/editInfo/EditInfo";
 import FindInfo from "./pages/findInfo/FindInfo";
 import Login from "./pages/login/Login";
-import MyCalendar from "./pages/myPage/MyCalendar";
-import MyComment from "./pages/myPage/MyComment";
-import MyHashtag from "./pages/myPage/MyHashtag";
-import MyLike from "./pages/myPage/MyLike";
-import MySocial from "./pages/myPage/MySocial";
-import MyStudy from "./pages/myPage/MyStudy";
 import Nav from "../src/containers/common/Nav";
 import Profile from "./pages/profile/Profile";
 import Register from "./pages/register/Register";
@@ -28,49 +22,55 @@ import SocialWrite from "./pages/social/SocialWrite";
 import SocketTest from "./pages/chat/SocketTest";
 import StudyDetail from "./pages/study/StudyDetail";
 import StudyList from "./pages/study/StudyList";
-import StudyUpdate from "./pages/study/StudyUpdate";
 import StudyWrite from "./pages/study/StudyWrite";
+import Terms from "./pages/register/Terms";
+import StudyUpdate from "./pages/study/StudyUpdate";
+import MyCalendar from "./pages/myPage/MyCalendar";
+import MyStudy from "./pages/myPage/MyStudy";
+import MySocial from "./pages/myPage/MySocial";
+import MyComment from "./pages/myPage/MyComment";
+import MyLike from "./pages/myPage/MyLike";
+
 
 // import Admin from "./pages/admin/Admin";
 function App() {
   return (
-    <Router>
-      <Nav />
-      <Routes>
-        {/* <Route path="/Admin" element={<Admin />} /> */}
-        <Route path="/AdminLogin" element={<AdminLogin />} />
-        <Route path="/AdminScBoardList" element={<AdminScBoardList />} />
-        <Route path="/AdminBoardList" element={<AdminBoardList />} />
-        <Route path="/AdminMemberList" element={<AdminMemberList />} />
-        <Route exact path="/AdminMember/:userId" element={<AdminEditUser />} />
-        <Route path="/" element={<Login />} />
-        <Route path="/user/register" element={<Register />} />
-        <Route path="/user/profile" element={<Profile />} />
-        <Route path="/user/find" element={<FindInfo />} />
-        <Route path="/user/edit" element={<EditInfo />} />
-        <Route path="/user/check" element={<CheckPwd />} />
-        <Route path="/studies" element={<StudyList />} />
-        <Route path="/study/write" element={<StudyWrite />} />
-        <Route exact path="/study/:studyId" element={<StudyDetail />} />
-        <Route exact path="/study/edit/:studyId" element={<StudyUpdate />} />
-        <Route path="/Socket" element={<SocketTest />} />
-        <Route path="/social" element={<SocialList />} />
-        <Route exact path="/social/:socialId" element={<SocialDetail />} />
-        <Route
-          exact
-          path="/social/:socialId/update"
-          element={<SocialUpdate />}
-        />
-        <Route path="/social/write" element={<SocialWrite />} />
-        <Route path="/myPage/myCalendar" element={<MyCalendar />} />
-        <Route path="/myPage/myStudy" element={<MyStudy />} />
-        <Route path="/myPage/myHashtag" element={<MyHashtag />} />
+      <Router>
+        <Nav />
+        <Routes>
+          {/* <Route path="/Admin" element={<Admin />} /> */}
+          <Route path="/AdminLogin" element={<AdminLogin />} />
+          <Route path="/AdminScBoardList" element={<AdminScBoardList />} />
+          <Route path="/AdminBoardList" element={<AdminBoardList />} />
+          <Route path="/AdminMemberList" element={<AdminMemberList />} />
+          <Route exact path="/AdminMember/:userId" element={<AdminEditUser />} />
+          <Route path="/" element={<Login />} />
+          <Route path="/user/register" element={<Register />} />
+          <Route path="/user/profile" element={<Profile />} />
+          <Route path="/user/find" element={<FindInfo />} />
+          <Route path="/user/edit" element={<EditInfo />} />
+          <Route path="/user/check" element={<CheckPwd />} />
+          <Route path="/studies" element={<StudyList />} />
+          <Route path="/study/write" element={<StudyWrite />} />
+          <Route exact path="/study/:studyId" element={<StudyDetail />} />
+          <Route exact path="/study/edit/:studyId" element={<StudyUpdate />} />
+          <Route path="/Socket" element={<SocketTest />} />
+          <Route path="/social" element={<SocialList />} />
+          <Route exact path="/social/:socialId" element={<SocialDetail />} />
+          <Route
+              exact
+              path="/social/:socialId/update"
+              element={<SocialUpdate />}
+          />
+          <Route path="/social/write" element={<SocialWrite />} />
+        <Route path="/myPage/myCalendar/:userId" element={<MyCalendar />} />
+        <Route path="/myPage/myStudy/:userId" element={<MyStudy />} />
         <Route path="/myPage/mySocial/:userId" element={<MySocial />} />
-        <Route path="/myPage/myComment" element={<MyComment />} />
-        <Route path="/myPage/MyLike" element={<MyLike />} />
-      </Routes>
-      {/* <Admin></Admin> */}
-    </Router>
+        <Route path="/myPage/myComment/:userId" element={<MyComment />} />
+        <Route path="/myPage/MyLike/:userId" element={<MyLike />} />
+        </Routes>
+        {/* <Admin></Admin> */}
+      </Router>
   );
 }
 
