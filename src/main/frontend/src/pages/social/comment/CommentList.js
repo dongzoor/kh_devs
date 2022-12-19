@@ -40,34 +40,41 @@ const BOX = styled.div`
 `;
 
 const CommentList = () => {
-  const getSocialId = window.sessionStorage.getItem("social_id");
-  const getUserId = window.sessionStorage.getItem("userId");
-
+  const getUserId = parseInt(window.sessionStorage.getItem("userId"));
   const [commentList, setCommentList] = useState([]);
   const [inputContent, setInputContent] = useState(""); // 댓글 내용 입력 받을 객체
+  const [isSubmit, setIsSubmit] = useState(false);
   const [deleteComplete, setDeleteComplete] = useState(false);
   const params = useParams().socialId; // router에서 지정한 :social 을 붙여줘야함!!
-
+  // 자식->부모로 isSubmit 값을 받아오기 위한 콜백 함수
+  const changeState = () => {
+    setIsSubmit(true);
+  };
   // 댓글 조회
   useEffect(() => {
     const CommentData = async () => {
       try {
         const response = await SocialApi.socialDetail(params);
         setCommentList(response.data.comments);
+        // rendering 을 위한 의존성배열 값 초기화
+        setDeleteComplete(false);
+        setIsSubmit(false);
+        console.log(commentList);
       } catch (e) {
         console.log(e);
       }
     };
     CommentData();
-  }, [deleteComplete, inputContent]);
+  }, [deleteComplete, isSubmit]);
 
   // 삭제 버튼 클릭 시
   const onClickButton = async (commentId) => {
     console.log(commentId + "번 댓글 삭제 버튼 클릭");
     const res = await SocialApi.commentDelete(commentId);
-    console.log(res);
-    if (res.data === "SUCCESS") {
-      setDeleteComplete(true);
+    if (res.data === true) {
+      console.log(res.data);
+      setDeleteComplete(true); // 삭제되면 render 되도록
+      alert("댓글이 삭제되었습니다.");
     } else setDeleteComplete(false);
   };
 
@@ -76,6 +83,9 @@ const CommentList = () => {
       <CommentWriter
         inputContent={inputContent}
         setInputContent={setInputContent}
+        isSubmit={isSubmit}
+        setIsSubmit={setIsSubmit}
+        changeState={changeState}
       />
       <div className="comment-box">
         {commentList &&
@@ -95,7 +105,7 @@ const CommentList = () => {
                 <span className="comment-date">| {comment.postDate}</span>
               </div>
               <p className="comment-text">{comment.content}</p>
-              {getUserId == comment.userId && (
+              {getUserId === comment.userId && (
                 <>
                   <button
                     className="deleteBt"
