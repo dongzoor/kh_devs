@@ -52,9 +52,9 @@ const SocialApi = {
   deleteComment: async function (socialId) {
     console.log("댓글 번호 : " + socialId);
     const delCommentObj = {
-      postId: String(socialId),
+      postId: socialId,
     };
-    return await axios.post(`api/social/${socialId}/comment`, delCommentObj);
+    return await axios.delete(`/api/social/comment`, delCommentObj);
   },
 };
 

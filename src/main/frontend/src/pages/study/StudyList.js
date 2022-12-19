@@ -1,12 +1,10 @@
 import styled from "styled-components";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import StudyApi from "../../lib/api/StudyApi";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Badge } from "react-bootstrap";
-import { BsPencil } from 'react-icons/bs'
 import { IoCalendarOutline, IoEyeOutline, IoLocationOutline, IoPersonOutline } from "react-icons/io5";
 
 const Box = styled.div`
