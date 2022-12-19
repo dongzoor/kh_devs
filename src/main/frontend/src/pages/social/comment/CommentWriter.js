@@ -51,15 +51,15 @@ const CommentWriter = ({ inputContent, setInputContent }) => {
   const onPressEnter = async (e) => {
     if (e.key === "Enter") {
       console.log("엔터 클릭");
-      const res = await SocialApi.insertComment(
+      const res = await SocialApi.commentWrite(
         getSocialId,
         getUserEmail,
         inputContent
       );
-      console.log(res.data.result);
-      if (res.data.result !== "SUCCESS") {
+      if (res.data === true) {
         setInputContent(inputContent);
-      }
+        alert("댓글이 작성되었습니다.");
+      } else alert("댓글 작성에 실패했습니다.");
     }
   };
   return (

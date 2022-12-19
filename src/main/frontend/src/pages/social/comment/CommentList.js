@@ -28,6 +28,8 @@ const BOX = styled.div`
   .comment-text {
     padding: 0px 5px 20px;
     border-bottom: 1px dashed rgba(209, 209, 209, 0.8);
+    // text 개행 처리 !
+    white-space: pre-wrap;
   }
   .userImage {
     margin: 5px;
@@ -60,11 +62,11 @@ const CommentList = () => {
   }, [deleteComplete, inputContent]);
 
   // 삭제 버튼 클릭 시
-  const onClickButton = async (postId) => {
-    console.log(postId + "번 댓글 삭제 버튼 클릭");
-    const res = await SocialApi.deleteComment(postId);
-    console.log(res.data.result);
-    if (res.data.result === "OK") {
+  const onClickButton = async (commentId) => {
+    console.log(commentId + "번 댓글 삭제 버튼 클릭");
+    const res = await SocialApi.commentDelete(commentId);
+    console.log(res);
+    if (res.data === "SUCCESS") {
       setDeleteComplete(true);
     } else setDeleteComplete(false);
   };
