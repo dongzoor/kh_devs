@@ -32,10 +32,10 @@ public class CommentController {
 
     // Comment 삭제
     @DeleteMapping("/api/comment")
-    public Map<String, Object> commentDelete(@RequestBody Map<String, Long> regData) {
+    public Map<String, Object> commentDelete(@RequestBody Map<String, Long> delCommentObj) {
         Map<String, Object> response = new HashMap<>();
-        Long id = regData.get("id");
-        if (commentService.delComment(id) > 0) {
+        Long id = delCommentObj.get("commentId");
+        if (commentService.delComment(id) > 0) { // 삭제 성공하면 1이 return 되므로
             response.put("result", "SUCCESS"); // front 의 res.data.result === "SUCCESS" 와 연결된당!!!
         } else {
             response.put("result", "FAIL");

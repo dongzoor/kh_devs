@@ -37,10 +37,11 @@ const SocialApi = {
   },
   // 게시글 삭제
   socialDelete: async function (socialId) {
-    return await axios.delete(`/api/comment`);
+    return await axios.delete(`/api/social/${socialId}`);
   },
+  // ########################## 댓글 ##########################
   // 댓글 입력
-  insertComment: async function (socialId, userEmail, content) {
+  commentWrite: async function (socialId, userEmail, content) {
     const regObj = {
       socialId: socialId,
       userEmail: userEmail,
@@ -49,12 +50,12 @@ const SocialApi = {
     return await axios.post(`/api/comment`, regObj);
   },
   // 댓글 삭제
-  deleteComment: async function (socialId) {
-    console.log("댓글 번호 : " + socialId);
+  commentDelete: async function (commentId) {
     const delCommentObj = {
-      postId: String(socialId),
+      commentId: commentId,
     };
-    return await axios.post(`api/social/${socialId}/comment`, delCommentObj);
+    console.log("댓글 번호 : " + commentId + typeof commentId);
+    return await axios.delete(`/api/comment`, delCommentObj);
   },
 };
 

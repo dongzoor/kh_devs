@@ -47,7 +47,7 @@ public class CommentService {
     public int delComment(Long commentId) {
         Comment comment = commentRepository.findById(commentId).get();
         if (!Objects.isNull(comment)) {
-            socialRepository.deleteById(comment.getId());
+            commentRepository.deleteById(comment.getId());
             return 1;
         } else {
             return 0;
