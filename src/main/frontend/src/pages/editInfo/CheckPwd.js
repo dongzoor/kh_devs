@@ -48,7 +48,7 @@ function PwdCheck() {
 
     if (res.data !== false) {
       // 성공 시 페이지 전환하기
-      window.location.replace("/EditInfo");
+      window.location.replace("/user/edit");
     } else if (res.data === false) {
       window.alert("비밀번호를 확인해주세요.");
     }
@@ -57,7 +57,7 @@ function PwdCheck() {
     <Box>
       <Container>
         <Content>
-          <Link to="/">
+          <Link to="/user/profile">
             <MdArrowBack size="24" style={{ margin: 10 }} />
           </Link>
           <div className="form-title">

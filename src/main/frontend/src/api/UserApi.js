@@ -16,7 +16,7 @@ const UserApi = {
     const phoneCheck = {
       phone: phone,
     };
-    return await axios.post("/phoneDuplCheck", phoneCheck);
+    return await axios.post("/api/phoneDuplCheck", phoneCheck);
   },
 
   //회원가입
@@ -36,16 +36,25 @@ const UserApi = {
       profileImage: profileImage,
       profileImagePath: profileImagePath,
     };
-    return await axios.post("register", userObj);
+    return await axios.post("/api/register", userObj);
   },
 
-  //로그인
+  // 일반 로그인
   userLogin: async function (id, pwd) {
     const loginObj = {
       userEmail: id,
       password: pwd,
     };
-    return await axios.post("login", loginObj);
+    return await axios.post("/api/login", loginObj);
+  },
+
+  // 카카오 로그인
+  kakaoLogin: async function (email, nickname) {
+    const loginObj = {
+      userEmail: email,
+      userNickname: nickname,
+    };
+    return await axios.post("/api/kakaoLogin", loginObj);
   },
 
   //회원정보 수정
@@ -65,7 +74,7 @@ const UserApi = {
       profileImage: profileImage,
       profileImagePath: profileImagePath,
     };
-    return await axios.put("update", UpdateObj);
+    return await axios.put("/api/update", UpdateObj);
   },
 
   // 회원정보 찾기(아이디찾기)
@@ -73,7 +82,7 @@ const UserApi = {
     const AccountInfo = {
       phone: phone,
     };
-    return await axios.post("findId", AccountInfo);
+    return await axios.post("/api/findId", AccountInfo);
   },
 
   // 회원정보 찾기(비밀번호찾기)
@@ -82,12 +91,12 @@ const UserApi = {
       userEmail: id,
       phone: phone,
     };
-    return await axios.post("findPwd", AccountInfo);
+    return await axios.post("/api/findPwd", AccountInfo);
   },
 
   // 회원탈퇴
   delete: async function (userEmail) {
-    return await axios.delete(`delete/${userEmail}`);
+    return await axios.delete(`/api/delete/${userEmail}`);
   },
 };
 

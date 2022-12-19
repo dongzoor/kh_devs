@@ -8,14 +8,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 public class SocialDTO {
     private Long socialId;          // 게시글 id
-    private String userEmail;       // 작성자 email
-    private String userNickName;    // 작성자 nickname
-    private String userImage;       // 작성자 이미지 name
     private String title;           // 게시글 제목
     private String content;         // 게시글 내용
     private String tag;             // 해시태그
@@ -25,6 +24,12 @@ public class SocialDTO {
     private int view;               // 조회수
     private int comment;            // 댓글 수
     private int saved;              // 저장 횟수
+    // USER DATA
+    private String userEmail;       // 작성자 email
+    private String userNickName;    // 작성자 nickname
+    private String userImageId;     // 작성자 이미지 ID
+    private String userImageUrl;    // 작성자 이미지 URL
+    private List<CommentDTO> comments = new ArrayList<>();
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)

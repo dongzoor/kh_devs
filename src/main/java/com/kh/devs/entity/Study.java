@@ -60,13 +60,15 @@ public class Study {
     @JoinColumn(name = "user_id")  // user_id FK 설정
     private User user;
 
+    private String addr;
+    private int goalPeople;
 //
 //    public void createdByUser(User user) {
 //        this.user = user;
 //    }
     @Builder
     public Study(Long id, String title, String content, String writer, String imgUrl, int cnt, LocalDateTime regTime,
-                 LocalDateTime updateTime, LocalDateTime goalTime, String coordinate, List<String> hashtag) {
+                 LocalDateTime updateTime, LocalDateTime goalTime, List<String> hashtag, String addr, int goalPeople, ApplyStatus applyStatus) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -76,8 +78,10 @@ public class Study {
         this.regTime = regTime;
         this.updateTime = updateTime;
         this.goalTime = goalTime;
-        this.coordinate = coordinate;
         this.hashtag = hashtag;
+        this.goalPeople = goalPeople;
+        this.addr = addr;
+        this.applyStatus = applyStatus;
     }
 
 }

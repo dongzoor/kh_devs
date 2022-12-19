@@ -18,6 +18,25 @@ const Adcontainer = styled.div`
   min-height: 100vh;
   background: linear-gradient(90deg, #ffe7e8, #8da4d0);
   font-family: "Gowun Dodum", sans-serif;
+  .Adphotos {
+    margin: 5px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+  }
+  .Boardphotos {
+    height: 50px;
+    width: 50px;
+    border-radius: 10px;
+    left: 5px;
+    top: 5px;
+  }
+  .tbody{
+    text-align: center;
+    align-items : center;
+    justify-content : center;
+  }
+
 `;
 
 const PaginationBox = styled.div`
@@ -72,6 +91,7 @@ function AdminScBoardList() {
   /// 페이지 네그네이션
   const [page, setPage] = useState(1);
   const [items, setItems] = useState(10); // 페이지별 목록 개수
+  const [modalData, setModalData] = useState(0);
 
   useEffect(() => {
     const BoardData = async () => {
@@ -120,7 +140,9 @@ function AdminScBoardList() {
     }
   };
 
-  const openModal = () => {
+  const openModal = (e) => {
+    console.log(e);
+    setModalData(e);
     setModalOpen(true);
   };
 
@@ -146,6 +168,7 @@ function AdminScBoardList() {
               <tr>
                 <th>제목</th>
                 <th>내용</th>
+                <th>게시글 사진</th>
                 <th>작성자</th>
                 <th>조회수</th>
                 <th>생성시간</th>
@@ -159,18 +182,37 @@ function AdminScBoardList() {
                   <tr key={list.socialId}>
                     <td>{list.title}</td>
                     <td>{list.content.substr(0, 7)}...</td>
-                    <td>{list.user}</td>
+                    <td><img
+                          className="Boardphotos"
+                          alt="게시글 사진"
+                          src={
+                            list.image
+                              ? list.image
+                              : "https://i.ibb.co/0shjfhn/no-photo-available.png"
+                          }
+                        /></td>
+                    <td>{list.userNickName}
+                    <img
+                          className="Adphotos"
+                          alt="프로필 사진"
+                          src={
+                            list.userImageUrl
+                              ? list.userImageUrl
+                              : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                          }
+                        />
+                    </td>
                     <td>{list.view}</td>
                     <td>{list.postDate}</td>
                     <td>
                       <>
-                        <button className="adbutton delete" onClick={openModal}>
+                        <button className="adbutton delete" onClick={() => openModal(list.socialId)}>
                           삭제
                         </button>
                         {modalOpen && (
                           <JwModal
                             open={modalOpen}
-                            confirm={() => confirmScModal(list.socialId)}
+                            confirm={() => confirmScModal(modalData)}
                             close={closeModal}
                             type={true}
                             header="확인"

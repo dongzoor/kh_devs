@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+import java.util.List;
+
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-//    Comment findBySocialId(Long socialId);
+    List<Comment> findBySocial_SocialId(Long socialId);
 }

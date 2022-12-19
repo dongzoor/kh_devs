@@ -3,7 +3,6 @@ package com.kh.devs.controller;
 import com.kh.devs.dto.SocialDTO;
 import com.kh.devs.service.SocialService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,7 +41,6 @@ public class SocialController {
         String tag = regData.get("tag");
         String image = regData.get("image");
         String imageId = regData.get("imageId");
-        System.out.println(userEmail + title + content + tag + image + imageId );
         boolean result = socialService.regSocial(userEmail, title, content, tag, image, imageId);
         if (result) {
             return new ResponseEntity<>(true, HttpStatus.OK);  // 프론트의 res.data 값(true)으로 넘어온다!!!
@@ -70,7 +68,7 @@ public class SocialController {
 
     // social 삭제
     @DeleteMapping("/{Id}")
-    public Map<String, Object> delete(@PathVariable("Id") long Id) {
+    public Map<String, Object> deleteSocial(@PathVariable("Id") long Id) {
         Map<String, Object> response = new HashMap<>();
         if (socialService.delSocial(Id) > 0) {
             response.put("result", "SUCCESS"); // front 의 res.data.result === "SUCCESS" 와 연결된당!!!

@@ -7,22 +7,42 @@ import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
+import { useNavigate } from "react-router-dom";
 
 function OffcanvasExample() {
-
   const userId = sessionStorage.getItem("userId");
-  const [userEmail, setUserEmail] = useState("");
-  // 초기값 설정
+  const [isLogin, setIslogin] = useState("");
+
+  // 초기값 설정(세션에 이메일 정보가 있을때)
   useEffect(() => {
     const sessioninfo = sessionStorage.getItem("userEmail");
     if (sessioninfo !== null) {
-      setUserEmail(sessioninfo);
+      setIslogin(sessioninfo);
     }
   }, []);
 
+  const navigate = useNavigate();
   const onClickLogout = (e) => {
-    window.alert("로그아웃 되었습니다.");
     sessionStorage.clear();
+
+    // 카카오 로그아웃
+    KakaoLogout();
+    window.alert("로그아웃 되었습니다.");
+  };
+
+  const KakaoLogout = () => {
+    if (window.Kakao.Auth.getAccessToken()) {
+      window.Kakao.API.request({
+        url: "/v1/user/unlink",
+        success: function (response) {
+          console.log(response);
+        },
+        fail: function (error) {
+          console.log(error);
+        },
+      });
+      window.Kakao.Auth.setAccessToken(undefined);
+    }
   };
 
   return (
@@ -50,7 +70,7 @@ function OffcanvasExample() {
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
-                  {userEmail !== "" && (
+                  {isLogin !== "" && (
                     <Nav.Link href="/" onClick={onClickLogout}>
                       로그아웃
                     </Nav.Link>
@@ -59,29 +79,35 @@ function OffcanvasExample() {
                     title="마이페이지"
                     id={`offcanvasNavbarDropdown-expand-${expand}`}
                   >
-                    <NavDropdown.Item href="#action3">
-                      내 정보 수정
-                    </NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item href={`/myPage/myCalendar/${userId}`}>
-                      캘린더
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href={`/myPage/myStudy/${userId}`}>
-                      나의 스터디
-                    </NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item href={`/myPage/mySocial/${userId}`}>
-                      내가 쓴 글
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href={`/myPage/myComment/${userId}`}>
-                      내가 쓴 댓글
-                    </NavDropdown.Item>
-                    {/* <NavDropdown.Item href={`/myPage/myLike/${userId}`}>
-                      내가 좋아요한 글
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href={`/myPage/myHashtag/${userId}`}>
-                      나의 관심 #글
-                    </NavDropdown.Item> */}
+                    {isLogin !== "" && (
+                      <NavDropdown.Item href="/user/check">
+                        내 정보 수정
+                      </NavDropdown.Item>
+                    )}
+                    {isLogin !== "" && <NavDropdown.Divider />}
+                    {isLogin !== "" ? (
+                      <NavDropdown.Item href={`/myPage/myCalendar/${userId}`}>
+                        캘린더
+                      </NavDropdown.Item>
+                    ) : (
+                      <NavDropdown.Item href={"/"}>캘린더</NavDropdown.Item>
+                    )}
+                    {isLogin !== "" ? (
+                      <NavDropdown.Item href={`/myPage/myStudy/${userId}`}>
+                        나의 스터디
+                      </NavDropdown.Item>
+                    ) : (
+                      <NavDropdown.Item href={"/"}>
+                        나의 스터디
+                      </NavDropdown.Item>
+                    )}
+
+                    {isLogin !== "" && <NavDropdown.Divider />}
+                    {isLogin !== "" && (
+                      <NavDropdown.Item href={`/myPage/mySocial/${userId}`}>
+                        My DevS
+                      </NavDropdown.Item>
+                    )}
                   </NavDropdown>
                   <Nav.Link href="/studies">스터디</Nav.Link>
                   <Nav.Link href="/social">Social</Nav.Link>

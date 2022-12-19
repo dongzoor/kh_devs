@@ -1,6 +1,6 @@
 import "./Register.css";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { getDownloadURL, ref, uploadString } from "@firebase/storage";
 
 import { Link } from "react-router-dom";
@@ -80,7 +80,9 @@ const IdContainer = styled.div`
 
 function Register() {
   const [userEmail, setUserEmail] = useState("");
+  const [kakaoEmail, setKakaoEmail] = useState("");
   const [userNickname, setUserNickname] = useState("");
+  const [kakaoNickname, setKakaoNickname] = useState("");
   const [password, setPassword] = useState("");
   const [inputConPw, setInputConPw] = useState("");
   const [phone, setPhone] = useState("");
@@ -101,6 +103,18 @@ function Register() {
   const [isPhoneDuplCheck, setIsPhoneDuplCheck] = useState(true);
   const [isPhoneDuplCheckYn, setIsPhoneDuplCheckYn] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+
+  // 초기값 설정
+  useEffect(() => {
+    const originEmail = sessionStorage.getItem("kakaoEmail");
+    const originNickname = sessionStorage.getItem("kakaoNickName");
+    if (originEmail || originNickname) {
+      setKakaoEmail(originEmail);
+      setUserEmail(originEmail);
+      setUserNickname(originNickname);
+      setIsDuplCheckYn(true);
+    }
+  }, []);
 
   //프로필 이미지 firebase 저장 및 미리 보여주기
   const saveImgFile = (e) => {
@@ -314,6 +328,7 @@ function Register() {
 
       // 회원가입 성공 여부 메시지
       if (userReg.data === true) {
+        sessionStorage.clear();
         window.confirm("회원가입이 완료되었습니다.");
         window.location.replace("/");
       } else {
@@ -356,21 +371,32 @@ function Register() {
                 onChange={saveImgFile}
                 ref={imgRef}
               />
-              <IdContainer>
-                <input
-                  type="text"
-                  placeholder="ID(EMAIL)"
-                  value={userEmail}
-                  onChange={onChangeId}
-                />
-                <button
-                  type="button"
-                  onClick={onDuplCheck}
-                  disabled={isDuplCheck}
-                >
-                  중복확인
-                </button>
-              </IdContainer>
+              {kakaoEmail !== "" ? (
+                <IdContainer>
+                  <input
+                    type="text"
+                    value={userEmail}
+                    style={{ background: "#F2F3F4" }}
+                    readOnly
+                  />
+                </IdContainer>
+              ) : (
+                <IdContainer>
+                  <input
+                    type="text"
+                    placeholder="ID(EMAIL)"
+                    value={userEmail}
+                    onChange={onChangeId}
+                  />
+                  <button
+                    type="button"
+                    onClick={onDuplCheck}
+                    disabled={isDuplCheck}
+                  >
+                    중복확인
+                  </button>
+                </IdContainer>
+              )}
               <span
                 className={`message ${isConId ? "success" : "error"}`}
                 style={{ color: "#ff0000" }}

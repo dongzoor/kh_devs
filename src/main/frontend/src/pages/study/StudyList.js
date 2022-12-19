@@ -7,12 +7,19 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Badge } from "react-bootstrap";
 import { BsPencil } from 'react-icons/bs'
+import { IoCalendarOutline, IoEyeOutline, IoLocationOutline, IoPersonOutline } from "react-icons/io5";
 
 const Box = styled.div`
   margin: 0;
   padding: 0;
   font-family: Raleway, Pretendard Std;
   background: linear-gradient(90deg, #ffe7e8, #8da4d0);
+
+  .icon-box {
+    display: flex;
+    align-items: center;
+    float: right;
+  }
 `;
 
 const WriteBtn = styled.div`
@@ -35,8 +42,8 @@ const Frame = styled.div`
   margin: 40px auto;
   text-align: center;
   position: absolute;
-  top: 11vh;
-  left: -10.5vw;
+  top: 10vh;
+  left: 35vw;
 
   .custom-btn {
     width: 7vw;
@@ -189,8 +196,9 @@ const Study = () => {
                             {`${list.hashtag}` &&
                               list.hashtag.map((e) => <Badge bg="info" style={{ "marginRight": "0.5vw" }} > {e} </Badge>)}
                           </div>
-                          <div className="hashtag-container">
-
+                          <div className="icon-box">
+                            <IoEyeOutline />
+                            <span className="count">{list.cnt}</span>
                           </div>
                         </div>
                       </div>
@@ -212,6 +220,16 @@ const Study = () => {
                         <p className="card-text"> {`${list.content}`}</p>
                         {`${list.hashtag}` &&
                           list.hashtag.map((e) => <Badge bg="info" style={{ "marginRight": "0.5vw" }} > {e} </Badge>)}
+                        <div className="icon-box">
+                          <IoEyeOutline />
+                          <span className="count">{list.cnt}</span>
+                          <IoPersonOutline />
+                          <span className="goalPeople">{list.goalPeople}</span>
+                          <IoLocationOutline />
+                          <span className="addr">{list.addr}</span>
+                          <IoCalendarOutline />
+                          <span className="goalDate">{list.goalTime}</span>
+                        </div>
                       </div>
                     </div>
                   </CardContainer>
