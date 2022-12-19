@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
 import AdminBoardList from "./pages/admin/AdminBoardList";
 import AdminEditUser from "./pages/admin/AdminEditUser";
@@ -12,6 +12,12 @@ import CheckPwd from "./pages/editInfo/CheckPwd";
 import EditInfo from "./pages/editInfo/EditInfo";
 import FindInfo from "./pages/findInfo/FindInfo";
 import Login from "./pages/login/Login";
+import MyCalendar from "./pages/myPage/MyCalendar";
+import MyComment from "./pages/myPage/MyComment";
+import MyHashtag from "./pages/myPage/MyHashtag";
+import MyLike from "./pages/myPage/MyLike";
+import MySocial from "./pages/myPage/MySocial";
+import MyStudy from "./pages/myPage/MyStudy";
 import Nav from "../src/containers/common/Nav";
 import Profile from "./pages/profile/Profile";
 import Register from "./pages/register/Register";
@@ -22,10 +28,8 @@ import SocialWrite from "./pages/social/SocialWrite";
 import SocketTest from "./pages/chat/SocketTest";
 import StudyDetail from "./pages/study/StudyDetail";
 import StudyList from "./pages/study/StudyList";
-import StudyWrite from "./pages/study/StudyWrite";
-import Terms from "./pages/register/Terms";
 import StudyUpdate from "./pages/study/StudyUpdate";
-
+import StudyWrite from "./pages/study/StudyWrite";
 
 // import Admin from "./pages/admin/Admin";
 function App() {
@@ -40,12 +44,11 @@ function App() {
         <Route path="/AdminMemberList" element={<AdminMemberList />} />
         <Route exact path="/AdminMember/:userId" element={<AdminEditUser />} />
         <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/Terms" element={<Terms />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/FindInfo" element={<FindInfo />} />
-        <Route path="/EditInfo" element={<EditInfo />} />
-        <Route path="/CheckPwd" element={<CheckPwd />} />
+        <Route path="/user/register" element={<Register />} />
+        <Route path="/user/profile" element={<Profile />} />
+        <Route path="/user/find" element={<FindInfo />} />
+        <Route path="/user/edit" element={<EditInfo />} />
+        <Route path="/user/check" element={<CheckPwd />} />
         <Route path="/studies" element={<StudyList />} />
         <Route path="/study/write" element={<StudyWrite />} />
         <Route exact path="/study/:studyId" element={<StudyDetail />} />
@@ -59,6 +62,12 @@ function App() {
           element={<SocialUpdate />}
         />
         <Route path="/social/write" element={<SocialWrite />} />
+        <Route path="/myPage/myCalendar" element={<MyCalendar />} />
+        <Route path="/myPage/myStudy" element={<MyStudy />} />
+        <Route path="/myPage/myHashtag" element={<MyHashtag />} />
+        <Route path="/myPage/mySocial/:userId" element={<MySocial />} />
+        <Route path="/myPage/myComment" element={<MyComment />} />
+        <Route path="/myPage/MyLike" element={<MyLike />} />
       </Routes>
       {/* <Admin></Admin> */}
     </Router>

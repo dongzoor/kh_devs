@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
+
+.myPageContainer {
+  font-family: 'Gowun Dodum', sans-serif;
+  /* 미디어쿼리 적용 예정 */
+  width: 1024px;
+  margin: auto;
+  padding: 0;
+  text-decoration: none;
+}
+
+.myPageHeader {
+  display: flex;
+}
+
+.myPageBody {
+  display: flex;
+}
+
+.subTitle {
+  margin: 50px 0;
+}
+
+.allDeleteBox {
+  display: flex;
+  justify-content : right;
+}
+
+.allDeleteButton {
+  border: 0;
+  border-radius: 3px;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.allDeleteButton:hover {
+  color: white;
+  background-color: rgba(190, 100, 255, 0.5);
+}

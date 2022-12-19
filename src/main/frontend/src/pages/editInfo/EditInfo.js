@@ -46,6 +46,48 @@ const Content = styled.div`
   box-shadow: 0px 0px 24px #5c5696;
 `;
 
+const IdContainer = styled.div`
+  position: relative;
+
+  input {
+    border: none;
+    border-bottom: 1px solid black;
+    outline: none;
+    width: 100%;
+    margin: 8px 0;
+    padding: 10px 0;
+  }
+  button {
+    position: absolute;
+    top: 15px;
+    right: 5px;
+    background: #fff;
+    font-size: 14px;
+    border-radius: 26px;
+    border: 1px solid #d4d3e8;
+    text-transform: uppercase;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    width: 13%;
+    color: #4c489d;
+    box-shadow: 0px 2px 2px #5c5696;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  button:hover,
+  button:focus,
+  button:active {
+    border-color: #6a679e;
+    outline: none;
+  }
+
+  button:disabled {
+    background: lightgray;
+  }
+`;
+
 function EditInfo() {
   const [userEmail, setUserEmail] = useState("");
   const [userNickname, setUserNickname] = useState("");
@@ -63,6 +105,13 @@ function EditInfo() {
 
   const [isConPw, setIsConPw] = useState(false);
   const [conPwMessage, setConPwMessage] = useState("");
+
+  // 버튼활성화 체크
+  const [isPhoneDuplCheck, setIsPhoneDuplCheck] = useState(true);
+  // 중복체크여부 체크
+  const [isPhoneDuplCheckYn, setIsPhoneDuplCheckYn] = useState(true);
+  // 전화번호 바꿀지 여부 체크
+  const [isPhoneUpdateYn, setIsPhoneUpdateYn] = useState(false);
 
   // 초기값 설정
   useEffect(() => {
@@ -129,6 +178,11 @@ function EditInfo() {
     }
     phoneRef.current.value = result;
     setPhone(e.target.value);
+    if (phone.valueOf().length === 12) {
+      setIsPhoneDuplCheck(false);
+    } else {
+      setIsPhoneDuplCheck(true);
+    }
   };
 
   // 비밀번호 일치 여부 검사
@@ -144,8 +198,33 @@ function EditInfo() {
     }
   };
 
+  // 핸드폰번호 중복체크
+  const onPhoneDuplCheck = async () => {
+    if (phone === "") {
+      window.alert("전화번호를 입력해주세요.");
+      return;
+    }
+
+    const duplPhoneCheck = await UserApi.phoneDuplCheck(phone);
+
+    if (duplPhoneCheck.data === true) {
+      window.confirm("사용 가능한 전화번호입니다.");
+      setIsPhoneDuplCheckYn(true);
+    } else {
+      window.confirm("중복된 전화번호입니다.");
+      setIsPhoneDuplCheckYn(false);
+    }
+  };
+
+  // 핸드폰번호 수정
+  const onPhoneUpdate = async () => {
+    setIsPhoneDuplCheckYn(false);
+    setIsPhoneUpdateYn(true);
+  };
+
   // 회원정보 수정
   const onClickEdit = async () => {
+    // 변경할 이미지 경로
     let profileImagePath = null;
 
     if (userNickname === "") {
@@ -158,24 +237,28 @@ function EditInfo() {
       return;
     }
 
+    if (isPhoneDuplCheckYn === false) {
+      window.alert("전화번호 중복 여부를 체크해주세요.");
+      return;
+    }
+
     if (window.confirm("회원정보를 수정하시겠습니까?")) {
       if (true) {
-        let profileImage = null;
-        let nowProfileImage = sessionStorage.getItem("profileImage");
+        let profileImage = null; // 이미지를 수정할 경우 넣을 이미지 파일명
+        let nowProfileImage = sessionStorage.getItem("profileImage"); // 현재 이미지 파일명
 
-        // 이미지가 바뀌는 경우
+        // 이미지가 바뀌는 경우 -> 새로운 파일 이름 생성 후 이미지 이름 업데이트
         if (changeImgFile !== "") {
-          //새로운 파일이름 생성
           profileImage = uuidv4();
         } else {
-          //기존이미지이름 넣기
           profileImage = nowProfileImage;
         }
 
-        if (imgFile !== "") {
+        // 세션에 이미지 정보가 있는 경우 -> 1. 그대로 냅두기 or 2. 변경하기
+        if (imgFile !== "null") {
           // 기존 이미지가 존재하는 경우
           if (nowProfileImage !== "null") {
-            // 이미지가 바뀌는 경우
+            // 2. 변경하는 경우
             if (changeImgFile !== "") {
               const attachmentRefDelete = ref(
                 storageService,
@@ -193,6 +276,8 @@ function EditInfo() {
 
               //storage 참조 경로로 파일경로 가져오기
               profileImagePath = await getDownloadURL(attachmentRefUpload);
+            } else {
+              profileImagePath = sessionStorage.getItem("profileImagePath");
             }
           } else {
             if (changeImgFile !== "") {
@@ -203,7 +288,7 @@ function EditInfo() {
               );
               await uploadString(attachmentRefUpload, imgFile, "data_url");
 
-              //storage 참조 경로로 파일경로 가져오기
+              //storage 참조 경로로 파일경로 가져오기 -> 변수에 넣고 DB에도 반영시킴
               profileImagePath = await getDownloadURL(attachmentRefUpload);
             }
           }
@@ -220,25 +305,24 @@ function EditInfo() {
 
         if (userUpdate.data !== false) {
           window.alert("회원정보 수정이 완료되었습니다.");
-          if (userUpdate.data.profileImage !== null) {
-            let attachmentUrl = ref(
-              storageService,
-              `/USER/${userUpdate.data.profileImage}`
-            );
-            // 이미지 불러오기
-            let profileImageNow = await getDownloadURL(attachmentUrl);
+          sessionStorage.clear();
+          // 이미지가 존재하는 경우
+          if (userUpdate.data.profileImage !== "null") {
             // 불러온 이미지 이름 저장
             sessionStorage.setItem(
               "profileImage",
               userUpdate.data.profileImage
             );
             // 불러온 이미지 경로 세션에 저장
-            sessionStorage.setItem("profileImagePath", profileImageNow);
+            sessionStorage.setItem(
+              "profileImagePath",
+              userUpdate.data.profileImagePath
+            );
           }
           sessionStorage.setItem("userEmail", userUpdate.data.userEmail);
           sessionStorage.setItem("userNickname", userUpdate.data.userNickname);
           sessionStorage.setItem("phone", userUpdate.data.phone);
-          window.location.replace("/Profile");
+          window.location.replace("/user/profile");
         }
       }
     } else {
@@ -330,17 +414,37 @@ function EditInfo() {
               >
                 {conPwMessage}
               </span>
-              {/* <input type="text" placeholder="CODE" />  */}
-              {/* 휴대폰이나 이메일 인증 기능 구현 시 사용 예정 */}
 
-              <input
-                type="text"
-                placeholder="PHONE NUMBER"
-                ref={phoneRef}
-                value={phone}
-                onChange={onChangePhone}
-              />
-              <div></div>
+              {isPhoneUpdateYn === false ? (
+                <IdContainer>
+                  <input
+                    type="text"
+                    value={phone}
+                    style={{ background: "#F2F3F4" }}
+                    readOnly
+                  />
+                  <button type="button" onClick={onPhoneUpdate}>
+                    수정
+                  </button>
+                </IdContainer>
+              ) : (
+                <IdContainer>
+                  <input
+                    type="text"
+                    placeholder="PHONE NUMBER"
+                    ref={phoneRef}
+                    value={phone}
+                    onChange={onChangePhone}
+                  />
+                  <button
+                    type="button"
+                    onClick={onPhoneDuplCheck}
+                    disabled={isPhoneDuplCheck}
+                  >
+                    중복확인
+                  </button>
+                </IdContainer>
+              )}
               <button
                 type="button"
                 className="submit_btn"

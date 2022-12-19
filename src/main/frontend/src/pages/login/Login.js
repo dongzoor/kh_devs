@@ -26,12 +26,19 @@ const Container = styled.div`
 `;
 
 function Login() {
+  // 카카오 로그인 구현 중...
+  const CLIENT_ID = "24bba33b64eb6b8ac36e9334aa20f2b7";
+  const REDIRECT_URI =
+    "http://localhost:8211/oauth" || "http://localhost:3000/oauth";
+
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+
   const navigate = useNavigate();
 
   useEffect(() => {
     // 세션이 존재하는 경우 프로필 화면으로
     if (sessionStorage.getItem("userEmail") !== null) {
-      navigate("/Profile");
+      navigate("/user/profile");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -49,6 +56,12 @@ function Login() {
     setInputPw(passwordCurrent);
   };
 
+  const onEnterDown = (e) => {
+    if (e.key === "Enter") {
+      onClickLogin();
+    }
+  };
+
   const onClickLogin = async () => {
     // 로그인을 위한 axios 호출
     const res = await UserApi.userLogin(inputId, inputPw);
@@ -64,7 +77,9 @@ function Login() {
       sessionStorage.setItem("userEmail", res.data.userEmail);
       sessionStorage.setItem("userNickname", res.data.userNickname);
       sessionStorage.setItem("phone", res.data.phone);
-      window.location.replace("/Profile");
+      // 마이페이지에서 사용
+      sessionStorage.setItem("userId", res.data.userId);
+      window.location.replace("/user/profile");
     } else if (res.data === false) {
       window.alert("이메일이나 비밀번호를 확인해주세요.");
     }
@@ -84,6 +99,7 @@ function Login() {
                   placeholder="Email"
                   value={inputId}
                   onChange={onChangeId}
+                  onKeyDown={onEnterDown}
                 />
               </div>
               <div className="login__field">
@@ -94,6 +110,7 @@ function Login() {
                   placeholder="Password"
                   value={inputPw}
                   onChange={onChangePw}
+                  onKeyDown={onEnterDown}
                 />
               </div>
 
@@ -105,7 +122,7 @@ function Login() {
                 Log in now
               </button>
 
-              <Link to="/Register" className="linktoReg">
+              <Link to="/user/register" className="linktoReg">
                 <label
                   style={{
                     textDecoration: "none",
@@ -116,7 +133,7 @@ function Login() {
                   <div className="linktoReg">Register</div>
                 </label>
               </Link>
-              <Link to="/FindInfo">
+              <Link to="/user/find">
                 <label
                   style={{
                     textDecoration: "none",
@@ -131,7 +148,7 @@ function Login() {
             <div className="social-login">
               <h3>log in via</h3>
               <div className="social-icons">
-                <a href="#" className="kakaoIcon">
+                <a href={KAKAO_AUTH_URL} className="kakaoIcon">
                   <SiKakaotalk />
                 </a>
                 <a href="#" className="kakaoIcon">

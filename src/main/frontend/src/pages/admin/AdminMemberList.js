@@ -4,14 +4,12 @@ import { useEffect, useState } from "react";
 
 import AdminApi from "../../api/AdminApi";
 import Adminheader from "./Adminheader";
+import JwModal from "../../utill/JwModal";
 import { Link } from "react-router-dom";
 import Loading from "../../utill/Loading";
 import Pagination from "react-js-pagination";
 import Table from "react-bootstrap/Table";
 import styled from "styled-components";
-
-// import JwModal from '../../utill/JwModal';
-
 
 const Adcontainer = styled.div`
   display: flex;
@@ -20,6 +18,13 @@ const Adcontainer = styled.div`
   min-height: 100vh;
   background: linear-gradient(90deg, #ffe7e8, #8da4d0);
   font-family: "Gowun Dodum", sans-serif;
+  .Adphotos {
+    margin: 5px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+  }
+
 `;
 const PaginationBox = styled.div`
   .pagination {
@@ -69,6 +74,7 @@ function AdminMemberList() {
   const [deleteadmem, setDeleteadmem] = useState(false); //멤버삭제
   const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalData, setModalData] = useState(0);
   /// 페이지 네그네이션
   const [page, setPage] = useState(1);
   const [items, setItems] = useState(10); // 페이지별 목록 개수
@@ -111,7 +117,8 @@ function AdminMemberList() {
     setLoading(false);
   };
 
-  const openModal = () => {
+  const openModal = (e) => {
+    setModalData(e);
     setModalOpen(true);
   };
 
@@ -140,7 +147,7 @@ function AdminMemberList() {
               <tr>
                 <th>이메일아이디</th>
                 <th>비밀번호</th>
-                <th>이름</th>
+                <th>닉네임</th>
                 <th>전화번호</th>
                 <th>가입시간</th>
                 <th>관리</th>
@@ -153,15 +160,35 @@ function AdminMemberList() {
                   <tr key={list.userId}>
                     <td>{list.userEmail}</td>
                     <td>{list.password}</td>
-                    <td>{list.userNickname}</td>
+                    <td>{list.userNickname}
+                    <img
+                          className="Adphotos"
+                          alt="프로필 사진"
+                          src={
+                            list.profileImagePath
+                              ? list.profileImagePath
+                              : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                          }
+                        />
+                        </td>
                     <td>{list.phone}</td>
                     <td>{list.createDate}</td>
                     <td>
                       <>
-                        <button className="adbutton delete" onClick={openModal}>
+                        <button className="adbutton delete" onClick={() => openModal(list.userId)}>
                           삭제
                         </button>
-                        {/* {modalOpen && <JwModal open={modalOpen} confirm={() => confirmMemModal(list.userId)} close={closeModal} type={true} header="확인">정말 삭제하시겠습니까?</JwModal>} */}
+                        {modalOpen && (
+                          <JwModal
+                            open={modalOpen}
+                            confirm={() => confirmMemModal(modalData)}
+                            close={closeModal}
+                            type={true}
+                            header="확인"
+                          >
+                            정말 삭제하시겠습니까?
+                          </JwModal>
+                        )}
                       </>
                       <Link
                         to={"/Profile"}

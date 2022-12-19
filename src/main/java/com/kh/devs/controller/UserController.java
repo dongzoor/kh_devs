@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +16,11 @@ import java.util.Map;
 
 @RestController
 @Slf4j
+@RequestMapping("/api")
 public class UserController {
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private UserService userService;
 
@@ -24,7 +29,7 @@ public class UserController {
     }
 
     // ID(Email) 중복체크
-    @PostMapping("duplCheck")
+    @PostMapping("/duplCheck")
     public ResponseEntity<Map<String, String>> duplCheck(@RequestBody Map<String, String> findData) {
         String userEmail = findData.get("userEmail");
         List<User> user = userService.userSearch(userEmail);
@@ -37,7 +42,7 @@ public class UserController {
     }
 
     // 전화번호 중복체크
-    @PostMapping("phoneDuplCheck")
+    @PostMapping("/phoneDuplCheck")
     public ResponseEntity<Map<String, String>> phoneDuplCheck(@RequestBody Map<String, String> findPhoneData) {
         String phone = findPhoneData.get("phone");
         List<User> user = userService.getUserEmail(phone);
@@ -51,14 +56,13 @@ public class UserController {
     // 회원가입
     @PostMapping("/register")
     @ResponseBody
-    public ResponseEntity<Map<String, String>> userRegister(@RequestBody Map<String, String> regData) {
+    public ResponseEntity<Map<String, String>> userRegister(@RequestBody Map<String, String> regData) throws Exception{
         String getUserEmail = regData.get("userEmail");
         String getUserNickname = regData.get("userNickname");
-        String getPassword = regData.get("password");
+        String getPassword = bCryptPasswordEncoder.encode(regData.get("password"));
         String getPhone = regData.get("phone");
         String getProfileImage = regData.get("profileImage");
         String getProfileImagePath = regData.get("profileImagePath");
-
 
         boolean result = userService.regUser(getUserEmail, getUserNickname, getPassword, getPhone, getProfileImage, getProfileImagePath);
         if (result) {
@@ -75,11 +79,18 @@ public class UserController {
 
         String userEmail = loginData.get("userEmail");
         String password = loginData.get("password");
-        List<User> users = userService.loginCheck(userEmail,password);
+        List<User> users = userService.userSearch(userEmail);
 
-        if (users.size() > 0) {
+        // 아이디가 틀린경우
+        if (users.size() == 0) {
+            return new ResponseEntity(false, HttpStatus.OK);
+        }
+
+        Boolean result = bCryptPasswordEncoder.matches(password, users.get(0).getPassword());
+
+        if (result == true) {
             return new ResponseEntity(users.get(0), HttpStatus.OK);
-        } else if (users.size() == 0) {
+        } else if (result == false) {
             return new ResponseEntity(false, HttpStatus.OK);
         } else {
             return new ResponseEntity(false, HttpStatus.BAD_REQUEST);
@@ -108,7 +119,7 @@ public class UserController {
             result.get(0).setProfileImagePath(profileImagePath);
 
             if (!"".equals(password)) {
-                result.get(0).setPassword(password);
+                result.get(0).setPassword(bCryptPasswordEncoder.encode(password));
             }
 
             rst = userService.UserUpdate(result.get(0));
@@ -160,7 +171,7 @@ public class UserController {
             newPw = String.valueOf(intRanNum);
 
             // 랜덤생성한 비밀번호 저장
-            userInfo.setPassword(newPw);
+            userInfo.setPassword(bCryptPasswordEncoder.encode(newPw));
             userService.UserUpdate(userInfo);
 
             // 메일생성
@@ -180,8 +191,8 @@ public class UserController {
 
 
     // 회원탈퇴
-    @DeleteMapping("/delete/{userEmailDb}")
-    public ResponseEntity<User> deleteUser(@PathVariable("userEmailDb") String userEmailDb) {
+    @DeleteMapping("/delete/{userEmail}")
+    public ResponseEntity<User> deleteUser(@PathVariable("userEmail") String userEmailDb) {
         String userEmail = userEmailDb;
 
         boolean result = userService.userDelete(userEmail);

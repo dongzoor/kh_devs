@@ -1,139 +1,18 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import React from "react";
 import styled from "styled-components";
-import Photo from "./pic/pic.gif";
-import CommentList from "./components/CommentList";
-import CommentWriter from "./components/CommentWriter";
 import { useState, useEffect } from "react";
 import SocialApi from "../../api/SocialApi";
 import { useParams } from "react-router-dom";
 import { storageService } from "../../lib/api/fbase";
 import { ref, deleteObject } from "@firebase/storage";
+import CommentList from "./comment/CommentList";
+import CommentWriter from "./comment/CommentWriter";
 import {
   IoEyeOutline,
   IoHeartOutline,
   IoChatboxOutline,
 } from "react-icons/io5";
-
-const SocialDetail = () => {
-  const navigate = useNavigate();
-  const params = useParams().socialId; // router에서 지정한 :social 을 붙여줘야함!!
-  const [socialDetail, setSocialDetail] = useState("");
-  const [loading, setLoading] = useState(false);
-  const userEmail = window.sessionStorage.getItem("userEmail");
-  // 게시글 ID session Set
-  const setSocialId = window.sessionStorage.setItem(
-    "social_id",
-    socialDetail.socialId
-  );
-  // 이미지 UUID session Set
-  const setImageId = window.sessionStorage.setItem(
-    "social_image",
-    socialDetail.imageId
-  );
-  // 게시글 수정 화면으로 전환
-  const onClickUpdate = async () => {
-    navigate(`/social/${params}/update`);
-  };
-
-  // 게시글 삭제
-  const onClickDelete = async () => {
-    console.log("삭제 버튼 클릭");
-    const res = await SocialApi.socialDelete(params);
-    let imageId = sessionStorage.getItem("social_image");
-    // 기존 이미지가 존재하면 삭제(이미지 ID로 확인)
-    if (imageId !== null) {
-      // 파이어베이스 상 파일주소 지정
-      const attachmentRef = ref(storageService, `/SOCIAL/${imageId}`);
-      // 참조경로로 firebase 이미지 삭제
-      await deleteObject(attachmentRef)
-        .then(() => {
-          console.log("Firebase File deleted successfully !");
-        })
-        .catch((error) => {
-          console.log("Uh-oh, File Delete error occurred!");
-        });
-    }
-    if (res.data.result === "SUCCESS") {
-      navigate(`/social`);
-      alert("게시글 삭제 완료 !");
-    } else {
-      alert("게시글 삭제 실패 ㅜ");
-      console.log(res.data.result);
-    }
-  };
-
-  useEffect(() => {
-    const socialData = async () => {
-      setLoading(true);
-      try {
-        console.log("★ 게시글 번호 : " + params);
-        const response = await SocialApi.socialDetail(params);
-        setSocialDetail(response.data);
-        console.log("★ 게시글 내용 ", response.data);
-        console.log("★ 게시글 내용 ", response.data.userNickName);
-        console.log("★ 게시글 내용 ", response.data.userEmail);
-      } catch (e) {
-        console.log(e);
-      }
-      setLoading(false);
-    };
-    socialData();
-  }, []);
-  if (loading) {
-    return <DetailBox>조금만 기다려주세요...👩‍💻</DetailBox>;
-  }
-  return (
-    <div>
-      <DetailBox>
-        <div className="subtitle">Board Detail Page</div>
-        <div className="parentBox">
-          <div key={socialDetail.socialId}>
-            <div className="content-title">{socialDetail.title}</div>
-            <div className="post-info">
-              <div className="publisher-info">
-                <img className="photos" src={Photo} alt="프로필 사진"></img>
-                <span className="nickName">{socialDetail.userNickName}</span>
-                <span className="date">| {socialDetail.postDate}</span>
-              </div>
-              <div className="icon-box">
-                <IoEyeOutline />
-                <span className="count">{socialDetail.view}</span>
-                <IoHeartOutline />
-                <span className="count">{socialDetail.like}</span>
-                <IoChatboxOutline />
-                <span className="count">{socialDetail.comment}</span>
-              </div>
-            </div>
-            <div className="attachedImg">
-              {`${socialDetail.image}` != null && (
-                <img src={socialDetail.image} className="preview" alt="" />
-              )}
-            </div>
-            <div className="content-text">{socialDetail.content}</div>
-            <div className="hashtag-box">
-              <span className="hashtag">{socialDetail.tag}</span>
-            </div>
-            {userEmail == socialDetail.userEmail && (
-              <>
-                <button className="deleteBt" onClick={onClickDelete}>
-                  삭제
-                </button>
-                <button className="updateBt" onClick={onClickUpdate}>
-                  수정
-                </button>
-              </>
-            )}
-
-            <hr />
-            {/*<CommentWriter />*/}
-            {/*<CommentList />*/}
-          </div>
-        </div>
-      </DetailBox>
-    </div>
-  );
-};
 
 const DetailBox = styled.div`
   & > * {
@@ -192,7 +71,7 @@ const DetailBox = styled.div`
     align-items: center;
     margin-right: 15px;
   }
-  .photos {
+  .userImage {
     margin: 5px;
     border-radius: 50%;
     width: 40px;
@@ -226,4 +105,138 @@ const DetailBox = styled.div`
     justify-content: center;
   }
 `;
+
+const SocialDetail = () => {
+  const navigate = useNavigate();
+  const params = useParams().socialId; // router에서 지정한 :social 을 붙여줘야함!!
+  const [socialDetail, setSocialDetail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const userEmail = window.sessionStorage.getItem("userEmail");
+  // 게시글 ID session Set
+  const setSocialId = window.sessionStorage.setItem(
+    "social_id",
+    socialDetail.socialId
+  );
+  // 이미지 UUID session Set
+  const setImageId = window.sessionStorage.setItem(
+    "social_imageId",
+    socialDetail.imageId
+  );
+  const setImageUrl = window.sessionStorage.setItem(
+    "social_imageUrl",
+    socialDetail.image
+  );
+  // 게시글 수정 화면으로 전환
+  const onClickUpdate = async () => {
+    navigate(`/social/${params}/update`);
+  };
+
+  // 게시글 삭제
+  const onClickDelete = async () => {
+    console.log("삭제 버튼 클릭");
+    const res = await SocialApi.socialDelete(params);
+    let imageId = sessionStorage.getItem("social_image");
+    // 기존 이미지가 존재하면 삭제(이미지 ID로 확인)
+    if (imageId !== null) {
+      // 파이어베이스 상 파일주소 지정
+      const attachmentRef = ref(storageService, `/SOCIAL/${imageId}`);
+      // 참조경로로 firebase 이미지 삭제
+      await deleteObject(attachmentRef)
+        .then(() => {
+          console.log("Firebase File deleted successfully !");
+        })
+        .catch((error) => {
+          console.log("Uh-oh, File Delete error occurred!");
+        });
+    }
+    if (res.data.result === "SUCCESS") {
+      navigate(`/social`);
+      alert("게시글 삭제 완료 !");
+    } else {
+      alert("게시글 삭제 실패 ㅜ");
+      console.log(res.data.result);
+    }
+  };
+
+  useEffect(() => {
+    const socialData = async () => {
+      setLoading(true);
+      try {
+        console.log("★ 게시글 번호 : " + params);
+        const response = await SocialApi.socialDetail(params);
+        setSocialDetail(response.data);
+        console.log("★ 게시글 내용 ", response.data);
+      } catch (e) {
+        console.log(e);
+      }
+      setLoading(false);
+    };
+    socialData();
+  }, []);
+  if (loading) {
+    return <DetailBox>조금만 기다려주세요...👩‍💻</DetailBox>;
+  }
+  return (
+    <div>
+      <DetailBox>
+        <div className="subtitle">Board Detail Page</div>
+        <div className="parentBox">
+          <div key={socialDetail.socialId}>
+            <div className="content-title">{socialDetail.title}</div>
+            <div className="post-info">
+              <div className="publisher-info">
+                <img
+                  className="userImage"
+                  alt="프로필 사진"
+                  src={
+                    socialDetail.userImageUrl
+                      ? socialDetail.userImageUrl
+                      : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                  }
+                ></img>
+                <span className="nickName">{socialDetail.userNickName}</span>
+                <span className="date">| {socialDetail.postDate}</span>
+              </div>
+              <div className="icon-box">
+                <IoEyeOutline />
+                <span className="count">{socialDetail.view}</span>
+                <IoHeartOutline />
+                <span className="count">{socialDetail.like}</span>
+                <IoChatboxOutline />
+                <span className="count">{socialDetail.comment}</span>
+              </div>
+            </div>
+            <div className="attachedImg">
+              {`${socialDetail.image}` != null && (
+                <img src={socialDetail.image} className="preview" alt="" />
+              )}
+            </div>
+            <div className="content-text">{socialDetail.content}</div>
+            <div className="hashtag-box">
+              <span className="hashtag">{socialDetail.tag}</span>
+            </div>
+            {/* 게시글 작성자 email = 로그인한 유저 email 이면 출력 */}
+            {userEmail == socialDetail.userEmail && (
+              <>
+                <button className="deleteBt" onClick={onClickDelete}>
+                  삭제
+                </button>
+                <button className="updateBt" onClick={onClickUpdate}>
+                  수정
+                </button>
+              </>
+            )}
+            <Link to="/social">
+              <button>목록보기</button>
+            </Link>
+            <hr />
+            <CommentWriter />
+            <CommentList />
+          </div>
+        </div>
+      </DetailBox>
+    </div>
+  );
+};
+
 export default SocialDetail;
