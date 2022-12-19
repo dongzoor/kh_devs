@@ -135,7 +135,7 @@ public class SocialService {
         }
     }
 
-    // JW) admin service
+    // JW admin service
     @Transactional
     public String deleteSocial(Long socialId) {
         socialRepository.deleteById(socialId); // 오류가 터지면 익센셥 타서 신경 노노

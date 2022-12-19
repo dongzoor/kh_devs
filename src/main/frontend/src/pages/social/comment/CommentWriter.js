@@ -1,6 +1,7 @@
 import React from "react";
 import { useRef } from "react";
 import styled from "styled-components";
+import SocialApi from "../../../api/SocialApi";
 
 const WriteBlock = styled.div`
   * {
@@ -41,11 +42,32 @@ const WriteBlock = styled.div`
   }
 `;
 
-const CommentWriter = () => {
+const CommentWriter = ({ inputContent, setInputContent }) => {
+  const getUserEmail = window.sessionStorage.getItem("userEmail");
+  const getSocialId = window.sessionStorage.getItem("social_id");
+  const onChangeContent = (e) => setInputContent(e.target.value);
+
+  // 엔터 클릭 이벤트
+  const onPressEnter = async (e) => {
+    if (e.key === "Enter") {
+      console.log("엔터 클릭");
+      const res = await SocialApi.insertComment(
+        getSocialId,
+        getUserEmail,
+        inputContent
+      );
+      console.log(res.data.result);
+      if (res.data.result !== "SUCCESS") {
+        setInputContent(inputContent);
+      }
+    }
+  };
   return (
     <WriteBlock>
       <div className="parentBox">
         <textarea
+          onChange={onChangeContent}
+          onKeyPress={onPressEnter}
           className="content"
           placeholder="댓글을 입력해주세요 (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧^"
         />

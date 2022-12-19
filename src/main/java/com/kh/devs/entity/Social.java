@@ -4,7 +4,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,14 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "social")
 public class Social {
     @Id
     @Column(name = "social_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long socialId;              // 게시글 id
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;            // 작성자 id
     @Column(name = "social_title", nullable = false)
@@ -51,7 +53,6 @@ public class Social {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @Column(name = "social_update")
     private LocalDateTime upDate;
-    // 댓글 https://thalals.tistory.com/229 에서 참고
     @OneToMany(mappedBy = "social", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     //게시글이 삭제되면 댓글 또한 삭제되어야 하기 때문에 CascadeType.REMOVE 속성을 사용
     @OrderBy("id DESC") // 댓글 정렬

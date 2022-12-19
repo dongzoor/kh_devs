@@ -22,7 +22,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
-    implementation group : 'javax.mail', name : 'mail', version : '1.4.7'
+    implementation group: 'javax.mail', name: 'mail', version: '1.4.7'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.4'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -42,7 +43,8 @@ def frontendDir = "$projectDir/src/main/frontend"
 
 sourceSets {
     main {
-        resources { srcDirs = ["$projectDir/src/main/resources"]
+        resources {
+            srcDirs = ["$projectDir/src/main/resources"]
         }
     }
 }
@@ -55,8 +57,8 @@ task installReact(type: Exec) {
     group = BasePlugin.BUILD_GROUP
     if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
         commandLine "npm.cmd", "audit", "fix"
-        commandLine 'npm.cmd', 'install' }
-    else {
+        commandLine 'npm.cmd', 'install'
+    } else {
         commandLine "npm", "audit", "fix" commandLine 'npm', 'install'
     }
 }

@@ -12,18 +12,15 @@ import java.util.Map;
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
-@RequestMapping("/api/social/{ID}")
 public class CommentController {
     private final CommentService commentService;
 
     // 댓글 작성
-    @PostMapping("/comment")
-    public ResponseEntity<Boolean> commentWrite(@PathVariable("ID") long pathSocialId, @RequestBody Map<String, String> regData) throws Exception {
-        Long socialId = pathSocialId;
-        System.out.println("###############소셜아이디" + socialId);
+    @PostMapping("/api/comment")
+    public ResponseEntity<Boolean> commentWrite(@RequestBody Map<String, String> regData) throws Exception {
+        String socialId = regData.get("socialId");
         String content = regData.get("content");
         String userEmail = regData.get("userEmail");
-        System.out.println("##############################################");
         System.out.println(userEmail + content + socialId);
         boolean result = commentService.regComment(socialId, content, userEmail);
         if (result) {
@@ -34,7 +31,7 @@ public class CommentController {
     }
 
     // Comment 삭제
-    @DeleteMapping("/comment")
+    @DeleteMapping("/api/comment")
     public Map<String, Object> commentDelete(@RequestBody Map<String, Long> regData) {
         Map<String, Object> response = new HashMap<>();
         Long id = regData.get("id");

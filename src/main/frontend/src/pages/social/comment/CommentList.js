@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import SocialApi from "../../../api/SocialApi";
 import { useParams } from "react-router-dom";
+import CommentWriter from "./CommentWriter";
 
 const BOX = styled.div`
   margin: 5px 20px;
@@ -60,8 +61,7 @@ const CommentList = () => {
 
   // 삭제 버튼 클릭 시
   const onClickButton = async (postId) => {
-    console.log("댓글 삭제 버튼 클릭");
-    console.log("postid: " + postId);
+    console.log(postId + "번 댓글 삭제 버튼 클릭");
     const res = await SocialApi.deleteComment(postId);
     console.log(res.data.result);
     if (res.data.result === "OK") {
@@ -71,6 +71,10 @@ const CommentList = () => {
 
   return (
     <BOX>
+      <CommentWriter
+        inputContent={inputContent}
+        setInputContent={setInputContent}
+      />
       <div className="comment-box">
         {commentList &&
           commentList.map((comment) => (

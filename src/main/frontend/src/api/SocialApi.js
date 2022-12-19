@@ -37,15 +37,16 @@ const SocialApi = {
   },
   // 게시글 삭제
   socialDelete: async function (socialId) {
-    return await axios.delete(`/api/social/${socialId}`);
+    return await axios.delete(`/api/comment`);
   },
   // 댓글 입력
   insertComment: async function (socialId, userEmail, content) {
     const regObj = {
+      socialId: socialId,
       userEmail: userEmail,
       content: content,
     };
-    return await axios.post(`/api/social/${socialId}`, regObj);
+    return await axios.post(`/api/comment`, regObj);
   },
   // 댓글 삭제
   deleteComment: async function (socialId) {
