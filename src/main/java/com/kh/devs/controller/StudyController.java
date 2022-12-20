@@ -62,7 +62,7 @@ public class StudyController {
 //        return "redirect:/study/" + studyId;
     }
 
-    @PutMapping("/study/{studyId}")  // 스터디 신청
+    @PutMapping("/study/{studyId}")  // 스터디 신청5
     public void applyStudy(@PathVariable Long studyId, @RequestBody StudyDTO studyDTO) {
 //        로그인 파트에서 세션으로 주면 받아올 예정
         studyService.applyStudy(studyId, studyDTO);

@@ -19,7 +19,6 @@ import java.util.List;
 public class StudyDTO {
     private String userId;
     private Long studyId;
-    private String writer;
     private String title;
     private String content;
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)

@@ -180,7 +180,8 @@ const Study = () => {
               <ul key={list.id}>
                 <Link to={`/study/${list.id}`} style={{ "textDecoration": "none" }}>
                   <CardContainer>
-                    <div className="card mb-3" style={{ "width": "40vw", "margin": "0 auto", "boxShadow": "0px 0px 24px #5c5696" }}>
+                    {list.applyPeople.length === list.goalPeople ? <></> : <></>}
+                    <div className="card mb-3" style={{ "width": "50vw", "margin": "0 auto", "boxShadow": "0px 0px 24px #5c5696" }}>
                       <div className="row g-0">
                         <div className="col-md-6">
                           <img src={`${list.imgUrl}`} className="img-fluid rounded-start" alt="..." />
@@ -188,15 +189,21 @@ const Study = () => {
                         <div className="col-md-5">
                           <div className="card-body">
                             <h5 className="card-title">{`${list.title}`}</h5>
-                            <h6 className="card-subtitle mb-2 text-muted" style={{ "float": "right" }}>{`${list.writer}`}</h6>
+                            <h6 className="card-subtitle mb-2 text-muted" style={{ "float": "right" }}>{`${list.user.userNickname}`}</h6>
                             <br />
                             <p className="card-text">{`${list.content}`}</p>
-                            {`${list.hashtag}` &&
+                            {list.hashtag &&
                               list.hashtag.map((e) => <Badge bg="info" style={{ "marginRight": "0.5vw" }} > {e} </Badge>)}
                           </div>
                           <div className="icon-box">
                             <IoEyeOutline />
                             <span className="count">{list.cnt}</span>
+                            <IoPersonOutline />
+                            <span className="goalPeople">{list.goalPeople}</span>
+                            <IoLocationOutline />
+                            <span className="addr">{list.addr}</span>
+                            <IoCalendarOutline />
+                            <span className="goalDate">{list.goalTime}</span>
                           </div>
                         </div>
                       </div>
@@ -213,7 +220,7 @@ const Study = () => {
                         <h5 className="card-title">{`${list.title}`}
                           <Link to={`/study/${list.studyId}`} />
                         </h5>
-                        <h6 className="card-subtitle mb-2 text-muted" style={{ "float": "right" }}>{`${list.writer}`}</h6>
+                        <h6 className="card-subtitle mb-2 text-muted" style={{ "float": "right" }}>{`${list.user.userNickname}`}</h6>
                         <br />
                         <p className="card-text"> {`${list.content}`}</p>
                         {`${list.hashtag}` &&
@@ -239,7 +246,7 @@ const Study = () => {
         <BsPencil style={{ "fontSize": "3vh", "margin": "10px 0 0 12px" }} />
       </WriteBtn> */}
       <Frame>
-        <button class="custom-btn btn-6" onClick={goToWrite}>Write</button>
+        <button className="custom-btn btn-6" onClick={goToWrite}>Write</button>
       </Frame>
 
     </>
