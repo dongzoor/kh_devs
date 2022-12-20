@@ -57,6 +57,10 @@
   background-color: rgba(190, 100, 255, 0.5);
 }
 
+.myPageHr {
+  margin: 3rem 0;
+}
+
 /* 작성글 페이지 */
 .myPageTable {
   width: 100%;
@@ -134,19 +138,21 @@
 
 #calCreateButton{
   height: 40px;
-  border: 1px solid white !important;
+  border: 1px solid gray !important;
   padding-top: 5px;
   padding-bottom: 5px;
   margin-bottom: 15px;
   border: 0;
   border-radius: 3px;
-  color: white;
-  background-color: rgb(190, 100, 255, 0.5);
+  color: rgb(226, 226, 226);
+  /* background-color: rgb(190, 100, 255, 0.5); */
+  background-color: rgba(155, 33, 242, 0.568);
 }
 
 #calCreateButton:hover {
-  color: white;
-  background-color: rgba(155, 33, 242, 0.568);
+  color: rgba(155, 33, 242, 0.568);
+  background-color: rgb(223, 223, 223);
+  font-weight: bold;
 }
 
 .fc-event-main {

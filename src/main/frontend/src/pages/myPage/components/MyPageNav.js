@@ -8,7 +8,7 @@ function MyActivityNav() {
   return(
     <div className="myPageHeader">
       <div className="subTitle">
-        <h1>My Dev's</h1>
+        <h1>My DevS</h1>
       </div>
       <Nav className="mt-5" variant="tabs" >
         <Nav.Item>

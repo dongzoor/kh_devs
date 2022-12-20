@@ -1,11 +1,14 @@
 package com.kh.devs.service;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.kh.devs.dao.*;
 import com.kh.devs.dto.CommentDTO;
 import com.kh.devs.dto.SocialDTO;
+import com.kh.devs.dto.StudyDTO;
 import com.kh.devs.entity.Comment;
 import com.kh.devs.entity.Social;
 import com.kh.devs.entity.Study;
+import com.kh.devs.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,8 +25,7 @@ public class MyPageService {
 
     private final MySocialRepository mySocialRepository;
     private final MyCommentRepository myCommentRepository;
-    private final UserService userService;
-    private final SocialRepository socialRepository;
+    private final MyStudyRepository myStudyRepository;
     private final CommentRepository commentRepository;
     private final StudyRepository studyRepository;
 
@@ -55,6 +57,7 @@ public class MyPageService {
             commentDTO.setUserId(e.getUser().getUserId());
 //            SocialId가 Null값으로 불려와짐....
 //            commentDTO.setSocialId(e.getSocial().getSocialId());
+//            commentDTO.setSocialId(e.getSocial());
             CommentDTOs.add(commentDTO);
         }
         return CommentDTOs;
@@ -70,6 +73,23 @@ public class MyPageService {
         } else {
             return 0;
         }
+    }
+
+    // 가입한 스터디 조회
+    public List<StudyDTO> getStudyList(Long userId) {
+        List<StudyDTO> studyDTOS = new ArrayList<>();
+        List<Study> studyList = myStudyRepository.findByApplyPeople(userId);
+        for (Study e : studyList) {
+            StudyDTO studyDTO = new StudyDTO();
+            studyDTO.setStudyId(e.getId());
+            studyDTO.setImgUrl(e.getImgUrl());
+            studyDTO.setWriter(e.getWriter());
+            studyDTO.setTitle((e.getTitle()));
+            studyDTO.setContent(e.getContent());
+            studyDTO.setHashtag(e.getHashtag());
+            studyDTOS.add(studyDTO);
+        }
+        return studyDTOS;
     }
 
 

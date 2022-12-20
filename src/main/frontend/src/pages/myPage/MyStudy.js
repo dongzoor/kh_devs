@@ -25,7 +25,7 @@ const MyStudy = () => {
       setLoading(true);
       try {
         console.log("User Id : " + userId);
-        // 로그인된 userId로 작성된 스터디글 조회
+        // 나의 스터디 조회(작성 및 가입한 스터디)
         const response = await MyPageApi.myStudyList(userId)
         setStudyList(response.data);  
         console.log("나의 스터디 리스트" + response.data);
@@ -45,12 +45,12 @@ const MyStudy = () => {
       <div className="subTitle">
         <h1>My Study</h1>
       </div>
-      <hr />
+      <hr className="myPageHr"/>
       {studyList &&
           studyList.map((list) =>
             list.imgUrl ?
               <ul key={list.id}>
-                <Link to={`/study/${list.id}`} style={{ "textDecoration": "none" }}>
+                <Link to={`/study/${list.studyId}`} style={{ "textDecoration": "none" }}>
                   <CardContainer>
                     <div className="card mb-3" style={{ "width": "40vw", "margin": "0 auto", "boxShadow": "0px 0px 24px #5c5696" }}>
                       <div className="row g-0">
@@ -77,7 +77,6 @@ const MyStudy = () => {
               </ul>
               :
               <ul key={list.id}>
-                <Link to={`/study/${list.id}`} style={{ "textDecoration": "none" }}>
                   <CardContainer>
                     <div className="card" style={{ "width": "40vw", "margin": "0 auto", "boxShadow": "0px 0px 24px #5c5696" }}>
                       <div className="card-body">
@@ -92,7 +91,6 @@ const MyStudy = () => {
                       </div>
                     </div>
                   </CardContainer>
-                </Link>
               </ul>
           )}
     </div>
