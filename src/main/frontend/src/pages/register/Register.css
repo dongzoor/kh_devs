@@ -1,17 +1,17 @@
 @import url("https://fonts.googleapis.com/css?family=Raleway:400,700");
 
 .form-title {
-  padding: 20px 40px 10px;
+  padding: 20px 60px 10px;
 }
 
 .register-form {
-  padding: 10px 40px 0px;
+  margin: 20px 60px 0px;
 }
 
 .register-form label {
   margin: 20px 20px 0;
   font-weight: bold;
-  font-size: 13px;
+  font-size: 1rem;
   color: #0095f6;
   display: inline-block;
   cursor: pointer;
@@ -63,14 +63,14 @@
 .register-form > input:focus,
 .register-form > input:hover {
   outline: none;
+  border-bottom-width: 2px;
   border-bottom-color: #6a679e;
 }
 
 .register_btn {
   background: #fff;
   font-size: 14px;
-  margin-top: 30px;
-  margin-bottom: 30px;
+  margin: 30px 0px 30px 15px;
   padding: 16px 20px;
   border-radius: 26px;
   border: 1px solid #d4d3e8;
@@ -78,7 +78,7 @@
   font-weight: 700;
   display: flex;
   align-items: center;
-  width: 100%;
+  width: 90%;
   color: #4c489d;
   box-shadow: 0px 2px 2px #5c5696;
   cursor: pointer;
@@ -89,4 +89,11 @@
 .register_btn:active {
   border-color: #6a679e;
   outline: none;
+}
+
+@media screen and (max-width: 768px) {
+  .profile_img {
+    width: 30vw;
+    height: 30vh;
+  }
 }

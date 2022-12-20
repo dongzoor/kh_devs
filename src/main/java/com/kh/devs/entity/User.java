@@ -20,8 +20,8 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "users")
-public class User
-{
+
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -58,6 +58,8 @@ public class User
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime modifyDate;
 
+
+    // 회원 탈퇴 시 참조하고 있는 테이블의 데이터를 함께 지우기
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Social> socials;
