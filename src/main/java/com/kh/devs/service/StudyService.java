@@ -3,8 +3,10 @@ package com.kh.devs.service;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.kh.devs.constant.ApplyStatus;
 import com.kh.devs.dao.StudyRepository;
+import com.kh.devs.dao.UserRepository;
 import com.kh.devs.dto.StudyDTO;
 import com.kh.devs.entity.Study;
+import com.kh.devs.entity.User;
 import com.kh.devs.exception.NotFoundStudyException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,10 +22,12 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class StudyService {
     private final StudyRepository studyRepository;
-    private final UserService userService;
+    private final UserRepository userRepository;
 
     public Boolean writeStudy(StudyDTO studyDTO) {
+        User user = userRepository.findByUserEmail(studyDTO.getWriter()).get(0);
         Study study = Study.builder()
+                .user(user)
                 .title(studyDTO.getTitle())
                 .content(studyDTO.getContent())
                 .regTime(LocalDateTime.now())
@@ -35,6 +39,8 @@ public class StudyService {
                 .addr(studyDTO.getAddr())
                 .goalPeople(studyDTO.getGoalPeople())
                 .applyStatus(ApplyStatus.ING)
+                .studyApplyCount(1)
+                .applyPeople(studyDTO.getApplyPeople())
                 .build();
         Study rst = studyRepository.save(study);
         log.warn(rst.toString());
@@ -67,7 +73,7 @@ public class StudyService {
 
     @Transactional
     public void updateStudy(Long id, StudyDTO studyDTO) {
-        Study study = studyRepository.findById(id).orElseThrow(() -> new NotFoundStudyException("study is not Found!"));;
+        Study study = studyRepository.findById(id).orElseThrow(() -> new NotFoundStudyException("study is not Found!"));
         if(!studyDTO.getTitle().equals("")) study.setTitle(studyDTO.getTitle()); // 제목이 바뀐 경우
         if(!studyDTO.getContent().equals("")) study.setContent(studyDTO.getContent()); // 내용이 바뀐 경우
         study.setImgUrl(studyDTO.getImgUrl());
@@ -78,6 +84,14 @@ public class StudyService {
         studyRepository.deleteById(studyId); // 오류가 터지면 익센셥 타서 신경 노노
         return "OK";
     }
+
+    @Transactional
+    public void applyStudy(Long id, StudyDTO studyDTO) {   //스터디 지원
+        Study study = studyRepository.findById(id).orElseThrow(() -> new NotFoundStudyException("study is not Found!"));
+        study.setApplyPeople(studyDTO.getApplyPeople());
+        study.setStudyApplyCount(studyDTO.getApplyCnt());
+    }
+
 
 
 //    @Transactional

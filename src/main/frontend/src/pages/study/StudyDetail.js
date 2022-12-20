@@ -20,18 +20,28 @@ const DetailContainer = styled.div`
 const StudyDetail = () => {
   const params = useParams().studyId;
   const [studyDetail, setStudyDetail] = useState("");
+  const [applyPeople, setApplyPeople] = useState([]);
+  const [applyGoalCnt, setApplyGoalCnt] = useState("");
+  const [applyCnt, setApplyCnt] = useState("");
   // const [userId, SetUserId] = useState("");
   const navigate = useNavigate();
-  const userId = "로그인한 회원 Id";
-  const userNickname = sessionStorage.getItem("userNickname");
+  const userId = sessionStorage.getItem("userId")
+  const userEmail = sessionStorage.getItem("userEmail");
+
+  let isApplied = false;
 
   useEffect(() => {
     const StudyData = async () => {
       try {
         const response = await StudyApi.studyDetail(parseInt(params));
+
         // const SetUserId = await UserApi.~~~//api로 정보 가져와야함
         setStudyDetail(response.data);
+        setApplyGoalCnt(response.data.goalPeople); // 목표 인원 수
+        setApplyCnt(response.data.applyPeople.length); // 지원자 수 
+        setApplyPeople(response.data.applyPeople); // 지원자 목록
         console.log(response.data);
+
       } catch (e) {
         console.log(e);
       }
@@ -54,6 +64,29 @@ const StudyDetail = () => {
     navigate(`/study/edit/${parseInt(params)}`)
   }
 
+  const applySubmit = async () => {  // 스터디 지원
+    let applyPeoples;
+    let applyCnts;
+
+    applyPeople.map((e) => { (e === userId) && (isApplied = true) });
+    try {
+      // 스터디 가입했는지 확인
+      if (!isApplied) { // 가입 안했으면,
+        applyPeoples = [userId, ...applyPeople];
+        applyCnts = applyCnt + 1;
+        setApplyPeople([userId, ...applyPeople]) // 지원자 목록에 추가
+        window.alert("스터디에 지원했습니다.")
+        setApplyCnt(applyCnt + 1);  // 지원자 수 1 증가 
+        const res = await StudyApi.studyApply(parseInt(params), applyPeoples, applyCnts);
+      }
+      else window.alert("이미 지원했습니다.");
+      // console.log(`지원자 목록: ${applyPeoples} // 지원자 수 : ${applyCnts} // studyId: ${parseInt(params)}`);
+    } catch {
+      console.log("error");
+    }
+    navigate(`/studies`);
+  }
+
   return (
     <>
       {studyDetail &&
@@ -69,8 +102,11 @@ const StudyDetail = () => {
           </div>
           <div>
             <Button variant="light" style={{ "width": "10vw", "float": "right" }} onClick={chatTest}>채팅</Button>
-            {studyDetail.writer === userNickname &&
+
+            {studyDetail.writer === userEmail ?
               <Button variant="light" style={{ "width": "10vw", "float": "right" }} onClick={goToUpdate}>수정</Button>
+              :
+              <Button variant="light" style={{ "width": "10vw", "float": "right" }} onClick={applySubmit}>스터디 신청하기</Button>
             }
           </div>
         </div>

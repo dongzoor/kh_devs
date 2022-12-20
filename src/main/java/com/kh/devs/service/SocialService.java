@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-// Service 의 역할은 DAO(Repository)가 DB 에서 받아온 데이터를 전달받아 가공하는 것
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -72,7 +71,7 @@ public class SocialService {
         socialDTO.setComment(social.getComment());
         socialDTO.setPostDate(social.getPostDate());
         // 댓글 list 조회
-        List<Comment> list = commentRepository.findBySocial_SocialId(socialId);
+        List<Comment> list = commentRepository.findBySocial_SocialIdOrderByPostDateDesc(socialId);
         List<CommentDTO> CommentDTOs = new ArrayList<>();
         for (Comment e : list) {
             CommentDTO commentDTO = new CommentDTO();
@@ -85,7 +84,6 @@ public class SocialService {
             CommentDTOs.add(commentDTO);    // CommentDTOs list에 값을 담는다
         }
         socialDTO.setComments(CommentDTOs); // 모든 댓글 list 값을 socialDTO에 담기
-        log.warn(socialDTO.toString()); // 터미널 창에 찍으려구
         return socialDTO;
     }
 
@@ -102,7 +100,6 @@ public class SocialService {
             social.setImageId(imageId);
             social.setPostDate(LocalDateTime.now());  // 게시일 정보 자동 기입
             Social rst = socialRepository.save(social);
-            log.warn(rst.toString()); // 터미널 창에 찍으려구
             return true;
         } catch (Exception e) {
             throw new Exception(e);

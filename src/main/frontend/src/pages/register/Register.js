@@ -82,7 +82,6 @@ function Register() {
   const [userEmail, setUserEmail] = useState("");
   const [kakaoEmail, setKakaoEmail] = useState("");
   const [userNickname, setUserNickname] = useState("");
-  const [kakaoNickname, setKakaoNickname] = useState("");
   const [password, setPassword] = useState("");
   const [inputConPw, setInputConPw] = useState("");
   const [phone, setPhone] = useState("");

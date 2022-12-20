@@ -1,7 +1,5 @@
-import React from "react";
-import { useRef } from "react";
-import styled from "styled-components";
 import SocialApi from "../../../api/SocialApi";
+import styled from "styled-components";
 
 const WriteBlock = styled.div`
   * {
@@ -42,7 +40,7 @@ const WriteBlock = styled.div`
   }
 `;
 
-const CommentWriter = ({ inputContent, setInputContent }) => {
+const CommentWriter = ({ inputContent, setInputContent, changeState }) => {
   const getUserEmail = window.sessionStorage.getItem("userEmail");
   const getSocialId = window.sessionStorage.getItem("social_id");
   const onChangeContent = (e) => setInputContent(e.target.value);
@@ -51,15 +49,16 @@ const CommentWriter = ({ inputContent, setInputContent }) => {
   const onPressEnter = async (e) => {
     if (e.key === "Enter") {
       console.log("엔터 클릭");
-      const res = await SocialApi.insertComment(
+      const res = await SocialApi.commentWrite(
         getSocialId,
         getUserEmail,
         inputContent
       );
-      console.log(res.data.result);
-      if (res.data.result !== "SUCCESS") {
-        setInputContent(inputContent);
-      }
+      if (res.data === true) {
+        alert("댓글이 작성되었습니다.");
+        changeState(true); // 댓글 입력 완료 시 render하기 위해 부모 값(isSubmit) 변환
+      } else alert("댓글 작성에 실패했습니다.");
+      changeState(false);
     }
   };
   return (

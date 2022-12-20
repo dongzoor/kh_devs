@@ -31,7 +31,6 @@ public class Study {
     @Column(name = "writer")
     private String writer;
 
-    @Lob
     @Column(nullable = false)
     private String content;
 
@@ -56,19 +55,25 @@ public class Study {
     @Enumerated(EnumType.STRING)
     private ApplyStatus applyStatus;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")  // user_id FK 설정
     private User user;
 
     private String addr;
+
+    @Convert(converter = StringListConverter.class)
+    private List<String> applyPeople;
+    private int studyApplyCount; // 지원자 수
     private int goalPeople;
 //
 //    public void createdByUser(User user) {
 //        this.user = user;
 //    }
     @Builder
-    public Study(Long id, String title, String content, String writer, String imgUrl, int cnt, LocalDateTime regTime,
-                 LocalDateTime updateTime, LocalDateTime goalTime, List<String> hashtag, String addr, int goalPeople, ApplyStatus applyStatus) {
+    public Study(User user, Long id, String title, String content, String writer, String imgUrl, int cnt, LocalDateTime regTime,
+                 LocalDateTime updateTime, LocalDateTime goalTime, List<String> hashtag, String addr, int goalPeople, ApplyStatus applyStatus,
+                 int studyApplyCount, List<String> applyPeople) {
+        this.user = user;
         this.id = id;
         this.title = title;
         this.content = content;
@@ -82,6 +87,8 @@ public class Study {
         this.goalPeople = goalPeople;
         this.addr = addr;
         this.applyStatus = applyStatus;
+        this.studyApplyCount = studyApplyCount;
+        this.applyPeople = applyPeople;
     }
 
 }

@@ -15,12 +15,11 @@ import styled from "styled-components";
 const Box = styled.div`
   margin: 0 auto;
   padding: 0;
-  font-family: "Nanum Gothic", GmarketSansMedium;
+  font-family: GmarketSansMedium;
   background: linear-gradient(90deg, #ffe7e8, #8da4d0);
 `;
 
 const Container = styled.div`
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -203,9 +202,6 @@ function Login() {
                     />
                   )}
                 ></KakaoLogin>
-                {/* <a href="#" className="kakaoIcon">
-                  <SiGoogle />
-                </a> */}
               </div>
             </div>
           </div>

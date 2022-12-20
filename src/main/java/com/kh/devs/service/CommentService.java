@@ -21,7 +21,6 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final SocialRepository socialRepository;
     private final UserRepository userRepository;
-//    private ObjectMapper objectMapper;
 
     // 댓글 작성
     public boolean regComment(String socialId, String content, String userEmail) throws Exception {
@@ -47,7 +46,7 @@ public class CommentService {
     public int delComment(Long commentId) {
         Comment comment = commentRepository.findById(commentId).get();
         if (!Objects.isNull(comment)) {
-            socialRepository.deleteById(comment.getId());
+            commentRepository.deleteById(comment.getId());
             return 1;
         } else {
             return 0;

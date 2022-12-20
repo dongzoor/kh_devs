@@ -28,13 +28,13 @@ public class SocialController {
     // social 디테일 페이지 조회
     @GetMapping("/{Id}")  // 이름으로 회원 조회
     public ResponseEntity<SocialDTO> socialList(@PathVariable Long Id) {
-        SocialDTO socialDTO = socialService.getSocialList(Id); // getSocialList의 오버로딩
+        SocialDTO socialDTO = socialService.getSocialList(Id);
         return new ResponseEntity<>(socialDTO, HttpStatus.OK);
     }
 
     // social 작성(등록)
     @PostMapping("/write")
-    public ResponseEntity<Boolean> socialWrite(@RequestBody Map<String, String> regData) throws Exception { // RequestBody로 받음
+    public ResponseEntity<Boolean> socialWrite(@RequestBody Map<String, String> regData) throws Exception {
         String userEmail = regData.get("userEmail");
         String title = regData.get("title");
         String content = regData.get("content");
@@ -43,7 +43,7 @@ public class SocialController {
         String imageId = regData.get("imageId");
         boolean result = socialService.regSocial(userEmail, title, content, tag, image, imageId);
         if (result) {
-            return new ResponseEntity<>(true, HttpStatus.OK);  // 프론트의 res.data 값(true)으로 넘어온다!!!
+            return new ResponseEntity<>(true, HttpStatus.OK);  // 프론트의 res.data 값(true)으로 넘어감
         } else {
             return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
         }
@@ -71,7 +71,7 @@ public class SocialController {
     public Map<String, Object> deleteSocial(@PathVariable("Id") long Id) {
         Map<String, Object> response = new HashMap<>();
         if (socialService.delSocial(Id) > 0) {
-            response.put("result", "SUCCESS"); // front 의 res.data.result === "SUCCESS" 와 연결된당!!!
+            response.put("result", "SUCCESS"); // front 의 res.data.result === "SUCCESS"
         } else {
             response.put("result", "FAIL");
             response.put("reason", "일치하는 게시글 정보가 없습니다.");
