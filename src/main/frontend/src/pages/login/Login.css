@@ -72,7 +72,7 @@
 .login {
   width: 80%;
   padding: 30px;
-  padding-top: 10vh;
+  padding-top: 8vh;
 }
 
 .login__field {
@@ -133,10 +133,11 @@
 .login_btn:focus {
   opacity: 1;
   border-color: #6a679e;
+  background-color: #eceafe;
+  box-shadow: 0px 1px 1px #5c5696;
   outline: none;
-  margin-top: 15px;
-  margin-bottom: 10px;
   cursor: pointer;
+  transform: translateY(5%);
 }
 
 .button__icon {
@@ -166,7 +167,7 @@
   cursor: pointer;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1024px) {
   .login_btn {
     font-size: 0.8rem;
   }

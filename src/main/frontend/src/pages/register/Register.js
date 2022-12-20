@@ -34,7 +34,7 @@ const Content = styled.div`
   justify-content: center;
   background-color: white;
   box-shadow: 0px 0px 24px #5c5696;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1024px) {
     width: 80vw;
   }
 `;
@@ -57,17 +57,16 @@ const IdContainer = styled.div`
   }
   button {
     position: absolute;
-    top: 10px;
+    top: 15px;
     right: 5px;
     background: #fff;
     font-size: 0.8rem;
-    border-radius: 26px;
+    border-radius: 1rem;
     border: 1px solid #d4d3e8;
     text-transform: uppercase;
     font-weight: 700;
     display: flex;
     align-items: center;
-    width: 10%;
     color: #4c489d;
     box-shadow: 0px 2px 2px #5c5696;
     cursor: pointer;
@@ -363,8 +362,8 @@ function Register() {
                 }
                 alt="프로필 이미지"
                 style={{
-                  width: "10vw",
-                  height: "10vw",
+                  width: "15vh",
+                  height: "15vh",
                   borderRadius: "50%",
                 }}
               />
@@ -406,7 +405,7 @@ function Register() {
               )}
               <span
                 className={`message ${isConId ? "success" : "error"}`}
-                style={{ color: "#ff0000" }}
+                style={{ color: "#ff0000", fontSize: "0.8rem" }}
               >
                 {ConIdMessage}
               </span>
@@ -430,14 +429,14 @@ function Register() {
               />
               <span
                 className={`message ${isConPw ? "success" : "error"}`}
-                style={{ color: "#ff0000" }}
+                style={{ color: "#ff0000", fontSize: "0.8rem" }}
               >
                 {conPwMessage}
               </span>
               <IdContainer>
                 <input
                   type="text"
-                  placeholder="PHONE NUMBER"
+                  placeholder="PHONE"
                   ref={phoneRef}
                   value={phone}
                   onChange={onChangePhone}
@@ -450,7 +449,7 @@ function Register() {
                   중복확인
                 </button>
               </IdContainer>
-              <div>
+              <div className="terms_check">
                 <input
                   type="checkbox"
                   id="check"
@@ -460,7 +459,6 @@ function Register() {
                 <label
                   style={{
                     textDecorationLine: "none",
-                    marginLeft: "10px",
                     color: "#7875b5",
                   }}
                   onClick={openModal}
@@ -481,7 +479,7 @@ function Register() {
                 className="register_btn"
                 onClick={onClickReg}
               >
-                Submit
+                <span>Submit</span>
               </button>
             </form>
           </div>

@@ -1,15 +1,15 @@
 @import url("https://fonts.googleapis.com/css?family=Raleway:400,700");
 
 .form-title {
-  padding: 20px 60px 10px;
+  padding: 20px 40px 10px;
 }
 
 .register-form {
-  margin: 20px 60px 0px;
+  margin: 20px 40px 0px;
 }
 
 .register-form label {
-  margin: 20px 20px 0;
+  margin: 5px 15px 0;
   font-weight: bold;
   font-size: 1rem;
   color: #0095f6;
@@ -80,20 +80,22 @@
   align-items: center;
   width: 90%;
   color: #4c489d;
-  box-shadow: 0px 2px 2px #5c5696;
+  box-shadow: 0px 5px 5px #5c5696;
   cursor: pointer;
   transition: 0.2s;
 }
 .register_btn:hover,
 .register_btn:focus,
 .register_btn:active {
+  opacity: 1;
   border-color: #6a679e;
+  background-color: #eceafe;
+  box-shadow: 0px 1px 1px #5c5696;
   outline: none;
+  cursor: pointer;
+  transform: translateY(5%);
 }
 
-@media screen and (max-width: 768px) {
-  .profile_img {
-    width: 30vw;
-    height: 30vh;
-  }
+.terms_check {
+  display: flex;
 }
