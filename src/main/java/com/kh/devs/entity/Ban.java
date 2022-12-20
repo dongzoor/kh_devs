@@ -1,34 +1,37 @@
-package com.kh.devs.dto;
+package com.kh.devs.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.kh.devs.constant.UserRole;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
 @Getter
 @Setter
-public class UserDTO {
+@ToString
+@Table(name = "Ban")
+public class Ban {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
-    private String userEmail;
-    private String userNickname;
-    private String password;
-    private String phone;
-    private String profileImage;
-    private String profileImagePath;
 
-    @Enumerated(EnumType.STRING)
-    private UserRole userRole;
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    private LocalDateTime createDate;
+    @Column(nullable = false)
+    private String userEmail;
+
+    @Column(nullable = false)
+    private String userNickname;
+
+    @Column(nullable = false)
+    private String phone;
+
+
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime modifyDate;

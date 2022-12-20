@@ -26,7 +26,7 @@ const Adcontainer = styled.div`
   }
   .Boardphotos {
     height: 50px;
-    width: 50px;
+    width: 80px;
     border-radius: 10px;
     left: 5px;
     top: 5px;
@@ -203,7 +203,7 @@ function AdminScBoardList() {
                         />
                     </td>
                     <td>{list.view}</td>
-                    <td>{list.postDate}</td>
+                    <td>{String(list.postDate).substring([0],[16])}</td>
                     <td>
                       <>
                         <button className="adbutton delete" onClick={() => openModal(list.socialId)}>

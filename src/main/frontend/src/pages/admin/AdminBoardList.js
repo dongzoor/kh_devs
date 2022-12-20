@@ -18,6 +18,24 @@ const Adcontainer = styled.div`
   min-height: 100vh;
   background: linear-gradient(90deg, #ffe7e8, #8da4d0);
   font-family: "Gowun Dodum", sans-serif;
+  .Adphotos {
+    margin: 5px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+  }
+  .Boardphotos {
+    height: 50px;
+    width: 90px;
+    border-radius: 10px;
+    left: 5px;
+    top: 5px;
+  }
+  .tbody{
+    text-align: center;
+    align-items : center;
+    justify-content : center;
+  }
 `;
 
 const PaginationBox = styled.div`
@@ -142,6 +160,7 @@ function AdminBoardList() {
               <tr>
                 <th>제목</th>
                 <th>내용</th>
+                <th>게시글 사진</th>
                 <th>작성자</th>
                 <th>조회수</th>
                 <th>생성시간</th>
@@ -157,9 +176,28 @@ function AdminBoardList() {
                   <tr key={list.id}>
                     <td>{list.title}</td>
                     <td>{list.content.substr(0, 7)}...</td>
-                    <td>{list.writer}</td>
+                    <td><img
+                          className="Boardphotos"
+                          alt="게시글 사진"
+                          src={
+                            list.imgUrl
+                              ? list.imgUrl
+                              : "https://i.ibb.co/0shjfhn/no-photo-available.png"
+                          }
+                        /></td>
+                    <td>{list.writer}
+                    <img
+                          className="Adphotos"
+                          alt="프로필 사진"
+                          src={
+                            list.profileImagePath
+                              ? list.profileImagePath
+                              : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                          }
+                        />
+                    </td>
                     <td>{list.cnt}</td>
-                    <td>{list.updateTime}</td>
+                    <td>{String(list.regTime).substring([0],[16])}</td>
                     <td>{list.coordinate}</td>
                     <td>
                       <>

@@ -41,6 +41,18 @@ const AdminApi = {
 
     );
   },
+  AdUserBanUpdate: async function ( userId ,userEmail, userNickname, phone) {
+    const updateObj = {
+    
+      userEmail : userEmail,
+      userNickname: userNickname,
+      phone: phone,
+      
+    };
+    return await axios.post(
+    `/api/adUserList/${userId}/BanUpdate`, updateObj
+    );
+  },
 
   //어드민 로그인
   AdminLogin: async function (id, pwd) {
