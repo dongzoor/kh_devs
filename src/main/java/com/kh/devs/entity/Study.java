@@ -28,9 +28,6 @@ public class Study {
     @Column(nullable = false)
     private String title;
 
-    @Column(name = "writer")
-    private String writer;
-
     @Column(nullable = false)
     private String content;
 
@@ -70,14 +67,13 @@ public class Study {
 //        this.user = user;
 //    }
     @Builder
-    public Study(User user, Long id, String title, String content, String writer, String imgUrl, int cnt, LocalDateTime regTime,
+    public Study(User user, Long id, String title, String content, String imgUrl, int cnt, LocalDateTime regTime,
                  LocalDateTime updateTime, LocalDateTime goalTime, List<String> hashtag, String addr, int goalPeople, ApplyStatus applyStatus,
                  int studyApplyCount, List<String> applyPeople) {
         this.user = user;
         this.id = id;
         this.title = title;
         this.content = content;
-        this.writer = writer;
         this.imgUrl = imgUrl;
         this.cnt = cnt;
         this.regTime = regTime;

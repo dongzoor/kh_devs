@@ -7,6 +7,7 @@ import UserApi from "../../api/UserApi";
 import Button from 'react-bootstrap/Button';
 import { async } from "@firebase/util";
 import { Badge } from "react-bootstrap";
+import { IoPersonOutline } from "react-icons/io5";
 
 
 const DetailContainer = styled.div`
@@ -26,7 +27,7 @@ const StudyDetail = () => {
   // const [userId, SetUserId] = useState("");
   const navigate = useNavigate();
   const userId = sessionStorage.getItem("userId")
-  const userEmail = sessionStorage.getItem("userEmail");
+  const userNickname = sessionStorage.getItem("userNickname");
 
   let isApplied = false;
 
@@ -94,20 +95,30 @@ const StudyDetail = () => {
           <img src={`${studyDetail.imgUrl}`} className="card-img-top" alt="" />
           <div className="card-body">
             <h5 className="card-title">{`${studyDetail.title}`}</h5>
-            <h6 className="card-subtitle mb2 text-muted" style={{ "float": "right" }}>{`${studyDetail.writer}`}</h6>
+            <h6 className="card-subtitle mb2 text-muted" style={{ "float": "right" }}>{`${studyDetail.user.userNickname}`}</h6>
             <br />
             <p className="card-text">{`${studyDetail.content}`}</p>
             {`${studyDetail.hashtag}` &&
               studyDetail.hashtag.map((e) => <Badge bg="info" style={{ "marginRight": "0.5vw" }} > {e} </Badge>)}
           </div>
           <div>
-            <Button variant="light" style={{ "width": "10vw", "float": "right" }} onClick={chatTest}>채팅</Button>
-
-            {studyDetail.writer === userEmail ?
-              <Button variant="light" style={{ "width": "10vw", "float": "right" }} onClick={goToUpdate}>수정</Button>
-              :
-              <Button variant="light" style={{ "width": "10vw", "float": "right" }} onClick={applySubmit}>스터디 신청하기</Button>
-            }
+            <div style={{ "display": "flex", "alignItems": "center", "float": "right" }}>
+              {userNickname !== studyDetail.user.userNickname ?
+                (
+                  studyDetail.applyPeople.length === studyDetail.goalPeople ?
+                    <Button variant="light" style={{ "width": "10vw" }}>모집 완료</Button>
+                    :
+                    <Button variant="light" style={{ "width": "10vw" }} onClick={applySubmit}>스터디 신청하기</Button>
+                )
+                :
+                <Button variant="light" style={{ "width": "10vw" }} onClick={goToUpdate}>수정</Button>
+              }
+              <Button variant="light" style={{ "width": "10vw" }} onClick={chatTest}>채팅</Button>
+            </div>
+            <div style={{ "display": "flex", "alignItems": "center", "float": "right", "margin": "0.5vh 1vw 0 0" }}>
+              <IoPersonOutline />
+              <span className="goalPeople">{`${studyDetail.applyPeople.length}/${studyDetail.goalPeople}`}</span>
+            </div>
           </div>
         </div>
       }

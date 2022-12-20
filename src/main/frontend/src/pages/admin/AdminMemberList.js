@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import AdminApi from "../../api/AdminApi";
 import Adminheader from "./Adminheader";
 import JwModal from "../../utill/JwModal";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Loading from "../../utill/Loading";
 import Pagination from "react-js-pagination";
 import Table from "react-bootstrap/Table";
@@ -70,11 +70,17 @@ const PaginationBox = styled.div`
 `;
 
 function AdminMemberList() {
+  const params = useParams().userId;
+  const [userEmail, setUserEmail] = useState("");
+  const [userNickname, setUserNickname] = useState("");
+  const [phone, setPhone] = useState("");
   const [members, setMembers] = useState([]); // 멤버조회
   const [deleteadmem, setDeleteadmem] = useState(false); //멤버삭제
   const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [banModalOpen, setBanModalOpen] = useState(false);
   const [modalData, setModalData] = useState(0);
+  const [banModalData, setBanModalData] = useState('');
   /// 페이지 네그네이션
   const [page, setPage] = useState(1);
   const [items, setItems] = useState(10); // 페이지별 목록 개수
@@ -84,7 +90,13 @@ function AdminMemberList() {
       setLoading(true);
       try {
         const response = await AdminApi.admemberList();
+        const originEmail = response.data.userEmail;
+        const originNickname = response.data.userNickname;
+        const originPhone = response.data.phone;
         setMembers(response.data);
+        setUserEmail(originEmail);
+        setUserNickname(originNickname);
+        setPhone(originPhone);
         console.log(response.data);
       } catch (e) {
         console.log(e);
@@ -117,12 +129,36 @@ function AdminMemberList() {
     setLoading(false);
   };
 
+  const confirmBanModal = async (e) => {
+    setModalOpen(true);
+    const response = await AdminApi.admemberDetail(e);
+    const BanUser = await AdminApi.AdUserBanUpdate(
+      response.data.userId,
+      response.data.userEmail, 
+      response.data.userNickname,
+      response.data.phone,
+      );
+    console.log(BanUser.data);
+    if (BanUser.data === true) {     
+      window.location.replace("/AdminMemberList");
+    } else 
+    setLoading(false);
+  };
+
+  const openBanModal = (e) => {
+    setBanModalData(e);
+    setBanModalOpen(true);
+  };
+
+
+
   const openModal = (e) => {
     setModalData(e);
     setModalOpen(true);
   };
 
   const closeModal = () => {
+    setBanModalOpen(false);
     setModalOpen(false);
   };
 
@@ -135,7 +171,7 @@ function AdminMemberList() {
       <Adminheader></Adminheader>
       <Adcontainer>
         <div>
-          <h1 className="adTitle"> 회원 리스트</h1>
+          <h1 className="adTitle"> 회원 리스트&nbsp;<i class="fi fi-rr-user"></i></h1>
           <Table
             striped
             bordered
@@ -146,7 +182,7 @@ function AdminMemberList() {
             <thead>
               <tr>
                 <th>이메일아이디</th>
-                <th>비밀번호</th>
+                {/* <th>비밀번호</th> */}
                 <th>닉네임</th>
                 <th>전화번호</th>
                 <th>가입시간</th>
@@ -159,7 +195,7 @@ function AdminMemberList() {
                 .map((list) => (
                   <tr key={list.userId}>
                     <td>{list.userEmail}</td>
-                    <td>{list.password}</td>
+                    {/* <td>{list.password}</td> */}
                     <td>{list.userNickname}
                     <img
                           className="Adphotos"
@@ -172,7 +208,7 @@ function AdminMemberList() {
                         />
                         </td>
                     <td>{list.phone}</td>
-                    <td>{list.createDate}</td>
+                    <td>{String(list.createDate).substring([0],[16])}</td>
                     <td>
                       <>
                         <button className="adbutton delete" onClick={() => openModal(list.userId)}>
@@ -189,6 +225,17 @@ function AdminMemberList() {
                             정말 삭제하시겠습니까?
                           </JwModal>
                         )}
+                           {banModalOpen && (
+                          <JwModal
+                            open={banModalOpen}
+                            confirm={() => confirmBanModal(banModalData)}
+                            close={closeModal}
+                            type={true}
+                            header="확인"
+                          >
+                            정말 차단하시겠습니까?
+                          </JwModal>
+                        )}
                       </>
                       <Link
                         to={"/Profile"}
@@ -202,7 +249,7 @@ function AdminMemberList() {
                       >
                         <button className="adbutton edit">수정</button>{" "}
                       </Link>
-                      <button className="adbutton delete">미정</button>
+                      <button className="adbutton delete" onClick={() => openBanModal(list.userId)}>차단</button>
                     </td>
                   </tr>
                 ))}

@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
-import SocialApi from "../../api/SocialApi";
 import {
+  IoChatboxOutline,
   IoEyeOutline,
   IoHeartOutline,
-  IoChatboxOutline,
 } from "react-icons/io5";
+import React, { useEffect, useState } from "react";
+
+import { Link } from "react-router-dom";
+import SocialApi from "../../api/SocialApi";
+import styled from "styled-components";
 
 const ListBlock = styled.div`
   * {

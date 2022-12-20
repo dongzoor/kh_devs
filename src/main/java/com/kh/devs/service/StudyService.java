@@ -25,7 +25,7 @@ public class StudyService {
     private final UserRepository userRepository;
 
     public Boolean writeStudy(StudyDTO studyDTO) {
-        User user = userRepository.findByUserEmail(studyDTO.getWriter()).get(0);
+        User user = userRepository.findByUserId(Long.parseLong(studyDTO.getUserId())).get(0);
         Study study = Study.builder()
                 .user(user)
                 .title(studyDTO.getTitle())
@@ -33,7 +33,6 @@ public class StudyService {
                 .regTime(LocalDateTime.now())
                 .goalTime(studyDTO.getGoalTime())
                 .cnt(0)
-                .writer(studyDTO.getWriter())
                 .imgUrl(studyDTO.getImgUrl())
                 .hashtag(studyDTO.getHashtag())
                 .addr(studyDTO.getAddr())

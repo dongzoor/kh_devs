@@ -47,7 +47,6 @@ const StudyWrite = (studyObj) => {
   const [applyPeople, setApplyPeople] = useState([]);
 
   const navigate = useNavigate();
-  const userEmail = sessionStorage.getItem("userEmail");
   const userId = sessionStorage.getItem("userId");
 
   let attachmentUrl = "";
@@ -89,8 +88,6 @@ const StudyWrite = (studyObj) => {
 
     e.preventDefault();
 
-    const userNickname = sessionStorage.getItem("userNickname");
-
     //이미지 첨부하지 않고 텍스트만 올리고 싶을 때도 있기 때문에 attachment가 있을때만 아래 코드 실행
     //이미지 첨부하지 않은 경우엔 attachmentUrl=""이 된다.
     if (attachment !== "") {
@@ -111,7 +108,6 @@ const StudyWrite = (studyObj) => {
 
     const studyReg = await StudyApi.studyWrite(
       userId,
-      userEmail,
       title,
       content,
       attachmentUrl,
