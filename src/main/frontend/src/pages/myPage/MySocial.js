@@ -90,8 +90,8 @@ const MySocial = () => {
           <div className='container-fluid' id='myPageTable'>
             <Table className='myPageTable' striped bordered hover size="sm">
               <thead>
-                <tr>
-                  <th colspan="2" className='ms-th-1'>제목</th>
+                <tr className='myPageTableTr'>
+                  <th className='ms-th-1'>제목</th>
                   <th className='ms-th-2'>작성일</th>
                   <th className='ms-th-3'>조회</th>
                 </tr>
@@ -108,11 +108,10 @@ const MySocial = () => {
                           정말 삭제하시겠습니까?
                         </JwModal>
                       )}
-                    </td>
-                    <td>
-                      <div className='titleBox'>
-                        <Link to={`/social/${list.socialId}`} style={{ textDecoration: 'none', color: 'black'}} >{list.title} [{list.comment}]</Link>
-                      </div>
+                      <Link to={`/social/${list.socialId}`} style={{ textDecoration: 'none', color: 'black'}}>
+                        <div className='mySocialTitle'>{list.title}　</div>
+                        <div className='mySocialCommNum'>[{list.comment}]</div>
+                      </Link>
                     </td>
                     <td className='ms-td-2'>{list.postDate}</td>
                     <td className='ms-td-3'>{list.view}</td>
