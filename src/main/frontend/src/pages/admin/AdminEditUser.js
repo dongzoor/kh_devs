@@ -229,7 +229,7 @@ const onChangePassword = (e) => {
           <Link to="/AdminMemberList">
             <MdArrowBack size="24" style={{ margin: 10 }} />
           </Link>
-          <h1 class="form-title">Edit Account Information</h1>
+          <h1 class="form-title">관리자 수정</h1>
           <div>
             <form className="edit-form">
               <img

@@ -1,8 +1,10 @@
 package com.kh.devs.controller;
 
 import com.kh.devs.dto.MailDTO;
+import com.kh.devs.entity.Ban;
 import com.kh.devs.entity.User;
 import com.kh.devs.sendMail.SendMail;
+import com.kh.devs.service.AdminService;
 import com.kh.devs.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +25,12 @@ public class UserController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private UserService userService;
+    @Autowired
+    private AdminService adminService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService , AdminService adminService) {
         this.userService = userService;
+        this.adminService = adminService;
     }
 
     // ID(Email) 중복체크
@@ -75,11 +80,13 @@ public class UserController {
 
     // 일반 로그인
     @PostMapping("/login")
-    public ResponseEntity<User> memberLogin(@RequestBody Map<String, String> loginData) {
+    public ResponseEntity<User> memberLogin(@RequestBody Map<String, String > loginData) {
 
         String userEmail = loginData.get("userEmail");
         String password = loginData.get("password");
         List<User> users = userService.userSearch(userEmail);
+
+        List<Ban> banUsers = adminService.banUserSearch(userEmail);
 
         // 아이디가 틀린경우
         if (users.size() == 0) {
@@ -89,12 +96,18 @@ public class UserController {
         Boolean result = bCryptPasswordEncoder.matches(password, users.get(0).getPassword());
 
         if (result == true) {
-            return new ResponseEntity(users.get(0), HttpStatus.OK);
+           // return new ResponseEntity(users.get(0), HttpStatus.OK);
+            if(banUsers.size() == 0) return new ResponseEntity(users.get(0), HttpStatus.OK);
+            else  return new ResponseEntity("BAN_USER", HttpStatus.OK);
+
         } else if (result == false) {
             return new ResponseEntity(false, HttpStatus.OK);
         } else {
             return new ResponseEntity(false, HttpStatus.BAD_REQUEST);
         }
+
+
+
     }
 
     // 카카오 로그인

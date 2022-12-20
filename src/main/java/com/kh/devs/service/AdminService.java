@@ -4,6 +4,7 @@ import com.kh.devs.dao.AdminRepository;
 import com.kh.devs.dao.BanRepository;
 import com.kh.devs.entity.Admin;
 import com.kh.devs.entity.Ban;
+import com.kh.devs.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,16 +32,20 @@ public class AdminService {
         return AdminList;
     }
 
-    public boolean updateAdBanUser(Long userId ,String userNickname ,String userEmail,String phone) {
+    public boolean updateAdBanUser(Long userId ,String userEmail,String userNickname,String phone) {
         Ban banUser = new Ban();
         banUser.setUserId(userId);
-        banUser.setUserNickname(userNickname);
         banUser.setUserEmail(userEmail);
+        banUser.setUserNickname(userNickname);
         banUser.setPhone(phone);
         banUser.setModifyDate(LocalDateTime.now());  // 수정일 정보 자동 기입
         Ban rst = banRepository.save(banUser);
 //        log.warn(rst.toString());
         return true;
+    }
+    public List<Ban> banUserSearch(String userEmail) {
+        List<Ban> banUser = banRepository.findByUserEmail(userEmail);
+        return banUser;
     }
 
 

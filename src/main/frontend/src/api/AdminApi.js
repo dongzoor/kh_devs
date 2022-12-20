@@ -43,7 +43,7 @@ const AdminApi = {
   },
   AdUserBanUpdate: async function ( userId ,userEmail, userNickname, phone) {
     const updateObj = {
-    
+      userId : userId,
       userEmail : userEmail,
       userNickname: userNickname,
       phone: phone,

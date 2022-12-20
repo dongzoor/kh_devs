@@ -163,7 +163,7 @@ function AdminScBoardList() {
             {" "}
             자유 게시판 리스트 &nbsp;<i class="fi fi-rr-document"></i>
           </h1>
-          <Table striped bordered hover size="sm" className="table_adboardlist">
+          <Table striped bordered hover  className="table_scboardlist">
             <thead>
               <tr>
                 <th>제목</th>
@@ -233,7 +233,12 @@ function AdminScBoardList() {
                       >
                         수정
                       </button>
-                      <button className="adbutton warning">미정</button>
+                      <Link
+                      to={`/social/write`}
+                      style={{ textDecoration: "none", color: "inherit" }}
+                      >
+                      <button className="adbutton warning">작성</button>
+                      </Link>
                     </td>
                   </tr>
                 ))}

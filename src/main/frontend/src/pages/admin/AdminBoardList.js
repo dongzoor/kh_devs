@@ -36,6 +36,7 @@ const Adcontainer = styled.div`
     align-items : center;
     justify-content : center;
   }
+  
 `;
 
 const PaginationBox = styled.div`
@@ -155,7 +156,7 @@ function AdminBoardList() {
           <h1 className="adTitle">
             스터디 게시판 리스트&nbsp;<i class="fi fi-rr-document"></i>
           </h1>
-          <Table striped bordered hover size="sm" className="table_adboardlist">
+          <Table striped bordered hover  className="table_adboardlist">
             <thead>
               <tr>
                 <th>제목</th>
@@ -185,20 +186,20 @@ function AdminBoardList() {
                               : "https://i.ibb.co/0shjfhn/no-photo-available.png"
                           }
                         /></td>
-                    <td>{list.writer}
+                    <td>{list.user.userNickname}
                     <img
                           className="Adphotos"
                           alt="프로필 사진"
                           src={
-                            list.profileImagePath
-                              ? list.profileImagePath
+                            list.user.profileImagePath
+                              ? list.user.profileImagePath
                               : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
                           }
                         />
                     </td>
                     <td>{list.cnt}</td>
                     <td>{String(list.regTime).substring([0],[16])}</td>
-                    <td>{list.coordinate}</td>
+                    <td>{list.goalPeople}</td>
                     <td>
                       <>
                         <button className="adbutton delete" onClick={() => openModal(list.id)}>
@@ -222,8 +223,16 @@ function AdminBoardList() {
                       >
                         <button className="adbutton serch">조회</button>
                       </Link>
+                      <Link  to={`/study/edit/${list.id}`}
+                        style={{ textDecoration: "none", color: "inherit" }}>
                       <button className="adbutton edit">수정</button>
-                      <button className="adbutton delete">미정</button>
+                      </Link>
+                      <Link
+                      to={`/study/write`}
+                      style={{ textDecoration: "none", color: "inherit" }}
+                      >
+                      <button className="adbutton warning">작성</button>
+                      </Link>
                     </td>
                   </tr>
                 ))}

@@ -238,7 +238,7 @@ function AdminMemberList() {
                         )}
                       </>
                       <Link
-                        to={"/Profile"}
+                        to={"/user/profile"}
                         style={{ textDecoration: "none", color: "inherit" }}
                       >
                         <button className="adbutton serch">조회</button>
@@ -247,9 +247,9 @@ function AdminMemberList() {
                         to={`/AdminMember/${list.userId}`}
                         style={{ textDecoration: "none", color: "inherit" }}
                       >
-                        <button className="adbutton edit">수정</button>{" "}
+                        <button className="adbutton edit">수정</button>
                       </Link>
-                      <button className="adbutton delete" onClick={() => openBanModal(list.userId)}>차단</button>
+                      <button className="adbutton warning" onClick={() => openBanModal(list.userId)}>차단</button>
                     </td>
                   </tr>
                 ))}

@@ -51,6 +51,7 @@ public class UserService {
     }
 
 
+
     // 로그인 체크
     public List<User> loginCheck(String userEmail, String password) {
         List<User> userList = userRepository.findByUserEmailAndPassword(userEmail, password);
@@ -147,17 +148,7 @@ public class UserService {
         return true;
     }
 
-    @Transactional
-    public boolean updateAdBanUser(Long userId ,String userEmail, String userNickname,String phone) {
-        Ban banUser = new Ban();
-        banUser.setUserId(userId);
-        banUser.setUserNickname(userNickname);
-        banUser.setUserEmail(userEmail);
-        banUser.setPhone(phone);
-//        banUser.setModifyDate(LocalDateTime.now());  // 수정일 정보 자동 기입
-        Ban rst = banRepository.save(banUser);
-        return true;
-    }
+
 
 
 

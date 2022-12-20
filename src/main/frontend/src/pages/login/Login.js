@@ -61,9 +61,12 @@ function Login() {
     const res = await UserApi.userLogin(inputId, inputPw);
 
     console.log(res.data);
-
+    if(res.data === "BAN_USER"){
+      window.alert("차단된 유저입니다 서비스이용이 불가합니다.");
+      window.location.replace("/");
+    }
     // 로그인을 성공하는 경우
-    if (res.data !== false) {
+    else if (res.data !== false) {
       // 사람정보에 이미지가 존재하는 경우
 
       sessionStorage.setItem("profileImage", res.data.profileImage);
