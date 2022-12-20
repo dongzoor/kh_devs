@@ -30,12 +30,12 @@ public class SocialDTO {
     private String userImageId;     // 작성자 이미지 ID
     private String userImageUrl;    // 작성자 이미지 URL
     private List<CommentDTO> comments = new ArrayList<>();
-
+    // 작성 일자
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    private LocalDateTime postDate; // 작성 일자
-
+    private LocalDateTime postDate;
+    // 수정 일자
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    private LocalDateTime upDate;   // 수정 일자
+    private LocalDateTime upDate;
 }

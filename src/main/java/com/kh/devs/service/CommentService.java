@@ -21,7 +21,6 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final SocialRepository socialRepository;
     private final UserRepository userRepository;
-//    private ObjectMapper objectMapper;
 
     // 댓글 작성
     public boolean regComment(String socialId, String content, String userEmail) throws Exception {
