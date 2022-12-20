@@ -24,6 +24,7 @@ public class Social {
     private Long socialId;// 게시글 id
 
     @JsonIgnore
+    //JPA 사용 시 양방향 관계를 조회하면 양방향 참조로 인한 무한 루프가 발생 -> 이를 방지하기 위한 어노테이션
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;            // 작성자 id
