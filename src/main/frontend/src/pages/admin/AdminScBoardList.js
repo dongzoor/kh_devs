@@ -26,7 +26,7 @@ const Adcontainer = styled.div`
   }
   .Boardphotos {
     height: 50px;
-    width: 50px;
+    width: 80px;
     border-radius: 10px;
     left: 5px;
     top: 5px;
@@ -163,7 +163,7 @@ function AdminScBoardList() {
             {" "}
             자유 게시판 리스트 &nbsp;<i class="fi fi-rr-document"></i>
           </h1>
-          <Table striped bordered hover size="sm" className="table_adboardlist">
+          <Table striped bordered hover  className="table_scboardlist">
             <thead>
               <tr>
                 <th>제목</th>
@@ -203,7 +203,7 @@ function AdminScBoardList() {
                         />
                     </td>
                     <td>{list.view}</td>
-                    <td>{list.postDate}</td>
+                    <td>{String(list.postDate).substring([0],[16])}</td>
                     <td>
                       <>
                         <button className="adbutton delete" onClick={() => openModal(list.socialId)}>
@@ -233,7 +233,12 @@ function AdminScBoardList() {
                       >
                         수정
                       </button>
-                      <button className="adbutton warning">미정</button>
+                      <Link
+                      to={`/social/write`}
+                      style={{ textDecoration: "none", color: "inherit" }}
+                      >
+                      <button className="adbutton warning">작성</button>
+                      </Link>
                     </td>
                   </tr>
                 ))}

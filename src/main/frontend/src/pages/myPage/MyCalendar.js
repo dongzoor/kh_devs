@@ -10,7 +10,7 @@ const MyCalendar = () => {
       <div className="subTitle">
         <h1>My Calendar</h1>
       </div>
-      <hr />
+      <hr className="myPageHr"/>
       <div className="calContainer">
         <div className="calCreateButtonBox">
           <button id="calCreateButton">+ 일정 추가</button>
@@ -21,7 +21,8 @@ const MyCalendar = () => {
           plugins={[ dayGridPlugin ]}
           events={[
             { title: '파이널 마무리', date: '2022-12-23' },
-            { title: '학원 수료일', date: '2022-12-26' }
+            { title: '학원 수료일', date: '2022-12-26' },
+            { title: '메롱', start: '2022-12-20', end: '2022-12-22', color: 'red'}
         ]}
         />
         </div>

@@ -1,8 +1,10 @@
 package com.kh.devs.service;
 
 import com.kh.devs.constant.UserRole;
+import com.kh.devs.dao.BanRepository;
 import com.kh.devs.dao.UserRepository;
 import com.kh.devs.dto.UserDTO;
+import com.kh.devs.entity.Ban;
 import com.kh.devs.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,8 @@ import java.util.Optional;
 public class UserService {
     // Repository와 연결
     private UserRepository userRepository;
+
+    private BanRepository banRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -47,6 +51,7 @@ public class UserService {
     }
 
 
+
     // 로그인 체크
     public List<User> loginCheck(String userEmail, String password) {
         List<User> userList = userRepository.findByUserEmailAndPassword(userEmail, password);
@@ -67,6 +72,16 @@ public class UserService {
         userRepository.save(userDb);
         return user.getUserEmail();
     }
+//    @Transactional
+//    public boolean BanUserUpdate(Ban banuser) {
+//        Ban banUser = banuser;
+//        banUser.setUserNickname(banuser.getUserNickname());
+//        banUser.setPassword(banuser.getPassword());
+//        banUser.setPhone(banuser.getPhone());
+//        banRepository.save(banUser);
+//        return true;
+//    }
+
 
     // 회원정보 찾기 - 아이디 찾기
     public List<User> getUserEmail(String phone) {
@@ -111,6 +126,7 @@ public class UserService {
         userDTO.setPhone(user.getPhone());
         userDTO.setProfileImage(user.getProfileImage());
         userDTO.setCreateDate(user.getCreateDate());
+        userDTO.setProfileImagePath(user.getProfileImagePath());
         log.warn(userDTO.toString()); // 터미널 창
         System.out.println(userDTO);
         return userDTO;
@@ -132,7 +148,12 @@ public class UserService {
         return true;
     }
 
-   //유저 전체조회
+
+
+
+
+
+    //유저 전체조회
     public List<User> getUserList() {
         return userRepository.findAll();
     }

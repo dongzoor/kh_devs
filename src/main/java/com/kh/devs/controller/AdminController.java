@@ -3,10 +3,7 @@ package com.kh.devs.controller;
 import com.kh.devs.dao.StudyRepository;
 import com.kh.devs.dto.SocialDTO;
 import com.kh.devs.dto.UserDTO;
-import com.kh.devs.entity.Admin;
-import com.kh.devs.entity.Social;
-import com.kh.devs.entity.Study;
-import com.kh.devs.entity.User;
+import com.kh.devs.entity.*;
 import com.kh.devs.service.AdminService;
 import com.kh.devs.service.SocialService;
 import com.kh.devs.service.StudyService;
@@ -96,18 +93,29 @@ public class AdminController {
             return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
         }
     }
-    //유저 삭제
-//    @DeleteMapping("/AdMemberDelete/{userEmailDb}")
-//    public ResponseEntity<User> deleteUser(@PathVariable("userEmailDb") String userEmailDb) {
-//        String userEmail = userEmailDb;
-//
-//        boolean result = userService.userDelete(userEmail);
-//        if (result) {
-//            return new ResponseEntity(true, HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity(false, HttpStatus.OK);
-//        }
-//    }
+
+    @PostMapping("/api/adUserList/{id}/BanUpdate")
+    @ResponseBody
+    public ResponseEntity<Map<String, String>> adUserBanUpdate(@PathVariable("id") Long id,@RequestBody Map<String, String> banData) throws Exception {
+
+        Long userId = id;
+        String UserEmail = banData.get("userEmail");
+        String UserNickname = banData.get("userNickname");
+        String Phone = banData.get("phone");
+
+        System.out.println(id);
+        System.out.println(UserEmail);
+        System.out.println(UserNickname);
+        System.out.println(Phone);
+
+
+        boolean result = adminService.updateAdBanUser(userId , UserEmail, UserNickname, Phone);
+        if (result) {
+            return new ResponseEntity(true, HttpStatus.OK);  // 프론트의 response.data 값(true)으로 넘어옴
+        } else {
+            return new ResponseEntity(false, HttpStatus.BAD_REQUEST);
+        }
+    }
 
     // 유저 아이디 삭제
     @DeleteMapping("/api/User/{id}")
