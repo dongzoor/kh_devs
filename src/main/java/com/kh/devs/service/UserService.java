@@ -50,8 +50,6 @@ public class UserService {
         return user;
     }
 
-
-
     // 로그인 체크
     public List<User> loginCheck(String userEmail, String password) {
         List<User> userList = userRepository.findByUserEmailAndPassword(userEmail, password);
@@ -147,12 +145,6 @@ public class UserService {
         user.setModifyDate(LocalDateTime.now());  // 수정일 정보 자동 기입
         return true;
     }
-
-
-
-
-
-
     //유저 전체조회
     public List<User> getUserList() {
         return userRepository.findAll();

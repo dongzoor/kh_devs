@@ -83,7 +83,7 @@ public class MyPageService {
             StudyDTO studyDTO = new StudyDTO();
             studyDTO.setStudyId(e.getId());
             studyDTO.setImgUrl(e.getImgUrl());
-            studyDTO.setWriter(e.getWriter());
+//            studyDTO.setWriter(e.getWriter());
             studyDTO.setTitle((e.getTitle()));
             studyDTO.setContent(e.getContent());
             studyDTO.setHashtag(e.getHashtag());

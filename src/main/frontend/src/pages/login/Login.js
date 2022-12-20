@@ -23,7 +23,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 80vh;
+  min-height: 100vh;
 `;
 
 function Login() {
@@ -61,7 +61,7 @@ function Login() {
     const res = await UserApi.userLogin(inputId, inputPw);
 
     console.log(res.data);
-    if(res.data === "BAN_USER"){
+    if (res.data === "BAN_USER") {
       window.alert("차단된 유저입니다 서비스이용이 불가합니다.");
       window.location.replace("/");
     }

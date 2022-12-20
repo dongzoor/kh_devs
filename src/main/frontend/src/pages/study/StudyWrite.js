@@ -1,27 +1,27 @@
-import { useState } from "react";
-import styled from "styled-components";
-import { v4 as uuidv4 } from "uuid"
-import { ref, uploadString, getDownloadURL, deleteObject } from "@firebase/storage";
-import { storageService } from "../../lib/api/fbase";
-import StudyApi from "../../lib/api/StudyApi";
+import "react-calendar/dist/Calendar.css";
+
 import { Badge, Button, Form, InputGroup } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { getDownloadURL, ref, uploadString } from "@firebase/storage";
+
 import Addr from "./Addr";
 import { Calendar } from "react-calendar";
-import 'react-calendar/dist/Calendar.css';
+import StudyApi from "../../lib/api/StudyApi";
 import moment from "moment";
-
-
+import { storageService } from "../../lib/api/fbase";
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 const Box = styled.div`
   margin: 0;
   padding: 0;
   font-family: Raleway, Pretendard Std;
   background: linear-gradient(90deg, #ffe7e8, #8da4d0);
-  
+
   .hashtag-container {
-  height: 2vh;
-  margin: -0.8vh 0.2vh 1vh 0;
+    height: 2vh;
+    margin: -0.8vh 0.2vh 1vh 0;
   }
 
   .inputContainer {
@@ -29,7 +29,7 @@ const Box = styled.div`
     height: 115vh;
     margin: 0 auto;
     padding: 15px;
-    background-color: #FFF;
+    background-color: #fff;
     box-shadow: 0px 0px 24px #5c5696;
     border-radius: 25px;
   }
@@ -55,14 +55,14 @@ const StudyWrite = (studyObj) => {
 
   const titleChange = (e) => {
     const {
-      target: { value }
+      target: { value },
     } = e;
     setTitle(value);
   };
 
   const contentChange = (e) => {
     const {
-      target: { value }
+      target: { value },
     } = e;
     setContent(value);
   };
@@ -85,7 +85,6 @@ const StudyWrite = (studyObj) => {
   };
 
   const onSubmit = async (e) => {
-
     e.preventDefault();
 
     //이미지 첨부하지 않고 텍스트만 올리고 싶을 때도 있기 때문에 attachment가 있을때만 아래 코드 실행
@@ -103,8 +102,6 @@ const StudyWrite = (studyObj) => {
       attachmentUrl = await getDownloadURL(response.ref);
       console.log(attachmentUrl);
     }
-
-
 
     const studyReg = await StudyApi.studyWrite(
       userId,
@@ -139,30 +136,28 @@ const StudyWrite = (studyObj) => {
 
   const onChangeHashtag = (e) => {
     const {
-      target: { value }
+      target: { value },
     } = e;
     setHashtag(value);
-  }
+  };
 
   const addHashtag = (e) => {
     setHashtags([...hashtags, hashtag]);
-    setHashtag('');
-  }
+    setHashtag("");
+  };
 
   const onDeleteHash = (e) => {
-    const {
-      target: target
-    } = e;
+    const { target: target } = e;
 
     hashtags.pop(target.innerHTML);
     console.log(hashtags);
     target.innerHTML = "";
-  }
+  };
 
   const getAddr = (e) => {
     setAddr(e);
     console.log(addr + " " + valueDate + " " + people);
-  }
+  };
 
   // const handleKeyPress = (e) => {
   //   if (e.key === 'Enter') {
@@ -174,19 +169,36 @@ const StudyWrite = (studyObj) => {
   return (
     <Box>
       <div className="inputContainer">
-
         <div className="mb-3">
-          <label htmlFor="title-input" className="form-label">Title</label>
-          <input type="text" className="form-control" id="title-input" placeholder="제목을 입력하세요." onChange={titleChange} />
+          <label htmlFor="title-input" className="form-label">
+            Title
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="title-input"
+            placeholder="제목을 입력하세요."
+            onChange={titleChange}
+          />
         </div>
 
         <div className="mb-3" style={{}}>
-          <label htmlFor="content-textarea" className="form-label">Content</label>
-          <textarea className="form-control" id="content-textarea" rows="9" placeholder="내용을 입력하세요." onChange={contentChange}></textarea>
+          <label htmlFor="content-textarea" className="form-label">
+            Content
+          </label>
+          <textarea
+            className="form-control"
+            id="content-textarea"
+            rows="9"
+            placeholder="내용을 입력하세요."
+            onChange={contentChange}
+          ></textarea>
         </div>
 
         <div className="hastag-contianer">
-          <label htmlFor="hashtag-input" className="form-label">Hashtag</label>
+          <label htmlFor="hashtag-input" className="form-label">
+            Hashtag
+          </label>
           <InputGroup className="mb-3" onChange={onChangeHashtag}>
             <Form.Control
               placeholder="태그를 입력하세요."
@@ -195,25 +207,41 @@ const StudyWrite = (studyObj) => {
               id="hashtag-input"
               value={hashtag}
             />
-            <Button variant="outline-secondary" id="button-addon2" onClick={addHashtag} >
+            <Button
+              variant="outline-secondary"
+              id="button-addon2"
+              onClick={addHashtag}
+            >
               추가
             </Button>
           </InputGroup>
         </div>
 
         <div className="hashtag-container">
-          {hashtags.map(e =>
-            <Badge bg="info" style={{ "marginRight": "0.5vw" }} onClick={onDeleteHash}>{e}</Badge>)}
+          {hashtags.map((e) => (
+            <Badge
+              bg="info"
+              style={{ marginRight: "0.5vw" }}
+              onClick={onDeleteHash}
+            >
+              {e}
+            </Badge>
+          ))}
         </div>
 
-        <div style={{ "display": "flex" }}>
+        <div style={{ display: "flex" }}>
           <div>
-            <label htmlFor="memberCount" className="form-label">인원</label>
-            <Form.Select aria-label="memberCount" style={{ "width": "7vw", "marginBottom": "2vh" }}
+            <label htmlFor="memberCount" className="form-label">
+              인원
+            </label>
+            <Form.Select
+              aria-label="memberCount"
+              style={{ width: "7vw", marginBottom: "2vh" }}
               onChange={(e) => {
                 setPeople(e.target.value);
                 setApplyPeople([userId]);
-              }}>
+              }}
+            >
               <option>인원 수</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -223,31 +251,57 @@ const StudyWrite = (studyObj) => {
             </Form.Select>
           </div>
 
-          <div style={{ "marginLeft": "5vw" }}>
-            <label htmlFor="addr" className="addr-label" style={{ "marginBottom": "0.6vh" }}>스터디 지역</label>
-            <div className="addr" >
+          <div style={{ marginLeft: "5vw" }}>
+            <label
+              htmlFor="addr"
+              className="addr-label"
+              style={{ marginBottom: "0.6vh" }}
+            >
+              스터디 지역
+            </label>
+            <div className="addr">
               <Addr propFunction={getAddr} />
             </div>
           </div>
 
-          <div style={{ "marginLeft": "5vw" }}>
-            <label htmlFor="calendar" className="calendar-label" style={{ "marginBottom": "0.6vh" }}>스터디 시작 날짜</label>
-            <div className="calendar" >
-              <Calendar onChange={(e) => setValueDate(e)}
-                formatDay={(locale, date) => moment(date).format("DD")} />
+          <div style={{ marginLeft: "5vw" }}>
+            <label
+              htmlFor="calendar"
+              className="calendar-label"
+              style={{ marginBottom: "0.6vh" }}
+            >
+              스터디 시작 날짜
+            </label>
+            <div className="calendar">
+              <Calendar
+                onChange={(e) => setValueDate(e)}
+                formatDay={(locale, date) => moment(date).format("DD")}
+              />
             </div>
           </div>
         </div>
 
         <div className="mb-3">
-          <label htmlFor="formFile" className="form-label">Upload Image</label>
-          <input className="form-control" type="file" id="formFile" onChange={imgChange} />
+          <label htmlFor="formFile" className="form-label">
+            Upload Image
+          </label>
+          <input
+            className="form-control"
+            type="file"
+            id="formFile"
+            onChange={imgChange}
+          />
         </div>
-        <button type="button" className="btn btn-light" style={{ "float": "right" }} onClick={onSubmit}>
+        <button
+          type="button"
+          className="btn btn-light"
+          style={{ float: "right" }}
+          onClick={onSubmit}
+        >
           Submit
         </button>
       </div>
-    </Box >
-  )
-}
+    </Box>
+  );
+};
 export default StudyWrite;
