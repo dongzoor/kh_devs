@@ -63,3 +63,4 @@ src/main/frontend/yarn-error.log*
 # Resources
 src/main/resources/static/static/*
 src/main/resources/static
+src/main/frontend/src/yarn.lock

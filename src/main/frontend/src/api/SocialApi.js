@@ -1,8 +1,5 @@
 import axios from "axios";
 
-// const DOMAIN = "http://localhost:8211/";
-// const HEADER = "application/json";
-
 const SocialApi = {
   // 게시글 전체 조회
   socialList: async function () {
@@ -42,21 +39,20 @@ const SocialApi = {
   // ########################## 댓글 ##########################
   // 댓글 입력
   commentWrite: async function (socialId, userEmail, content) {
-    const regObj = {
+    const regCmtObj = {
       socialId: socialId,
       userEmail: userEmail,
       content: content,
     };
-    return await axios.post(`/api/comment`, regObj);
+    return await axios.post(`/comment/post`, regCmtObj);
   },
   // 댓글 삭제
   commentDelete: async function (commentId) {
-    const delCommentObj = {
+    const delCmtObj = {
       commentId: commentId,
     };
-    console.log("댓글 번호 : " + commentId + typeof commentId);
-    return await axios.delete(`/api/comment`, delCommentObj);
+    console.log("댓글 번호 : ", commentId, typeof commentId);
+    return await axios.post(`/comment/delete`, delCmtObj);
   },
 };
-
 export default SocialApi;

@@ -1,9 +1,6 @@
 package com.kh.devs.service;
 
-import com.kh.devs.dao.CommentRepository;
-import com.kh.devs.dao.MySocialRepository;
-import com.kh.devs.dao.SocialRepository;
-import com.kh.devs.dao.StudyRepository;
+import com.kh.devs.dao.*;
 import com.kh.devs.dto.CommentDTO;
 import com.kh.devs.dto.SocialDTO;
 import com.kh.devs.entity.Comment;
@@ -16,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -23,6 +21,7 @@ import java.util.List;
 public class MyPageService {
 
     private final MySocialRepository mySocialRepository;
+    private final MyCommentRepository myCommentRepository;
     private final UserService userService;
     private final SocialRepository socialRepository;
     private final CommentRepository commentRepository;
@@ -42,6 +41,35 @@ public class MyPageService {
             socialDTOS.add(socialDTO);
         }
         return socialDTOS;
+    }
+
+    // 작성 댓글 조회
+    public List<CommentDTO> getCommentList(Long userId) {
+        List<Comment> list = myCommentRepository.findAllByUserId(userId);
+        List<CommentDTO> CommentDTOs = new ArrayList<>();
+        for (Comment e : list) {
+            CommentDTO commentDTO = new CommentDTO();
+            commentDTO.setId(e.getId()); // 댓글 ID
+            commentDTO.setContent(e.getContent());
+            commentDTO.setPostDate(e.getPostDate());
+            commentDTO.setUserId(e.getUser().getUserId());
+//            SocialId가 Null값으로 불려와짐....
+//            commentDTO.setSocialId(e.getSocial().getSocialId());
+            CommentDTOs.add(commentDTO);
+        }
+        return CommentDTOs;
+    }
+
+    // 작성 댓글 삭제
+    @Transactional
+    public int delComment(Long id) {
+        Comment comment = commentRepository.findById(id).get();
+        if (!Objects.isNull(comment)) {
+            commentRepository.deleteById(comment.getId());
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
 

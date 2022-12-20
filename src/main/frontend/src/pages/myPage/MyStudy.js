@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Badge } from "react-bootstrap";
-import MyPageNav from "./components/MyPageNav";
 import MyPageApi from "../../api/MyPageApi";
 
 const CardContainer = styled.div`
@@ -43,7 +42,10 @@ const MyStudy = () => {
   }
   return (
     <div className="myPageContainer">
-      <MyPageNav />
+      <div className="subTitle">
+        <h1>My Study</h1>
+      </div>
+      <hr />
       {studyList &&
           studyList.map((list) =>
             list.imgUrl ?
