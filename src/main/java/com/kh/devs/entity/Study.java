@@ -43,8 +43,6 @@ public class Study {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime goalTime; // 스터디 시작일
 
-    private String coordinate;
-
 //    @ElementCollection(fetch = FetchType.LAZY)
     @Convert(converter = StringListConverter.class)
     private List<String> hashtag;

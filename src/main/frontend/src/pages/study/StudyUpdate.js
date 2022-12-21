@@ -8,6 +8,9 @@ import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Badge, Button, Form, InputGroup } from "react-bootstrap";
 import Addr from "./Addr";
+import { Calendar } from "react-calendar";
+import 'react-calendar/dist/Calendar.css';
+import moment from "moment";
 
 const Box = styled.div`
   margin: 0;
@@ -19,15 +22,45 @@ const Box = styled.div`
   height: 2vh;
   margin: -0.8vh 0.2vh 1vh 0;
   }
+  .hashtag-badge {
+    margin-right: 0.5vw; 
+  }
 
   .inputContainer {
-    width: 50vw;
-    height: 90vh;
+    width: 60vw;
+    height: 115vh;
     margin: 0 auto;
     padding: 15px;
     background-color: #FFF;
     box-shadow: 0px 0px 24px #5c5696;
     border-radius: 25px;
+  }
+
+  .option-container {
+    display: flex;
+  }
+
+  .form-select {
+    width: 7vw;
+    margin-bottom: 2vh;
+  }
+
+  .addr-container {
+    margin-left: 5vw;
+  }
+  .addr-label {
+    margin-bottom: 0.6vh;
+  }
+
+  .calendar-container {
+    margin-left: 5vw;
+  }
+  .calendar-label {
+    margin-bottom: 0.6vh;
+  }
+
+  .btn-submit {
+    float: right;
   }
 `;
 
@@ -39,11 +72,20 @@ const StudyWrite = (studyObj) => {
   const [hashtag, setHashtag] = useState("");
   const [hashtags, setHashtags] = useState([]);
   const params = useParams().studyId;
+  const [valueDate, setValueDate] = useState(new Date());
+  const [people, setPeople] = useState("");
+  const [addr, setAddr] = useState("");
+  const [applyPeople, setApplyPeople] = useState([]);
+  const [addrCity, setAddrCity] = useState();
+  const [addrSidong, setAddrSidong] = useState();
+  const [dateAry, setDateAry] = useState([]);
 
+  const userId = sessionStorage.getItem("userId");
   const navigate = useNavigate();
 
   let attachmentUrl = "";
   let preImgUrl = "";
+
 
   if (studyDetail.imgUrl) preImgUrl = studyDetail.imgUrl;
 
@@ -51,11 +93,10 @@ const StudyWrite = (studyObj) => {
     const StudyData = async () => {
       try {
         const response = await StudyApi.studyDetail(params);
-        // const response = await StudyApi.studyUpdate(parseInt(params), title, content, attachmentUrl);
-        // const SetUserId = await UserApi.~~~//api로 정보 가져와야함
         setStudyDetail(response.data);
         setHashtags(response.data.hashtag);
 
+        console.log(response.data);
       } catch (e) {
         console.log(e);
       }
@@ -128,7 +169,11 @@ const StudyWrite = (studyObj) => {
           title,
           content,
           attachmentUrl,
-          hashtags
+          hashtags,
+          people,
+          addr,
+          valueDate,
+          applyPeople
         );
         console.log(studyUpdate);
         navigate("/studies");
@@ -138,10 +183,15 @@ const StudyWrite = (studyObj) => {
           params,
           title,
           content,
-          preImgUrl
+          preImgUrl,
+          hashtags,
+          people,
+          addr,
+          valueDate,
+          applyPeople
         );
         console.log(studyUpdate);
-        window.location.replace("/studies");
+        navigate("/studies");
       }
     } else { // 첨부했던 이미지가 없을 때
       if (attachment !== "") {// 첨부한게 있을 때
@@ -155,16 +205,35 @@ const StudyWrite = (studyObj) => {
         );
         //storage 참조 경로에 있는 파일의 URL을 다운로드해서 attachmentUrl 변수에 넣어서 업데이트
         attachmentUrl = await getDownloadURL(response.ref);
+
+        const studyUpdate = await StudyApi.studyUpdate(
+          params,
+          title,
+          content,
+          attachmentUrl,
+          hashtags,
+          people,
+          addr,
+          valueDate,
+          applyPeople
+        );
+        console.log(studyUpdate);
+        navigate("/studies");
+      } else {
+        const studyUpdate = await StudyApi.studyUpdate(
+          params,
+          title,
+          content,
+          attachmentUrl,
+          hashtags,
+          people,
+          addr,
+          valueDate,
+          applyPeople
+        );
+        console.log(studyUpdate);
+        navigate("/studies");
       }
-      const studyUpdate = await StudyApi.studyUpdate(
-        params,
-        title,
-        content,
-        attachmentUrl,
-        hashtags
-      );
-      console.log(studyUpdate);
-      window.location.replace("/studies");
     }
   };
 
@@ -195,26 +264,33 @@ const StudyWrite = (studyObj) => {
 
   const onDeleteHash = (e) => {
     const {
-      target: target
+      target: target2
     } = e;
 
-    hashtags.pop(target.innerHTML);
+    hashtags.pop(target2.innerHTML);
     console.log(hashtags);
-    target.innerHTML = "";
+    target2.innerHTML = "";
+  }
 
+  const getAddr = (e) => {
+    setAddr(e);
+    // console.log(addr + " " + valueDate + " " + people);
   }
 
   return (
     <Box>
       <div className="inputContainer">
+
         <div className="mb-3">
           <label htmlFor="title-input" className="form-label">Title</label>
           <input type="email" className="form-control" id="title-input" placeholder="제목을 입력하세요." onChange={titleChange} defaultValue={studyDetail.title} />
         </div>
-        <div className="mb-3" style={{}}>
+
+        <div className="mb-3">
           <label htmlFor="content-textarea" className="form-label">Content</label>
           <textarea className="form-control" id="content-textarea" rows="12" placeholder="내용을 입력하세요." onChange={contentChange} defaultValue={studyDetail.content}></textarea>
         </div>
+
         <div className="hastag-contianer">
           <label htmlFor="hashtag-input" className="form-label">Hashtag</label>
           <InputGroup className="mb-3" onChange={onChangeHashtag}>
@@ -230,14 +306,21 @@ const StudyWrite = (studyObj) => {
             </Button>
           </InputGroup>
         </div>
+
         <div className="hashtag-container">
-          {hashtags.map(e => <Badge bg="info" style={{ "marginRight": "0.5vw" }} onClick={onDeleteHash}>{e} </Badge>)}
+          {hashtags.map(e => <Badge bg="info" className="hashtag-badge" onClick={onDeleteHash}>{e} </Badge>)}
         </div>
 
-        <div style={{ "display": "flex" }}>
+        <div className="option-container">
           <div>
             <label htmlFor="memberCount" className="form-label">인원</label>
-            <Form.Select aria-label="memberCount" style={{ "width": "5vw", "marginBottom": "2vh" }}>
+            <Form.Select aria-label="memberCount" className="form-select"
+              key={studyDetail.goalPeople}
+              defaultValue={studyDetail.goalPeople}
+              onChange={(e) => {
+                setPeople(e.target.value);
+                setApplyPeople([userId]);
+              }}>
               <option>인원 수</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -246,10 +329,22 @@ const StudyWrite = (studyObj) => {
               <option value="6">6</option>
             </Form.Select>
           </div>
-          <div style={{ "marginLeft": "15vw" }}>
+
+          <div className="addr-container">
             <label htmlFor="addr" className="addr-label">스터디 지역</label>
             <div className="addr" >
-              <Addr />
+              <Addr propFunction={getAddr}
+              />
+            </div>
+          </div>
+
+
+          <div className="calendar-container">
+            <label htmlFor="calendar" className="calendar-label" >스터디 시작 날짜</label>
+            <div className="calendar" >
+              <Calendar
+                onChange={(e) => setValueDate(e)}
+                formatDay={(locale, date) => moment(date).format("DD")} />
             </div>
           </div>
         </div>
@@ -258,12 +353,15 @@ const StudyWrite = (studyObj) => {
           <label htmlFor="formFile" className="form-label">Upload Image</label>
           <input className="form-control" type="file" id="formFile" onChange={imgChange} defaultValue={studyDetail.imgUrl} />
         </div>
+
         <img src={studyDetail.imgUrl} alt="no image" style={{ "width": "5vw", "height": "5vh" }} />
-        <button type="button" className="btn btn-light" style={{ "float": "right" }} onClick={onSubmit}>
-          Update
-        </button>
+        <div className="btn-submit">
+          <button type="button" className="btn btn-light" onClick={onSubmit}>
+            Update
+          </button>
+        </div>
       </div>
-    </Box>
+    </Box >
   )
 }
 export default StudyWrite;
