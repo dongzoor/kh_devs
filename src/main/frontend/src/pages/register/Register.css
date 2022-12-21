@@ -60,8 +60,7 @@
 }
 
 .register-form > input:active,
-.register-form > input:focus,
-.register-form > input:hover {
+.register-form > input:focus {
   outline: none;
   border-bottom-width: 2px;
   border-bottom-color: #6a679e;

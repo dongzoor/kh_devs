@@ -15,8 +15,9 @@ import { v4 as uuidv4 } from "uuid";
 const Box = styled.div`
   margin: 0 auto;
   padding: 0;
-  font-family: "Nanum Gothic", GmarketSansMedium;
+  font-family: "Gowun Dodum";
   background: linear-gradient(90deg, #ffe7e8, #8da4d0);
+  overflow-x: hidden;
 `;
 
 const Container = styled.div`
@@ -30,7 +31,7 @@ const Container = styled.div`
 const Content = styled.div`
   display: block;
   align-items: center;
-  width: 40vw;
+  width: 30vw;
   justify-content: center;
   background-color: white;
   box-shadow: 0px 0px 24px #5c5696;
