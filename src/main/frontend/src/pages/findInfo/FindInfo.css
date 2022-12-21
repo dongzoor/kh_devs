@@ -8,36 +8,34 @@
   padding: 10px 40px 0px;
 }
 
-.findInfo-form label {
-  margin: 20px 20px 0;
-  font-weight: bold;
-  font-size: 13px;
-  color: #0095f6;
-  display: inline-block;
-  cursor: pointer;
-}
-
 .findId > input[type="text"] {
   border: none;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid rgb(114, 114, 114);
   outline: none;
   width: 100%;
   margin: 8px 0;
   padding: 10px 0;
+}
+
+.findId > input:active,
+.findId > input:hover,
+.findId > input:focus {
+  border-bottom-width: 2px;
+  border-bottom-color: #6a679e;
 }
 
 .findPwd > input[type="text"] {
   border: none;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid rgb(114, 114, 114);
   outline: none;
   width: 100%;
   margin: 8px 0;
   padding: 10px 0;
 }
 
-.find__input:active,
-.find__input:focus,
-.find__input:hover {
+.findPwd > input:active,
+.findPwd > input:hover,
+.findPwd > input:focus {
   outline: none;
   border-bottom-width: 2px;
   border-bottom-color: #6a679e;

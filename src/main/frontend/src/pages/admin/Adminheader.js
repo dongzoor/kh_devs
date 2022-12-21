@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
+import './admin.css'
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import './admin.css'
+
 
 function Adminheader() {
 
@@ -47,11 +48,12 @@ function Adminheader() {
               </NavDropdown.Item> */}             
             </NavDropdown>
             {isLogin !== "" && (
-                    <Nav.Link href="/" onClick={onClickLogout}>
-                      로그아웃
-                    </Nav.Link>
+                    <Nav.Link href="/" onClick={onClickLogout} style={{float:'left'}}>
+                            로그아웃&nbsp;<i class="fi fi-rr-sign-out-alt"></i>
+                    </Nav.Link> 
                   )}
           </Nav>
+     
         </Navbar.Collapse>
       </Container>
     </Navbar>

@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css?family=Raleway:400,700");
-
 .form-title {
   padding: 20px 40px 10px;
 }
@@ -42,6 +40,13 @@
   width: 100%;
   margin: 8px 0;
   padding: 10px 0;
+}
+
+.edit-form > input:active,
+.edit-form > input:focus {
+  outline: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #6a679e;
 }
 
 .submit_btn {

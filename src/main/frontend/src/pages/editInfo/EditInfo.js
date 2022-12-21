@@ -20,8 +20,9 @@ import { v4 as uuidv4 } from "uuid";
 const Box = styled.div`
   margin: 0 auto;
   padding: 0;
-  font-family: "Nanum Gothic", GmarketSansMedium;
+  font-family: "Gowun Dodum";
   background: linear-gradient(90deg, #ffe7e8, #8da4d0);
+  overflow-x: hidden;
 `;
 
 const Container = styled.div`
@@ -35,7 +36,7 @@ const Container = styled.div`
 const Content = styled.div`
   display: block;
   align-items: center;
-  width: 40vw;
+  width: 30vw;
   justify-content: center;
   background-color: white;
   box-shadow: 0px 0px 24px #5c5696;
@@ -130,12 +131,13 @@ function EditInfo() {
     }
   }, []);
 
+  // 문자로 된 파일을 이미지로 미리보여주기
   const saveImgFile = (e) => {
     const {
       target: { files },
     } = e;
     const theFile = files[0];
-    console.log(theFile);
+    console.log("이미지 파일 : ", theFile);
 
     const reader = new FileReader();
     reader.onloadend = (finishedEvent) => {

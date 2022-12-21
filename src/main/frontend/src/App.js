@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { Route, BrowserRouter as Router, Routes, Navigate } from "react-router-dom";
 
 import AdminBoardList from "./pages/admin/AdminBoardList";
 import AdminEditUser from "./pages/admin/AdminEditUser";
@@ -24,14 +24,27 @@ import SocialDetail from "./pages/social/SocialDetail";
 import SocialList from "./pages/social/SocialList";
 import SocialUpdate from "./pages/social/SocialUpdate";
 import SocialWrite from "./pages/social/SocialWrite";
-import SocketTest from "./pages/chat/SocketTest";
 import StudyDetail from "./pages/study/StudyDetail";
 import StudyList from "./pages/study/StudyList";
 import StudyUpdate from "./pages/study/StudyUpdate";
 import StudyWrite from "./pages/study/StudyWrite";
+import Home from "./pages/chat/Home";
+import { useContext } from "react";
+import { AuthContext } from "./pages/context/AuthContext";
 
 // import Admin from "./pages/admin/Admin";
 function App() {
+
+  const { currentUser } = useContext(AuthContext);
+
+  const ProtectedRoute = ({ children }) => {
+    if (!currentUser) {
+      return <Navigate to="/" />;
+    }
+
+    return children
+  };
+
   return (
     <Router>
       <Nav />
@@ -52,7 +65,6 @@ function App() {
         <Route path="/study/write" element={<StudyWrite />} />
         <Route exact path="/study/:studyId" element={<StudyDetail />} />
         <Route exact path="/study/edit/:studyId" element={<StudyUpdate />} />
-        <Route path="/Socket" element={<SocketTest />} />
         <Route path="/social" element={<SocialList />} />
         <Route exact path="/social/:socialId" element={<SocialDetail />} />
         <Route
@@ -66,6 +78,15 @@ function App() {
         <Route path="/myPage/mySocial/:userId" element={<MySocial />} />
         <Route path="/myPage/myComment/:userId" element={<MyComment />} />
         <Route path="/myPage/MyLike/:userId" element={<MyLike />} />
+        <Route
+          index
+          path="/chat"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
       {/* <Admin></Admin> */}
     </Router>

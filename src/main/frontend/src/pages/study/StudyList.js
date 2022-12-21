@@ -6,14 +6,13 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Badge } from "react-bootstrap";
 import { IoCalendarOutline, IoEyeOutline, IoLocationOutline, IoPersonOutline } from "react-icons/io5";
-import '../../utill/fonts/gmarketFont.css'
+
 
 
 const Box = styled.div`
 
   margin: 0;
   padding: 0;
-  font-family: Raleway, Pretendard Std;
   background: linear-gradient(90deg, #ffe7e8, #8da4d0);
 
   .icon-box {
@@ -260,7 +259,6 @@ const Study = () => {
       <Frame>
         <button className="custom-btn btn-6" onClick={goToWrite}>Write</button>
       </Frame>
-
     </>
   );
 }

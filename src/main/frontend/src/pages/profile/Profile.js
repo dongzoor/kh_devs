@@ -7,8 +7,9 @@ import styled from "styled-components";
 const Box = styled.div`
   margin: 0;
   padding: 0;
-  font-family: "Nanum Gothic", GmarketSansMedium;
+  font-family: "Gowun Dodum";
   background: linear-gradient(90deg, #ffe7e8, #8da4d0);
+  overflow-x: hidden;
 `;
 
 const Container = styled.div`
@@ -35,8 +36,8 @@ function Profile() {
             }
             alt="프로필 이미지"
             style={{
-              width: "30vw",
-              height: "30vh",
+              width: "250px",
+              height: "250px",
               borderRadius: "50%",
               boxShadow: "0px 0px 24px #5c5696",
             }}

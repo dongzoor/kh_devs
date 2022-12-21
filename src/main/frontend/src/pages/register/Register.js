@@ -1,7 +1,10 @@
 import "./Register.css";
-
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth, db } from "../../lib/api/fbase";
+import { doc, setDoc } from "firebase/firestore"
+import { getFirestore } from "firebase/firestore";
 import React, { useEffect, useRef, useState } from "react";
-import { getDownloadURL, ref, uploadString } from "@firebase/storage";
+import { getDownloadURL, ref, uploadBytesResumable, uploadString } from "@firebase/storage";
 
 import { Link } from "react-router-dom";
 import { MdArrowBack } from "react-icons/md";
@@ -11,12 +14,14 @@ import UserApi from "../../api/UserApi";
 import { storageService } from "../../lib/api/fbase";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
+import { async } from "@firebase/util";
 
 const Box = styled.div`
   margin: 0 auto;
   padding: 0;
-  font-family: "Nanum Gothic", GmarketSansMedium;
+  font-family: "Gowun Dodum";
   background: linear-gradient(90deg, #ffe7e8, #8da4d0);
+  overflow-x: hidden;
 `;
 
 const Container = styled.div`
@@ -30,7 +35,7 @@ const Container = styled.div`
 const Content = styled.div`
   display: block;
   align-items: center;
-  width: 40vw;
+  width: 30vw;
   justify-content: center;
   background-color: white;
   box-shadow: 0px 0px 24px #5c5696;
@@ -89,6 +94,7 @@ function Register() {
   const [userEmail, setUserEmail] = useState("");
   const [kakaoEmail, setKakaoEmail] = useState("");
   const [userNickname, setUserNickname] = useState("");
+  const [displayName, setDisplayName] = useState("");  // firebase에서 사용
   const [password, setPassword] = useState("");
   const [inputConPw, setInputConPw] = useState("");
   const [phone, setPhone] = useState("");
@@ -110,6 +116,7 @@ function Register() {
   const [isPhoneDuplCheckYn, setIsPhoneDuplCheckYn] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
 
+
   // 초기값 설정
   useEffect(() => {
     const originEmail = sessionStorage.getItem("kakaoEmail");
@@ -118,6 +125,7 @@ function Register() {
       setKakaoEmail(originEmail);
       setUserEmail(originEmail);
       setUserNickname(originNickname);
+      setDisplayName(originNickname);  // 파이어베이스
       setIsDuplCheckYn(true);
     }
   }, []);
@@ -128,7 +136,6 @@ function Register() {
       target: { files },
     } = e;
     const theFile = files[0];
-    console.log(theFile);
 
     const reader = new FileReader();
     reader.onloadend = (finishedEvent) => {
@@ -136,6 +143,7 @@ function Register() {
         currentTarget: { result },
       } = finishedEvent;
       setImgFile(result);
+      console.log(result);
     };
     reader.readAsDataURL(theFile);
   };
@@ -161,6 +169,7 @@ function Register() {
 
   const onChangeNickname = (e) => {
     setUserNickname(e.target.value);
+    setDisplayName(e.target.value); // 파이어베이스
   };
 
   const onChangePassword = (e) => {
@@ -273,12 +282,34 @@ function Register() {
         //파일 랜덤 이름 생성(FireBase에 저장할 파일 이름)
         profileImage = uuidv4();
 
+        const result = await createUserWithEmailAndPassword(auth, userEmail, password);
         // 업로드파일 참조
         const attachmentRef = ref(storageService, `/USER/${profileImage}`);
         //storage 참조 경로로 파일 업로드 하기
         await uploadString(attachmentRef, imgFile, "data_url");
         //storage 참조 경로로 파일경로 가져오기
-        profileImagePath = await getDownloadURL(attachmentRef);
+        await getDownloadURL(attachmentRef).then(async (downloadURL) => {     // 파이어베이스
+          try {
+            //Update profile
+            await updateProfile(result.user, {
+              displayName,
+              photoURL: downloadURL,
+            });
+            //create user on firestore
+            await setDoc(doc(db, "users", result.user.uid), {
+              uid: result.user.uid,
+              displayName,
+              userEmail,
+              photoURL: downloadURL,
+            });
+
+            //create empty user chats on firestore
+            await setDoc(doc(db, "userChats", result.user.uid), {});
+            profileImagePath = downloadURL;
+          } catch (err) {
+            console.log(err);                                         // 여기까지 파이어베이스
+          }
+        });
       }
 
       // 필수 입력항목 미입력 시 에러메세지
@@ -332,7 +363,7 @@ function Register() {
         profileImagePath
       );
 
-      // 회원가입 성공 여부 메시지
+      //회원가입 성공 여부 메시지
       if (userReg.data === true) {
         sessionStorage.clear();
         window.confirm("회원가입이 완료되었습니다.");
@@ -341,7 +372,7 @@ function Register() {
         window.confirm("회원가입에 실패했습니다.");
       }
     }
-  };
+  }
 
   return (
     <Box>
