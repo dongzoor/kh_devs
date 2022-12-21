@@ -1,16 +1,16 @@
-import { useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { storageService } from "../../lib/api/fbase";
-import SocialApi from "../../api/SocialApi";
-import styled from "styled-components";
-import { v4 as uuidv4 } from "uuid";
 import {
   deleteObject,
   getDownloadURL,
   ref,
   uploadString,
 } from "@firebase/storage";
+import { useNavigate, useParams } from "react-router-dom";
 
+import SocialApi from "../../api/SocialApi";
+import { storageService } from "../../lib/api/fbase";
+import styled from "styled-components";
+import { v4 as uuidv4 } from "uuid";
 
 const WriteBox = styled.div`
   & > * {
@@ -149,7 +149,7 @@ const SocialUpdate = () => {
     if (imageId !== "null") {
       // ※※ 1-1. 새로 이미지가 생겼을 때
       // if (attachment !== null) {
-      if (inputVal !== null) {
+      if (inputVal !== "") {
         console.log(attachment);
         console.log("1-1. 새로 이미지가 생겼을 때");
         // 파이어베이스 상 파일주소 지정
@@ -191,14 +191,16 @@ const SocialUpdate = () => {
           alert("Social 게시글 수정 실패 ");
           console.log(res.data);
         }
-      } else if (attachment == null) {
+      } else if (attachment !== null) {
         // ※※ 1-2. 기존 이미지 그대로 유지할 때
         console.log("1-2. 기존 이미지 그대로 유지할 때");
         const res = await SocialApi.socialUpdate(
           params,
           titleInput,
           contentInput,
-          tagInput
+          tagInput,
+          attachment,
+          imageId
         );
         if (res.data === true) {
           navigate(`/social/${params}`); // 수정된 게시글로 이동

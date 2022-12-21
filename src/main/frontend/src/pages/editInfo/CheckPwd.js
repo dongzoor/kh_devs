@@ -25,6 +25,10 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+  @media screen and (max-width: 580px) {
+    width: 90%;
+    min-height: 90vh;
+  }
 `;
 
 const Content = styled.div`

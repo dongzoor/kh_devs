@@ -24,21 +24,23 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  min-height: 90vh;
 `;
 
 const Content = styled.div`
   display: block;
   align-items: center;
+  width: 40vw;
   justify-content: center;
   background-color: white;
-  width: 40vw;
   box-shadow: 0px 0px 24px #5c5696;
+  @media screen and (max-width: 1024px) {
+    width: 80vw;
+  }
 `;
 
 const IdContainer = styled.div`
   position: relative;
-
   input {
     border: none;
     border-bottom: 1px solid black;
@@ -47,19 +49,24 @@ const IdContainer = styled.div`
     margin: 8px 0;
     padding: 10px 0;
   }
+  input:hover,
+  input:active {
+    outline: none;
+    border-bottom-width: 2px;
+    border-bottom-color: #6a679e;
+  }
   button {
     position: absolute;
     top: 15px;
     right: 5px;
     background: #fff;
-    font-size: 14px;
-    border-radius: 26px;
+    font-size: 0.8rem;
+    border-radius: 1rem;
     border: 1px solid #d4d3e8;
     text-transform: uppercase;
     font-weight: 700;
     display: flex;
     align-items: center;
-    width: 13%;
     color: #4c489d;
     box-shadow: 0px 2px 2px #5c5696;
     cursor: pointer;
@@ -355,8 +362,8 @@ function Register() {
                 }
                 alt="프로필 이미지"
                 style={{
-                  width: "150px",
-                  height: "150px",
+                  width: "15vh",
+                  height: "15vh",
                   borderRadius: "50%",
                 }}
               />
@@ -398,7 +405,7 @@ function Register() {
               )}
               <span
                 className={`message ${isConId ? "success" : "error"}`}
-                style={{ color: "#ff0000" }}
+                style={{ color: "#ff0000", fontSize: "0.8rem" }}
               >
                 {ConIdMessage}
               </span>
@@ -422,14 +429,14 @@ function Register() {
               />
               <span
                 className={`message ${isConPw ? "success" : "error"}`}
-                style={{ color: "#ff0000" }}
+                style={{ color: "#ff0000", fontSize: "0.8rem" }}
               >
                 {conPwMessage}
               </span>
               <IdContainer>
                 <input
                   type="text"
-                  placeholder="PHONE NUMBER"
+                  placeholder="PHONE"
                   ref={phoneRef}
                   value={phone}
                   onChange={onChangePhone}
@@ -442,7 +449,7 @@ function Register() {
                   중복확인
                 </button>
               </IdContainer>
-              <div>
+              <div className="terms_check">
                 <input
                   type="checkbox"
                   id="check"
@@ -452,7 +459,6 @@ function Register() {
                 <label
                   style={{
                     textDecorationLine: "none",
-                    marginLeft: "10px",
                     color: "#7875b5",
                   }}
                   onClick={openModal}
@@ -473,7 +479,7 @@ function Register() {
                 className="register_btn"
                 onClick={onClickReg}
               >
-                Submit
+                <span>Submit</span>
               </button>
             </form>
           </div>
