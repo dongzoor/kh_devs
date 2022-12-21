@@ -1,5 +1,3 @@
-import "../profile/Profile.css";
-
 import { FaRegEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Quote from "../quote/Quote";
@@ -37,19 +35,20 @@ function Profile() {
             }
             alt="프로필 이미지"
             style={{
-              width: "300px",
-              height: "300px",
+              width: "30vw",
+              height: "30vh",
               borderRadius: "50%",
+              boxShadow: "0px 0px 24px #5c5696",
             }}
           />
         </div>
-        <div className="user_container">
+        <div className="user_container" style={{ display: "flex" }}>
           <h2 className="userName">{sessionStorage.getItem("userNickname")}</h2>
           <Link to="/user/check">
             <FaRegEdit size="30" style={{ marginLeft: "5" }} />
           </Link>
         </div>
-        <div className="todays_info">
+        <div className="todays_info" style={{ textAlign: "center" }}>
           <h1 className="todays_schedule">오늘은 n개의 일정이 있습니다.</h1>
           <Quote />
         </div>
