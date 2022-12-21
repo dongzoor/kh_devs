@@ -10,7 +10,6 @@ import SocialApi from "../../api/SocialApi";
 import { storageService } from "../../lib/api/fbase";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
-import { Badge, Button, Form, InputGroup } from "react-bootstrap";
 
 const WriteBox = styled.div`
   & > * {
@@ -163,38 +162,96 @@ const SocialUpdate = () => {
   };
   const onClickEdit = async () => {
     console.log("수정 버튼 클릭");
-    // ※ 1. 기존 이미지가 있을 때
-    if (imageId !== "null") {
-      // ※※ 1-1. 다른 이미지가 생겼을 때
-      if (inputVal !== "") {
-        console.log(attachment);
-        console.log("1-1. 다른 이미지가 생겼을 때");
-        // =============== 기존 이미지 삭제 =================
-        // 파이어베이스 상 파일주소 지정
-        const deleteAttachmentRef = ref(storageService, `/SOCIAL/${imageId}`);
-        // 참조경로로 firebase 이미지 삭제
-        await deleteObject(deleteAttachmentRef)
-          // then이하 코드는 안타고, catch이하부터 탑니다 - J2
-          .then(() => {
-            console.log("Firebase File deleted successfully !");
-            setStatus(true);
-          })
-          .catch((error) => {
-            console.log("Uh-oh, File Delete error occurred!");
-          });
-        if (status === true) {
-          // =============== 신규 이미지 저장 =================
-          var attachmentUrl = null; // 이미지 URL
-          var imageName = uuidv4(); // 이미지 UUID
+    if (titleInput === "" || contentInput === "") {
+      alert("⚡ 제목과 내용은 필수 입력사항입니다. 꼭 작성해주세요 ⚡");
+    } else {
+      // ※ 1. 기존 이미지가 있을 때
+      if (imageId !== "null") {
+        // ※※ 1-1. 다른 이미지가 생겼을 때
+        if (inputVal !== "") {
+          console.log(attachment);
+          console.log("1-1. 다른 이미지가 생겼을 때");
+          // =============== 기존 이미지 삭제 =================
+          // 파이어베이스 상 파일주소 지정
+          const deleteAttachmentRef = ref(storageService, `/SOCIAL/${imageId}`);
+          // 참조경로로 firebase 이미지 삭제
+          await deleteObject(deleteAttachmentRef)
+            // then이하 코드는 안타고, catch이하부터 탑니다 - J2
+            .then(() => {
+              console.log("Firebase File deleted successfully !");
+              setStatus(true);
+            })
+            .catch((error) => {
+              console.log("Uh-oh, File Delete error occurred!");
+            });
+          if (status === true) {
+            // =============== 신규 이미지 저장 =================
+            var attachmentUrl = null; // 이미지 URL
+            var imageName = uuidv4(); // 이미지 UUID
 
-          // 참조경로로 storage에 저장
-          // 기존 setAttachmentRef 를 const로 변환 - J2
-          const uploadAttachmentRef = ref(
-            storageService,
-            `/SOCIAL/${imageName}`
+            // 참조경로로 storage에 저장
+            // 기존 setAttachmentRef 를 const로 변환 - J2
+            const uploadAttachmentRef = ref(
+              storageService,
+              `/SOCIAL/${imageName}`
+            );
+            const response = await uploadString(
+              uploadAttachmentRef,
+              attachment,
+              "data_url"
+            );
+            attachmentUrl = await getDownloadURL(response.ref);
+            // api 전송
+            const res = await SocialApi.socialUpdate(
+              params,
+              titleInput,
+              contentInput,
+              hashtags.join(","),
+              attachmentUrl,
+              imageName
+            );
+
+            if (res.data === true) {
+              window.sessionStorage.setItem("social_imageId", imageName);
+              window.sessionStorage.setItem("social_imageUrl", attachmentUrl);
+              navigate(`/social/${params}`); //수정된 게시글로 이동
+              alert("Social 게시글 수정 완료 !");
+            } else {
+              alert("Social 게시글 수정 실패 ");
+              console.log(res.data);
+            }
+          }
+        } else if (attachment !== null) {
+          // ※※ 1-2. 기존 이미지 그대로 유지할 때
+          console.log("1-2. 기존 이미지 그대로 유지할 때");
+          const res = await SocialApi.socialUpdate(
+            params,
+            titleInput,
+            contentInput,
+            hashtags.join(","),
+            attachment,
+            imageId
           );
+          if (res.data === true) {
+            navigate(`/social/${params}`); // 수정된 게시글로 이동
+            alert("Social 게시글 수정 완료 !");
+          } else {
+            alert("Social 게시글 수정 실패 ");
+            console.log(res.data);
+          }
+        }
+      } else {
+        // ※ 2. 기존 이미지가 없을 때
+        // ※※ 2-1. 새로 이미지가 생겼을 때
+        if (inputVal !== "") {
+          console.log("2-1. 새로 이미지가 생겼을 때");
+          // 파일 참조 경로 지정
+          attachmentUrl = null;
+          imageName = uuidv4(); // 이미지 UUID
+          const attachmentRef = ref(storageService, `/SOCIAL/${imageName}`);
+          // 참조경로로 storage에 저장
           const response = await uploadString(
-            uploadAttachmentRef,
+            attachmentRef,
             attachment,
             "data_url"
           );
@@ -218,79 +275,25 @@ const SocialUpdate = () => {
             alert("Social 게시글 수정 실패 ");
             console.log(res.data);
           }
-        }
-      } else if (attachment !== null) {
-        // ※※ 1-2. 기존 이미지 그대로 유지할 때
-        console.log("1-2. 기존 이미지 그대로 유지할 때");
-        const res = await SocialApi.socialUpdate(
-          params,
-          titleInput,
-          contentInput,
-          hashtags.join(","),
-          attachment,
-          imageId
-        );
-        if (res.data === true) {
-          navigate(`/social/${params}`); // 수정된 게시글로 이동
-          alert("Social 게시글 수정 완료 !");
-        } else {
-          alert("Social 게시글 수정 실패 ");
-          console.log(res.data);
-        }
-      }
-    } else {
-      // ※ 2. 기존 이미지가 없을 때
-      // ※※ 2-1. 새로 이미지가 생겼을 때
-      if (inputVal !== "") {
-        console.log("2-1. 새로 이미지가 생겼을 때");
-        // 파일 참조 경로 지정
-        attachmentUrl = null;
-        imageName = uuidv4(); // 이미지 UUID
-        const attachmentRef = ref(storageService, `/SOCIAL/${imageName}`);
-        // 참조경로로 storage에 저장
-        const response = await uploadString(
-          attachmentRef,
-          attachment,
-          "data_url"
-        );
-        attachmentUrl = await getDownloadURL(response.ref);
-        // api 전송
-        const res = await SocialApi.socialUpdate(
-          params,
-          titleInput,
-          contentInput,
-          hashtags.join(","),
-          attachmentUrl,
-          imageName
-        );
-
-        if (res.data === true) {
-          window.sessionStorage.setItem("social_imageId", imageName);
-          window.sessionStorage.setItem("social_imageUrl", attachmentUrl);
-          navigate(`/social/${params}`); //수정된 게시글로 이동
-          alert("Social 게시글 수정 완료 !");
-        } else {
-          alert("Social 게시글 수정 실패 ");
-          console.log(res.data);
-        }
-      } else if (inputVal === "") {
-        // ※ 2-2. 계속 이미지가 없을 때
-        console.log("2-2. 계속 이미지가 없을 때");
-        // api 전송
-        attachmentUrl = null;
-        const res = await SocialApi.socialUpdate(
-          params,
-          titleInput,
-          contentInput,
-          hashtags.join(","),
-          attachmentUrl
-        );
-        if (res.data === true) {
-          navigate(`/social/${params}`); //수정된 게시글로 이동
-          alert("Social 게시글 수정 완료 !");
-        } else {
-          alert("Social 게시글 수정 실패 ");
-          console.log(res.data);
+        } else if (inputVal === "") {
+          // ※ 2-2. 계속 이미지가 없을 때
+          console.log("2-2. 계속 이미지가 없을 때");
+          // api 전송
+          attachmentUrl = null;
+          const res = await SocialApi.socialUpdate(
+            params,
+            titleInput,
+            contentInput,
+            hashtags.join(","),
+            attachmentUrl
+          );
+          if (res.data === true) {
+            navigate(`/social/${params}`); //수정된 게시글로 이동
+            alert("Social 게시글 수정 완료 !");
+          } else {
+            alert("Social 게시글 수정 실패 ");
+            console.log(res.data);
+          }
         }
       }
     }
@@ -338,9 +341,7 @@ const SocialUpdate = () => {
         <hr />
         {/* 해시태그 */}
         <div className="hastag-box">
-          <label  className="tag-label">
-            Hashtag
-          </label>
+          <label className="tag-label">Hashtag</label>
           <div>
             <textarea
               placeholder="태그하고 싶은 단어를 입력하세요."
