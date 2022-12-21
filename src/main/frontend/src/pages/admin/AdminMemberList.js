@@ -10,6 +10,7 @@ import Loading from "../../utill/Loading";
 import Pagination from "react-js-pagination";
 import Table from "react-bootstrap/Table";
 import styled from "styled-components";
+import { Button, Form } from "react-bootstrap";
 
 const Adcontainer = styled.div`
   display: flex;
@@ -67,6 +68,11 @@ const PaginationBox = styled.div`
   ul.pagination li a.active {
     color: #4a4688;
   }
+  .search {
+    background-color: #9691db;
+    padding: 50px;
+  }
+  
 `;
 
 function AdminMemberList() {
@@ -81,6 +87,7 @@ function AdminMemberList() {
   const [banModalOpen, setBanModalOpen] = useState(false);
   const [modalData, setModalData] = useState(0);
   const [banModalData, setBanModalData] = useState('');
+  const [searchData , setSearchData] = useState('');
   /// 페이지 네그네이션
   const [page, setPage] = useState(1);
   const [items, setItems] = useState(10); // 페이지별 목록 개수
@@ -162,6 +169,11 @@ function AdminMemberList() {
     setModalOpen(false);
   };
 
+//   const search = (data) => {
+// return data.filter(list => list.first_name.toLowerCase().includes(searchData))
+//   }
+
+
   if (loading) {
     return <Loading></Loading>;
   }
@@ -172,12 +184,24 @@ function AdminMemberList() {
       <Adcontainer>
         <div>
           <h1 className="adTitle"> 회원 리스트&nbsp;<i class="fi fi-rr-user"></i></h1>
+          {/* 검색기능 창 */}
+          <div>
+          
+        <input
+        type="text"
+        placeholder="Search... &#61442;"
+        className="search"
+        onChange={(e) => setSearchData(e.target.value)}
+        >
+        </input>
+        </div>
           <Table
             striped
             bordered
             hover
             size="sm"
             className="table_admemberlist"
+        
           >
             <thead>
               <tr>
@@ -191,6 +215,12 @@ function AdminMemberList() {
             </thead>
             <tbody>
               {members
+              // 검색기능 필터
+                .filter((list) => list.userNickname.toLowerCase().includes(searchData) ||
+                                  list.userEmail.toLowerCase().includes(searchData) ||
+                                  list.phone.toLowerCase().includes(searchData)
+                
+                )
                 .slice(items * (page - 1), items * (page - 1) + items)
                 .map((list) => (
                   <tr key={list.userId}>
@@ -208,7 +238,7 @@ function AdminMemberList() {
                         />
                         </td>
                     <td>{list.phone}</td>
-                    <td>{String(list.createDate).substring([0],[16])}</td>
+                    <td>{list.createDate.slice(0,5).join("-")}</td>
                     <td>
                       <>
                         <button className="adbutton delete" onClick={() => openModal(list.userId)}>

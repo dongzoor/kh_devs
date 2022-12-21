@@ -20,8 +20,7 @@ const WriteBox = styled.div`
     margin: 20px;
   }
   .parentBox {
-    font-family: "Song Myung", serif;
-    width: 1024px;
+    font-family: "Gowun Dodum", sans-serif;    width: 1024px;
     margin: 0px auto;
     padding: 5px;
     /* border: 1px solid black; */

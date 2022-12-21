@@ -43,8 +43,6 @@ public class Social {
     // 조회수의 기본 값을 0으로 지정, null 불가 처리
     @Column(name = "social_view", columnDefinition = "integer default 0", nullable = false)
     private int view;               // 조회수
-    @Column(name = "comment")
-    private int comment;            // 댓글 수
     @Column(name = "social_saved")
     private int saved;              // 저장 횟수
 

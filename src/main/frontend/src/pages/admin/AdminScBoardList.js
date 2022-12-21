@@ -203,7 +203,7 @@ function AdminScBoardList() {
                         />
                     </td>
                     <td>{list.view}</td>
-                    <td>{String(list.postDate).substring([0],[16])}</td>
+                    <td>{list.postDate.slice(0,5).join("-")}</td>
                     <td>
                       <>
                         <button className="adbutton delete" onClick={() => openModal(list.socialId)}>

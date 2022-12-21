@@ -1,8 +1,12 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import SocialApi from "../../api/SocialApi";
-import {IoChatboxOutline, IoEyeOutline, IoHeartOutline,} from "react-icons/io5";
+import {
+  IoChatboxOutline,
+  IoEyeOutline,
+  IoHeartOutline,
+} from "react-icons/io5";
 
 const ListBlock = styled.div`
   * {
@@ -30,8 +34,8 @@ const ListBlock = styled.div`
     font-family: "Alfa Slab One", cursive;
   }
   .parentBox {
-    font-family: "Yeon Sung", cursive;
-    font-family: "Song Myung", serif;
+    /* font-family: "Song Myung", serif; */
+    font-family: "Gowun Dodum", sans-serif;
     width: 1024px;
     padding: 5px;
     border-radius: 10px;
@@ -181,114 +185,116 @@ const ListBlock = styled.div`
 `;
 
 const Social = () => {
-    const [socialList, setSocialList] = useState("");
-    const [loading, setLoading] = useState(false);
-    // const [userImageUrl, setUserImageUrl] = useState("");
+  const [socialList, setSocialList] = useState("");
+  const [loading, setLoading] = useState(false);
+  // const [userImageUrl, setUserImageUrl] = useState("");
 
-    useEffect(() => {
-        const socialData = async () => {
-            setLoading(true);
-            try {
-                const response = await SocialApi.socialList();
-                setSocialList(response.data);
-                console.log("★ Social List ", response.data);
-            } catch (e) {
-                console.log(e);
-            }
-            setLoading(false);
-        };
-        socialData();
-    }, []);
+  useEffect(() => {
+    const socialData = async () => {
+      setLoading(true);
+      try {
+        const response = await SocialApi.socialList();
+        setSocialList(response.data);
+        console.log("★ Social List ", response.data);
+      } catch (e) {
+        console.log(e);
+      }
+      setLoading(false);
+    };
+    socialData();
+  }, []);
 
-    if (loading) {
-        return <ListBlock>조금만 기다려주세요...👩‍💻</ListBlock>;
-    }
-    return (
-        <ListBlock>
-            <div className="subtitle">Dev' Social</div>
-            <div className="inducer"> Share anything you want 👩🏻‍💻✨</div>
-            <div className="parentBox">
-                <Link to="/social/write">
-                    <button className="postBt">P O S T</button>
-                </Link>
-                {socialList &&
-                    socialList.map((social) =>
-                        social.image ? (
-                            <Link to={`/social/${social.socialId}`} key={social.socialId}>
-                                <div className="childBox">
-                                    <div className="flex-box1">
-                                        <img src={social.image} className="insertImg" alt=""/>
-                                    </div>
-                                    <div className="flex-box2">
-                                        <div className="content-title">{social.title}</div>
-                                        {/* <div className="hashtag-box">
+  if (loading) {
+    return <ListBlock>조금만 기다려주세요...👩‍💻</ListBlock>;
+  }
+  return (
+    <ListBlock>
+      <div className="subtitle">Dev' Social</div>
+      <div className="inducer"> Share anything you want 👩🏻‍💻✨</div>
+      <div className="parentBox">
+        <Link to="/social/write">
+          <button className="postBt">P O S T</button>
+        </Link>
+        {socialList &&
+          socialList.map((social) =>
+            social.image ? (
+              <Link to={`/social/${social.socialId}`} key={social.socialId}>
+                <div className="childBox">
+                  <div className="flex-box1">
+                    <img src={social.image} className="insertImg" alt="" />
+                  </div>
+                  <div className="flex-box2">
+                    <div className="content-title">{social.title}</div>
+                    {/* <div className="hashtag-box">
                                             <span className="hashtag">{social.tag}</span>
                                         </div> */}
-                                        <div className="flex-box3">
-                                            <div className="publisher-info">
-                                                <img
-                                                    className="userImage"
-                                                    alt="프로필 사진"
-                                                    src={
-                                                        social.userImageUrl
-                                                            ? social.userImageUrl
-                                                            : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-                                                    }
-                                                />
-                                                <span className="nickName">{social.userNickName}</span>
-                                                <span className="date">| {social.postDate}</span>
-                                            </div>
-                                            <div className="icon-box">
-                                                <IoEyeOutline/>
-                                                <span className="count">{social.view}</span>
-                                                <IoHeartOutline/>
-                                                <span className="count">{social.like}</span>
-                                                <IoChatboxOutline/>
-                                                <span className="count">{social.comment}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Link>
-                        ) : (
-                            <Link to={`/social/${social.socialId}`} key={social.socialId}>
-                                <div className="childBox-noPic">
-                                    <div className="flex-box2">
-                                        <div className="content-title">{social.title}</div>
-                                        {/* <div className="hashtag-box">
+                    <div className="flex-box3">
+                      <div className="publisher-info">
+                        <img
+                          className="userImage"
+                          alt="프로필 사진"
+                          src={
+                            social.userImageUrl
+                              ? social.userImageUrl
+                              : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                          }
+                        />
+                        <span className="nickName">{social.userNickName}</span>
+                        <span className="date">
+                          | {social.postDate[0]}-{social.postDate[1]}-
+                          {social.postDate[2]}
+                        </span>
+                      </div>
+                      <div className="icon-box">
+                        <IoHeartOutline />
+                        <span className="count">{social.like}</span>
+                        <IoChatboxOutline />
+                        <span className="count">{social.comments.length}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ) : (
+              <Link to={`/social/${social.socialId}`} key={social.socialId}>
+                <div className="childBox-noPic">
+                  <div className="flex-box2">
+                    <div className="content-title">{social.title}</div>
+                    {/* <div className="hashtag-box">
                                             <span className="hashtag">{social.tags.tag}</span>
                                         </div> */}
-                                        <div className="flex-box3">
-                                            <div className="publisher-info">
-                                                <img
-                                                    className="userImage"
-                                                    alt="프로필 사진"
-                                                    src={
-                                                        social.userImageUrl
-                                                            ? social.userImageUrl
-                                                            : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-                                                    }
-                                                />
-                                                <span className="nickName">{social.userNickName}</span>
-                                                <span className="date">| {social.postDate}</span>
-                                            </div>
-                                            <div className="icon-box">
-                                                <IoEyeOutline/>
-                                                <span className="count">{social.view}</span>
-                                                <IoHeartOutline/>
-                                                <span className="count">{social.like}</span>
-                                                <IoChatboxOutline/>
-                                                <span className="count">{social.comment}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Link>
-                        )
-                    )}
-            </div>
-        </ListBlock>
-    );
+                    <div className="flex-box3">
+                      <div className="publisher-info">
+                        <img
+                          className="userImage"
+                          alt="프로필 사진"
+                          src={
+                            social.userImageUrl
+                              ? social.userImageUrl
+                              : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                          }
+                        />
+                        <span className="nickName">{social.userNickName}</span>
+                        <span className="date">
+                          | {social.postDate[0]}-{social.postDate[1]}-
+                          {social.postDate[2]}
+                        </span>
+                      </div>
+                      <div className="icon-box">
+                        <IoHeartOutline />
+                        <span className="count">{social.like}</span>
+                        <IoChatboxOutline />
+                        <span className="count">{social.comments.length}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            )
+          )}
+      </div>
+    </ListBlock>
+  );
 };
 
 export default Social;
