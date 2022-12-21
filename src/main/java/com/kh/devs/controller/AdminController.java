@@ -94,6 +94,7 @@ public class AdminController {
         }
     }
 
+    // 밴 차단기능
     @PostMapping("/api/adUserList/{id}/BanUpdate")
     @ResponseBody
     public ResponseEntity<Map<String, String>> adUserBanUpdate(@PathVariable("id") Long id,@RequestBody Map<String, String> banData) throws Exception {

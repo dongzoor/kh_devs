@@ -92,6 +92,7 @@ function AdminScBoardList() {
   const [page, setPage] = useState(1);
   const [items, setItems] = useState(10); // 페이지별 목록 개수
   const [modalData, setModalData] = useState(0);
+  const [searchData , setSearchData] = useState('');
 
   useEffect(() => {
     const BoardData = async () => {
@@ -163,6 +164,15 @@ function AdminScBoardList() {
             {" "}
             자유 게시판 리스트 &nbsp;<i class="fi fi-rr-document"></i>
           </h1>
+          <div>         
+        <input
+        type="text"
+        placeholder="Search... &#61442;"
+        className="search"
+        onChange={(e) => setSearchData(e.target.value)}
+        >
+        </input>
+        </div>
           <Table striped bordered hover  className="table_scboardlist">
             <thead>
               <tr>
@@ -177,6 +187,11 @@ function AdminScBoardList() {
             </thead>
             <tbody>
               {adSocialboard
+              .filter((list) => list.userNickName.toLowerCase().includes(searchData) ||
+                                  list.title.toLowerCase().includes(searchData) ||
+                                  list.content.toLowerCase().includes(searchData)
+                
+                )
                 .slice(items * (page - 1), items * (page - 1) + items)
                 .map((list) => (
                   <tr key={list.socialId}>

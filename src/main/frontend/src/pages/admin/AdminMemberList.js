@@ -185,8 +185,7 @@ function AdminMemberList() {
         <div>
           <h1 className="adTitle"> 회원 리스트&nbsp;<i class="fi fi-rr-user"></i></h1>
           {/* 검색기능 창 */}
-          <div>
-          
+          <div>         
         <input
         type="text"
         placeholder="Search... &#61442;"

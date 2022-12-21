@@ -10,10 +10,9 @@ const JwModal = (props) => {
                 <section>
                     <header>
                         {header}
-                        <button onClick={confirm}>
+                        {/* <button onClick={confirm}>
                             &times;
-                        </button>
-                        
+                        </button>                 */}
                         <button className="close"  onClick={close}>
                             &times;
                         </button>
