@@ -235,6 +235,7 @@ const Social = () => {
                         />
                         <span className="nickName">{social.userNickName}</span>
                         <span className="date">| {social.postDate}</span>
+                        {/* J2 : 날짜 형식 이렇게 해보시는건 어떨까요...? {social.postDate.slice(0, 3).join("-")} */}
                       </div>
                       <div className="icon-box">
                         <IoEyeOutline />

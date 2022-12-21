@@ -177,6 +177,7 @@
   }
   .menu {
     font-size: 0.9rem;
+    margin: 5px !important;
   }
 
   .social-login {
