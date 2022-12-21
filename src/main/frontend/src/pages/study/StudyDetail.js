@@ -2,7 +2,6 @@ import styled from "styled-components";
 import StudyApi from "../../lib/api/StudyApi";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import ChatApi from "../../lib/api/ChatApi";
 import UserApi from "../../api/UserApi";
 import Button from 'react-bootstrap/Button';
 import { async } from "@firebase/util";
@@ -51,14 +50,7 @@ const StudyDetail = () => {
   }, []);
 
   const chatTest = async () => {
-    try {
-      const res = await ChatApi.chatRoomOpen(params);
-      console.log(res.data);
-      window.localStorage.setItem("chatRoomId", res.data);
-      navigate("/Socket");
-    } catch {
-      console.log("error");
-    }
+    navigate("/chat");
   }
   const goToUpdate = () => {
     // <Link to={`/study/${parseInt(params)}`} style={{ "textDecoration": "none" }}></Link>
