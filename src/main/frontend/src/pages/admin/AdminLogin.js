@@ -45,7 +45,12 @@ function AdminLogin() {
     
     // 로그인을 성공하는 경우
     if (res.data !== false) {
-      navigate("/AdminScBoardList")
+      sessionStorage.setItem("profileImage", res.data.profileImage);
+      sessionStorage.setItem("profileImagePath", res.data.profileImagePath);
+      sessionStorage.setItem("userEmail", res.data.userEmail);
+      sessionStorage.setItem("userNickname", res.data.userNickname);
+      sessionStorage.setItem("phone", res.data.phone);
+      navigate("/AdminMemberList")
       } else if (res.data === false) {
         window.alert("이메일이나 비밀번호를 확인해주세요.");
       }

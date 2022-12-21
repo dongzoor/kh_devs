@@ -198,7 +198,9 @@ function AdminBoardList() {
                         />
                     </td>
                     <td>{list.cnt}</td>
-                    <td>{String(list.regTime).substring([0],[16])}</td>
+                    {/* {social.postDate.slice(0, 3).join("-")} */}
+                    {/* {String(list.regTime).substring([0],[16])} */}
+                    <td>{list.regTime.slice(0,5).join("-")}</td>
                     <td>{list.goalPeople}</td>
                     <td>
                       <>
