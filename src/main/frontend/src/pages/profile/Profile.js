@@ -1,5 +1,3 @@
-import "../profile/Profile.css";
-
 import { FaRegEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Quote from "../quote/Quote";
@@ -9,8 +7,9 @@ import styled from "styled-components";
 const Box = styled.div`
   margin: 0;
   padding: 0;
-  font-family: "Nanum Gothic", GmarketSansMedium;
+  font-family: "Gowun Dodum";
   background: linear-gradient(90deg, #ffe7e8, #8da4d0);
+  overflow-x: hidden;
 `;
 
 const Container = styled.div`
@@ -37,19 +36,20 @@ function Profile() {
             }
             alt="프로필 이미지"
             style={{
-              width: "300px",
-              height: "300px",
+              width: "250px",
+              height: "250px",
               borderRadius: "50%",
+              boxShadow: "0px 0px 24px #5c5696",
             }}
           />
         </div>
-        <div className="user_container">
+        <div className="user_container" style={{ display: "flex" }}>
           <h2 className="userName">{sessionStorage.getItem("userNickname")}</h2>
           <Link to="/user/check">
             <FaRegEdit size="30" style={{ marginLeft: "5" }} />
           </Link>
         </div>
-        <div className="todays_info">
+        <div className="todays_info" style={{ textAlign: "center" }}>
           <h1 className="todays_schedule">오늘은 n개의 일정이 있습니다.</h1>
           <Quote />
         </div>

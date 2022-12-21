@@ -11,7 +11,6 @@ import {
   IoHeartOutline,
 } from "react-icons/io5";
 
-
 const DetailBox = styled.div`
   & > * {
     margin: 0;
@@ -28,7 +27,7 @@ const DetailBox = styled.div`
     margin: 20px;
   }
   .parentBox {
-    font-family: "Song Myung", serif;
+    font-family: "Gowun Dodum", sans-serif;
     width: 1024px;
     margin: 0px auto;
     padding: 5px;
@@ -85,13 +84,6 @@ const DetailBox = styled.div`
   .hashtag-box {
     margin: 10px;
   }
-  .hashtag {
-    margin: 0px 3px;
-    padding: 8px;
-    font-style: italic;
-    background-color: rgba(219, 219, 219, 0.5);
-    border-radius: 10px;
-  }
   // 첨부 사진 최대 크기 조정
   .preview {
     max-width: 95%;
@@ -108,6 +100,7 @@ const SocialDetail = () => {
   const navigate = useNavigate();
   const params = useParams().socialId; // router에서 지정한 :social 을 붙여줘야함!!
   const [socialDetail, setSocialDetail] = useState("");
+  const [postDate, setPostDate] = useState("");
   const [loading, setLoading] = useState(false);
   const userEmail = window.sessionStorage.getItem("userEmail");
   // 게시글 ID session Set
@@ -133,9 +126,10 @@ const SocialDetail = () => {
   const onClickDelete = async () => {
     console.log("삭제 버튼 클릭");
     const res = await SocialApi.socialDelete(params);
-    let imageId = sessionStorage.getItem("social_image");
+    let imageId = sessionStorage.getItem("social_imageId");
     // 기존 이미지가 존재하면 삭제(이미지 ID로 확인)
-    if (imageId !== null) {
+    if (imageId !== "null") {
+      // 이미지없는 게시글 삭제 에러 수정 완료
       // 파이어베이스 상 파일주소 지정
       const attachmentRef = ref(storageService, `/SOCIAL/${imageId}`);
       // 참조경로로 firebase 이미지 삭제
@@ -163,6 +157,7 @@ const SocialDetail = () => {
         console.log("★ 게시글 번호 : " + params);
         const response = await SocialApi.socialDetail(params);
         setSocialDetail(response.data);
+        setPostDate(response.data.postDate);
         console.log("★ 게시글 내용 ", response.data);
       } catch (e) {
         console.log(e);
@@ -193,15 +188,16 @@ const SocialDetail = () => {
                   }
                 ></img>
                 <span className="nickName">{socialDetail.userNickName}</span>
-                <span className="date">| {socialDetail.postDate}</span>
+                <span className="date">
+                  | {postDate[0]}-{postDate[1]}-
+                  {postDate[2]} {postDate[3]}:{postDate[4]}
+                </span>
               </div>
               <div className="icon-box">
-                <IoEyeOutline />
-                <span className="count">{socialDetail.view}</span>
                 <IoHeartOutline />
                 <span className="count">{socialDetail.like}</span>
-                <IoChatboxOutline />
-                <span className="count">{socialDetail.comment}</span>
+                {/* <IoChatboxOutline />
+                <span className="count">{comments.length}</span> */}
               </div>
             </div>
             <div className="attachedImg">
@@ -210,11 +206,9 @@ const SocialDetail = () => {
               )}
             </div>
             <div className="content-text">{socialDetail.content}</div>
-            <div className="hashtag-box">
-              <span className="hashtag">{socialDetail.tag}</span>
-            </div>
+            <div className="hashtag-box">{/*<HashTagList />*/}</div>
             {/* 게시글 작성자 email = 로그인한 유저 email 이면 출력 */}
-            {userEmail == socialDetail.userEmail && (
+            {userEmail === socialDetail.userEmail && (
               <>
                 <button className="deleteBt" onClick={onClickDelete}>
                   삭제

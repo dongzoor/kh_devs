@@ -20,8 +20,7 @@ const WriteBox = styled.div`
     margin: 20px;
   }
   .parentBox {
-    font-family: "Song Myung", serif;
-    width: 1024px;
+    font-family: "Gowun Dodum", sans-serif;    width: 1024px;
     margin: 0px auto;
     padding: 5px;
     /* border: 1px solid black; */
@@ -53,17 +52,11 @@ const WriteBox = styled.div`
   .content {
     height: 600px;
   }
-  .hashTag {
-    height: 50px;
-  }
   hr {
     width: 98%;
     height: 1px;
     border: 0;
     background-color: rgba(209, 209, 209, 0.8);
-  }
-  .hashTag-input {
-    margin: 5px 20px;
   }
   .submitBt {
     width: 96%;
@@ -94,20 +87,62 @@ const WriteBox = styled.div`
     color: rgb(98, 98, 112);
     margin-right: 10px;
   }
+  .hashtag {
+    margin: 0px 3px;
+    padding: 8px;
+    font-style: italic;
+    background-color: rgba(219, 219, 219, 0.5);
+    border-radius: 10px;
+    box-shadow: 0 1px 3px grey;
+    /* color: rgba(3, 0, 209, 0.9); */
+    margin-top: 50px;
+  }
 `;
 
 const SocialWrite = () => {
   const navigate = useNavigate();
-  // session storage에서
   const userEmail = sessionStorage.getItem("userEmail");
+  const socialId = sessionStorage.getItem("social_id");
+
   const [titleInput, setTitleInput] = useState("");
   const [contentInput, setContentInput] = useState("");
-  const [tagInput, setTagInput] = useState("");
   const [attachment, setAttachment] = useState("");
+
+  // // #################해시태그
+  // const [socialData, setSocialData] = useState("");
+  // const [tags, setTags] = useState([]);
+  // const [inputTag, setInputTag] = useState("");
+  // const [nextId, setNextId] = useState(0);
+  // const onTagChange = (e) => setInputTag(e.target.value);
+  // const onClickTag = () => {
+  //   const nextTags = tags.concat({
+  //     id: nextId,
+  //     name: inputTag,
+  //     userEmail: userEmail,
+  //   });
+  //   console.log(nextTags);
+  //   setNextId(nextId + 1);
+  //   setTags(nextTags);
+  //   setInputTag("");
+  // };
+  // const onRemoveTag = (id) => {
+  //   const nextTags = tags.filter((tag) => tag.id !== id);
+  //   setTags(nextTags);
+  // };
+  // const tagsList = tags.map((tag) => (
+  //   <span
+  //     className="hashtag"
+  //     key={tag.id}
+  //     onDoubleClick={() => {
+  //       onRemoveTag(tag.id);
+  //     }}
+  //   >
+  //     {tag.name}
+  //   </span>
+  // ));
 
   const onChangeTitle = (title) => setTitleInput(title.target.value);
   const onChangeContent = (content) => setContentInput(content.target.value);
-  const onChangeTag = (tag) => setTagInput(tag.target.value);
 
   // 문자로 된 파일을 이미지로 보여줌 - 미리보기 코드
   const onFileChange = (e) => {
@@ -148,30 +183,38 @@ const SocialWrite = () => {
         console.log("★ 이미지 UUID : " + imageName);
       }
       console.log("###############################");
-      console.log(userEmail);
-      console.log(titleInput);
-      console.log(contentInput);
-      console.log(tagInput);
-      console.log(attachmentUrl);
-      console.log(imageName);
       console.log("★ 이미지 주소 : " + attachmentUrl);
       console.log("★ 이미지 UUID : " + imageName);
+
       const res = await SocialApi.socialWrite(
         userEmail,
         titleInput,
         contentInput,
-        tagInput,
         attachmentUrl,
         imageName
       );
       console.log("제출 버튼 클릭");
-      if (res.data === true) {
+      if (res.data.result === "SUCCESS") {
         window.alert("Social 게시글 작성 완료 !");
         navigate(`/social`);
       } else {
         window.alert("Social 게시글 작성 실패 ㅜ");
         console.log(res.data);
       }
+      // if (res.data.result === "SUCCESS") {
+      //   setSocialData(res.data.socialId);
+      //   const resTag = await SocialApi.hashtagWrite(socialData, tags);
+      //   console.log(resTag);
+      //
+      //   if (resTag === true) {
+      //     console.log("back 에서 가져온 소셜아이디 : ", res.data.socialId);
+      //     window.alert("Social 게시글 작성 완료");
+      //     navigate(`/social`);
+      //   } else {
+      //     window.alert("Social 게시글 작성 실패 ㅜ");
+      //     console.log(res.data);
+      //   }
+      // }
     }
   };
 
@@ -194,14 +237,13 @@ const SocialWrite = () => {
           value={contentInput}
           onChange={onChangeContent}
         />
+        {/* 해시태그 */}
+        {/*<div>*/}
+        {/*  <textarea value={inputTag} onChange={onTagChange}></textarea>*/}
+        {/*  <button onClick={onClickTag}>입력</button>*/}
+        {/*  <div>{tagsList}</div>*/}
+        {/*</div>*/}
         <hr />
-        <label>#해시태그</label>
-        <textarea
-          className="hashTag"
-          placeholder="#이직 #프리랜서"
-          value={tagInput}
-          onChange={onChangeTag}
-        />
         <label htmlFor="formFile" className="form-label">
           이미지 첨부
         </label>

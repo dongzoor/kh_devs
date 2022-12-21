@@ -1,8 +1,10 @@
 package com.kh.devs.controller;
 
 import com.kh.devs.dto.SocialDTO;
+import com.kh.devs.entity.Social;
 import com.kh.devs.service.SocialService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import java.util.Map;
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/social")
 @RequiredArgsConstructor
+@Slf4j
 public class SocialController {
     private final SocialService socialService; // Controller 는 넘어온 요청을 처리하기 위해 Service 를 호출한다.
 
@@ -34,19 +37,23 @@ public class SocialController {
 
     // social 작성(등록)
     @PostMapping("/write")
-    public ResponseEntity<Boolean> socialWrite(@RequestBody Map<String, String> regData) throws Exception {
+    public Map<String, Object> socialWrite(@RequestBody Map<String, String> regData) throws Exception {
+        Social social = new Social();
+        Map<String, Object> response = new HashMap<>();
         String userEmail = regData.get("userEmail");
         String title = regData.get("title");
         String content = regData.get("content");
-        String tag = regData.get("tag");
         String image = regData.get("image");
         String imageId = regData.get("imageId");
-        boolean result = socialService.regSocial(userEmail, title, content, tag, image, imageId);
-        if (result) {
-            return new ResponseEntity<>(true, HttpStatus.OK);  // 프론트의 res.data 값(true)으로 넘어감
+        Map<String, Object> result = socialService.regSocial(userEmail, title, content, image, imageId);
+        if (result.get("result") == "true") {
+            response.put("result", "SUCCESS");
+            response.put("socialId", result.get("socialId"));
         } else {
-            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+            response.put("result", "FAIL");
+            response.put("reason", "일치하는 게시글 정보가 없습니다.");
         }
+        return response;
     }
 
     // social 수정
@@ -55,10 +62,10 @@ public class SocialController {
         Long socialId = pathSocialId;
         String title = editData.get("title");
         String content = editData.get("content");
-        String tag = editData.get("tag");
+//        String tag = editData.get("tag");
         String image = editData.get("image");
         String imageId = editData.get("imageId");
-        boolean result = socialService.updateSocial(socialId, title, content, tag, image, imageId);
+        boolean result = socialService.updateSocial(socialId, title, content, image, imageId);
         if (result) {
             return new ResponseEntity<>(true, HttpStatus.OK);  // 프론트의 res.data 값(true)으로 넘어온다!!!
         } else {

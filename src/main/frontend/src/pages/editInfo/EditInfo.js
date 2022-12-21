@@ -18,14 +18,11 @@ import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 
 const Box = styled.div`
-  height: auto;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-family: "Nanum Gothic", GmarketSansMedium;
+  padding: 0;
+  font-family: "Gowun Dodum";
   background: linear-gradient(90deg, #ffe7e8, #8da4d0);
+  overflow-x: hidden;
 `;
 
 const Container = styled.div`
@@ -33,22 +30,23 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  min-height: 90vh;
 `;
 
 const Content = styled.div`
   display: block;
   align-items: center;
+  width: 30vw;
   justify-content: center;
-  height: 100%;
   background-color: white;
-  width: 40vw;
   box-shadow: 0px 0px 24px #5c5696;
+  @media screen and (max-width: 1024px) {
+    width: 80vw;
+  }
 `;
 
 const IdContainer = styled.div`
   position: relative;
-
   input {
     border: none;
     border-bottom: 1px solid black;
@@ -57,19 +55,24 @@ const IdContainer = styled.div`
     margin: 8px 0;
     padding: 10px 0;
   }
+  input:hover,
+  input:active {
+    outline: none;
+    border-bottom-width: 2px;
+    border-bottom-color: #6a679e;
+  }
   button {
     position: absolute;
     top: 15px;
     right: 5px;
     background: #fff;
-    font-size: 14px;
-    border-radius: 26px;
+    font-size: 0.8rem;
+    border-radius: 1rem;
     border: 1px solid #d4d3e8;
     text-transform: uppercase;
     font-weight: 700;
     display: flex;
     align-items: center;
-    width: 13%;
     color: #4c489d;
     box-shadow: 0px 2px 2px #5c5696;
     cursor: pointer;
@@ -128,12 +131,13 @@ function EditInfo() {
     }
   }, []);
 
+  // 문자로 된 파일을 이미지로 미리보여주기
   const saveImgFile = (e) => {
     const {
       target: { files },
     } = e;
     const theFile = files[0];
-    console.log(theFile);
+    console.log("이미지 파일 : ", theFile);
 
     const reader = new FileReader();
     reader.onloadend = (finishedEvent) => {

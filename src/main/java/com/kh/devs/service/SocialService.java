@@ -15,9 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -41,13 +39,25 @@ public class SocialService {
             socialDTO.setUserImageUrl(e.getUser().getProfileImagePath());   // 작성자 사진 URL
             socialDTO.setTitle(e.getTitle());
             socialDTO.setContent(e.getContent());
-            socialDTO.setTag(e.getTag());
             socialDTO.setPostDate(e.getPostDate());
             socialDTO.setImage(e.getImage());
             socialDTO.setLike(e.getLike());
-            socialDTO.setComment(e.getComment());
             socialDTO.setView(e.getView());
             socialDTOS.add(socialDTO);
+            // 댓글 list 조회
+            List<Comment> list = commentRepository.findBySocial_SocialIdOrderByPostDateDesc(socialDTO.getSocialId());
+            List<CommentDTO> CommentDTOs = new ArrayList<>();
+            for (Comment c : list) {
+                CommentDTO commentDTO = new CommentDTO();
+                commentDTO.setId(c.getId());
+                commentDTO.setContent(c.getContent());
+                commentDTO.setPostDate(c.getPostDate());
+                commentDTO.setUserId(c.getUser().getUserId());
+                commentDTO.setUserNickName(c.getUser().getUserNickname());
+                commentDTO.setUserImageUrl(c.getUser().getProfileImagePath());
+                CommentDTOs.add(commentDTO);    // CommentDTOs list에 값을 담는다
+            }
+            socialDTO.setComments(CommentDTOs); // 모든 댓글 list 값을 socialDTO에 담기
         }
         return socialDTOS;
     }
@@ -63,13 +73,21 @@ public class SocialService {
         socialDTO.setUserImageUrl(social.getUser().getProfileImagePath());  // 작성자 사진 URL
         socialDTO.setTitle(social.getTitle());
         socialDTO.setContent(social.getContent());
-        socialDTO.setTag(social.getTag());
         socialDTO.setLike(social.getLike());
         socialDTO.setImage(social.getImage());
         socialDTO.setImageId(social.getImageId());
         socialDTO.setView(social.getView());
-        socialDTO.setComment(social.getComment());
         socialDTO.setPostDate(social.getPostDate());
+//        // hashtag list 조회
+//        List<HashTag> hashTags = hashTagRepository.findBySocial_SocialId(socialId);
+//        List<HashTagDTO> HashTagDTOs = new ArrayList<>();
+//        for (HashTag e : hashTags) {
+//            HashTagDTO hashTagDTO = new HashTagDTO();
+//            hashTagDTO.setId(e.getId());
+//            hashTagDTO.setTag(e.getTag());
+//            HashTagDTOs.add(hashTagDTO);    // CommentDTOs list에 값을 담는다
+//        }
+//        socialDTO.setTags(HashTagDTOs); // 모든 댓글 list 값을 socialDTO에 담기
         // 댓글 list 조회
         List<Comment> list = commentRepository.findBySocial_SocialIdOrderByPostDateDesc(socialId);
         List<CommentDTO> CommentDTOs = new ArrayList<>();
@@ -88,32 +106,37 @@ public class SocialService {
     }
 
     // Social Write 등록
-    public boolean regSocial(String userEmail, String title, String content, String tag, String image, String imageId) throws Exception { // 결과값은 성공,실패만 알려주면 되니까 boolean
+    public Map<String, Object> regSocial(String userEmail, String title, String content, String image, String imageId) throws Exception { // 결과값은 성공,실패만 알려주면 되니까 boolean
+        Map<String, Object> response = new HashMap<>();
         try {
             User user = (userRepository.findByUserEmail(userEmail)).get(0); // 객체로 user 정보를 다시 찾아와서 넣어주기 위함
             Social social = new Social();
             social.setUser(user);
             social.setTitle(title);
-            social.setTag(tag);
             social.setContent(content);
             social.setImage(image);
             social.setImageId(imageId);
             social.setPostDate(LocalDateTime.now());  // 게시일 정보 자동 기입
             Social rst = socialRepository.save(social);
-            return true;
+            Long socialIdData = rst.getSocialId();  // 게시글 ID 받아옴
+
+            System.out.println(socialIdData);
+            response.put("result", "true");
+            response.put("socialId", socialIdData); // 받아온 게시글 ID를 넘겨줌
+            return response;
         } catch (Exception e) {
             throw new Exception(e);
         }
     }
 
     @Transactional  // 수정
-    public boolean updateSocial(Long socialId, String title, String content, String tag, String image, String imageId) {
+    public boolean updateSocial(Long socialId, String title, String content, String image, String imageId) {
         Social social = socialRepository.findById(socialId)
                 .orElseThrow(() -> {
                     return new IllegalArgumentException("글 찾기 실패: 아이디를 찾을 수 없습니다.");
                 });
         social.setTitle(title);
-        social.setTag(tag);
+//        social.setTag(tag);
         social.setContent(content);
         social.setImage(image);
         social.setImageId(imageId);

@@ -20,7 +20,7 @@ public class Comment {
     @Column(name = "comment_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;                // 댓글 id
-    @Column(name = "comment_content")
+    @Column(name = "comment_content", columnDefinition = "TEXT")
     private String content;         // 댓글 내용
     @ManyToOne
     @JoinColumn(name = "user_id")

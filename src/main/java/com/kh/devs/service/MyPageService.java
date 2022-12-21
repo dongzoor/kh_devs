@@ -1,6 +1,5 @@
 package com.kh.devs.service;
 
-import com.fasterxml.jackson.annotation.JsonSetter;
 import com.kh.devs.dao.*;
 import com.kh.devs.dto.CommentDTO;
 import com.kh.devs.dto.SocialDTO;
@@ -8,7 +7,6 @@ import com.kh.devs.dto.StudyDTO;
 import com.kh.devs.entity.Comment;
 import com.kh.devs.entity.Social;
 import com.kh.devs.entity.Study;
-import com.kh.devs.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -38,7 +36,7 @@ public class MyPageService {
             socialDTO.setSocialId(e.getSocialId());
             socialDTO.setTitle(e.getTitle());
             socialDTO.setPostDate(e.getPostDate());
-            socialDTO.setComment(e.getComment());
+//            socialDTO.setComment(e.getComment()); 코맨트 컬럼 삭제해서 주석처리 했습니다.
             socialDTO.setView(e.getView());
             socialDTOS.add(socialDTO);
         }
@@ -91,6 +89,4 @@ public class MyPageService {
         }
         return studyDTOS;
     }
-
-
 }

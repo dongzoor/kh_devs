@@ -90,6 +90,7 @@ function AdminBoardList() {
   const [deleteAdBoard, setDeleteAdBoard] = useState(false); //멤버삭제
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState(0);
+  const [searchData , setSearchData] = useState('');
   /// 페이지 네그네이션
   const [page, setPage] = useState(1);
   const [items, setItems] = useState(10); // 페이지별 목록 개수
@@ -156,6 +157,15 @@ function AdminBoardList() {
           <h1 className="adTitle">
             스터디 게시판 리스트&nbsp;<i class="fi fi-rr-document"></i>
           </h1>
+          <div>         
+        <input
+        type="text"
+        placeholder="Search... &#61442;"
+        className="search"
+        onChange={(e) => setSearchData(e.target.value)}
+        >
+        </input>
+        </div>
           <Table striped bordered hover  className="table_adboardlist">
             <thead>
               <tr>
@@ -171,7 +181,11 @@ function AdminBoardList() {
             </thead>
             <tbody>
               {/* 페이지네이션 잘라내기 */}
-              {adstudyboard
+              {adstudyboard.filter((list) => list.title.toLowerCase().includes(searchData) ||
+                                  list.content.toLowerCase().includes(searchData) ||
+                                  list.user.userNickname.toLowerCase().includes(searchData)
+                
+                )
                 .slice(items * (page - 1), items * (page - 1) + items)
                 .map((list) => (
                   <tr key={list.id}>
@@ -198,7 +212,9 @@ function AdminBoardList() {
                         />
                     </td>
                     <td>{list.cnt}</td>
-                    <td>{String(list.regTime).substring([0],[16])}</td>
+                    {/* {social.postDate.slice(0, 3).join("-")} */}
+                    {/* {String(list.regTime).substring([0],[16])} */}
+                    <td>{list.regTime.slice(0,5).join("-")}</td>
                     <td>{list.goalPeople}</td>
                     <td>
                       <>

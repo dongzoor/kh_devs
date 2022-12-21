@@ -17,19 +17,20 @@ public class SocialDTO {
     private Long socialId;          // 게시글 id
     private String title;           // 게시글 제목
     private String content;         // 게시글 내용
-    private String tag;             // 해시태그
     private String image;           // 첨부 이미지 Link
     private String imageId;         // 첨부 이미지 ID
     private int like;               // 좋아요 수
     private int view;               // 조회수
-    private int comment;            // 댓글 수
     private int saved;              // 저장 횟수
     // USER DATA
     private String userEmail;       // 작성자 email
     private String userNickName;    // 작성자 nickname
     private String userImageId;     // 작성자 이미지 ID
     private String userImageUrl;    // 작성자 이미지 URL
-    private List<CommentDTO> comments = new ArrayList<>();
+
+    private List<HashTagDTO> tags = new ArrayList<>();     // 해시태그
+    private List<CommentDTO> comments = new ArrayList<>(); // 댓글
+
     // 작성 일자
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)

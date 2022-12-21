@@ -1,10 +1,32 @@
+import { useEffect, useState } from 'react';
+import './admin.css'
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import './admin.css'
+
 
 function Adminheader() {
+
+  const userId = sessionStorage.getItem("userId");
+  const [isLogin, setIslogin] = useState("");
+
+  useEffect(() => {
+    const sessioninfo = sessionStorage.getItem("userEmail");
+    if (sessioninfo !== null) {
+      setIslogin(sessioninfo);
+    }
+  }, []);
+
+
+
+
+  const onClickLogout = (e) => {
+    sessionStorage.clear();
+    window.alert("로그아웃 되었습니다.");
+  };
+
+
   return (
     <Navbar id='adminNav' expand="lg">
       <Container>
@@ -23,10 +45,15 @@ function Adminheader() {
               {/* <NavDropdown.Divider />
               <NavDropdown.Item href="#action/3.4">
                 Separated link
-              </NavDropdown.Item> */}
-              
+              </NavDropdown.Item> */}             
             </NavDropdown>
+            {isLogin !== "" && (
+                    <Nav.Link href="/" onClick={onClickLogout} style={{float:'left'}}>
+                            로그아웃&nbsp;<i class="fi fi-rr-sign-out-alt"></i>
+                    </Nav.Link> 
+                  )}
           </Nav>
+     
         </Navbar.Collapse>
       </Container>
     </Navbar>

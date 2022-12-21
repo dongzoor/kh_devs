@@ -10,23 +10,21 @@ const SocialApi = {
     return await axios.get(`/api/social/${socialId}`);
   },
   // 게시글 작성
-  socialWrite: async function (userEmail, title, content, tag, image, imageId) {
+  socialWrite: async function (userEmail, title, content, image, imageId) {
     const writeObj = {
       userEmail: userEmail, // 유저 id(PK)
       title: title,
       content: content,
-      tag: tag,
       image: image,
       imageId: imageId,
     };
     return await axios.post(`/api/social/write`, writeObj);
   },
   // 게시글 수정
-  socialUpdate: async function (socialId, title, content, tag, image, imageId) {
+  socialUpdate: async function (socialId, title, content, image, imageId) {
     const updateObj = {
       title: title,
       content: content,
-      tag: tag,
       image: image,
       imageId: imageId,
     };
@@ -37,7 +35,7 @@ const SocialApi = {
     return await axios.delete(`/api/social/${socialId}`);
   },
   // ########################## 댓글 ##########################
-  // 댓글 입력
+  // 입력
   commentWrite: async function (socialId, userEmail, content) {
     const regCmtObj = {
       socialId: socialId,
@@ -46,13 +44,32 @@ const SocialApi = {
     };
     return await axios.post(`/comment/post`, regCmtObj);
   },
-  // 댓글 삭제
+  // 삭제
   commentDelete: async function (commentId) {
     const delCmtObj = {
       commentId: commentId,
     };
     console.log("댓글 번호 : ", commentId, typeof commentId);
     return await axios.post(`/comment/delete`, delCmtObj);
+  },
+  // ########################## 해시태그 ##########################
+  // 입력
+  hashtagWrite: async function (id, tags) {
+    // const regObj = {
+    //   tag:tags
+    // }
+    return await axios.post(`/hashtag/post/${id}`, JSON.stringify(tags));
+  },
+  // hashtagWrite: async function (id, tags) {
+  //   return await axios.post(`/hashtag/post/${id}`, JSON.stringify(tags));
+  // },
+  // 삭제
+  hashtagDelete: async function (tagId) {
+    const delTagObj = {
+      tagId: tagId,
+    };
+    console.log("태그 ID : ", tagId, typeof commentId);
+    return await axios.post(`/hashtag/delete`, delTagObj);
   },
 };
 export default SocialApi;

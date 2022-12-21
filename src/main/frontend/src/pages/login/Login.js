@@ -17,15 +17,17 @@ import { auth } from "../../lib/api/fbase";
 const Box = styled.div`
   margin: 0 auto;
   padding: 0;
-  font-family: GmarketSansMedium;
+  font-family: "Gowun Dodum";
   background: linear-gradient(90deg, #ffe7e8, #8da4d0);
+  overflow-x: hidden;
+  overflow-y: hidden;
 `;
 
 const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  min-height: 90vh;
 `;
 
 function Login() {

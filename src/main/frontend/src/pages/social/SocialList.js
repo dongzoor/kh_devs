@@ -1,13 +1,12 @@
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+import SocialApi from "../../api/SocialApi";
 import {
   IoChatboxOutline,
   IoEyeOutline,
   IoHeartOutline,
 } from "react-icons/io5";
-import React, { useEffect, useState } from "react";
-
-import { Link } from "react-router-dom";
-import SocialApi from "../../api/SocialApi";
-import styled from "styled-components";
 
 const ListBlock = styled.div`
   * {
@@ -35,8 +34,8 @@ const ListBlock = styled.div`
     font-family: "Alfa Slab One", cursive;
   }
   .parentBox {
-    font-family: "Yeon Sung", cursive;
-    font-family: "Song Myung", serif;
+    /* font-family: "Song Myung", serif; */
+    font-family: "Gowun Dodum", sans-serif;
     width: 1024px;
     padding: 5px;
     border-radius: 10px;
@@ -120,9 +119,16 @@ const ListBlock = styled.div`
     align-items: center;
   }
   .content-title {
+    width: 750px;
+    /* white-space:wrap;  */
+    /* overflow:hidden; */
+    /* text-overflow:ellipsis; */
+    /* white-space:pre-wrap; */
+    /* word-break:break-all; */
+    white-space: normal;
+    word-break: break-all;
     margin: 5px;
     /* border: 1px solid grey; */
-    width: 750px;
   }
   .hashtag {
     padding: 10px;
@@ -219,9 +225,9 @@ const Social = () => {
                   </div>
                   <div className="flex-box2">
                     <div className="content-title">{social.title}</div>
-                    <div className="hashtag-box">
-                      <span className="hashtag">{social.tag}</span>
-                    </div>
+                    {/* <div className="hashtag-box">
+                                            <span className="hashtag">{social.tag}</span>
+                                        </div> */}
                     <div className="flex-box3">
                       <div className="publisher-info">
                         <img
@@ -234,15 +240,16 @@ const Social = () => {
                           }
                         />
                         <span className="nickName">{social.userNickName}</span>
-                        <span className="date">| {social.postDate}</span>
+                        <span className="date">
+                          | {social.postDate[0]}-{social.postDate[1]}-
+                          {social.postDate[2]}
+                        </span>
                       </div>
                       <div className="icon-box">
-                        <IoEyeOutline />
-                        <span className="count">{social.view}</span>
                         <IoHeartOutline />
                         <span className="count">{social.like}</span>
                         <IoChatboxOutline />
-                        <span className="count">{social.comment}</span>
+                        <span className="count">{social.comments.length}</span>
                       </div>
                     </div>
                   </div>
@@ -253,9 +260,9 @@ const Social = () => {
                 <div className="childBox-noPic">
                   <div className="flex-box2">
                     <div className="content-title">{social.title}</div>
-                    <div className="hashtag-box">
-                      <span className="hashtag">{social.tag}</span>
-                    </div>
+                    {/* <div className="hashtag-box">
+                                            <span className="hashtag">{social.tags.tag}</span>
+                                        </div> */}
                     <div className="flex-box3">
                       <div className="publisher-info">
                         <img
@@ -268,15 +275,16 @@ const Social = () => {
                           }
                         />
                         <span className="nickName">{social.userNickName}</span>
-                        <span className="date">| {social.postDate}</span>
+                        <span className="date">
+                          | {social.postDate[0]}-{social.postDate[1]}-
+                          {social.postDate[2]}
+                        </span>
                       </div>
                       <div className="icon-box">
-                        <IoEyeOutline />
-                        <span className="count">{social.view}</span>
                         <IoHeartOutline />
                         <span className="count">{social.like}</span>
                         <IoChatboxOutline />
-                        <span className="count">{social.comment}</span>
+                        <span className="count">{social.comments.length}</span>
                       </div>
                     </div>
                   </div>
