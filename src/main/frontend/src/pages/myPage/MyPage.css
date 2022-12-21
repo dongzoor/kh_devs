@@ -18,17 +18,21 @@
 }
 
 .subTitle {
-  margin: 50px 0 50px 12px;
+  margin: 50px 0 30px 12px;
 }
 
 .mp-nv-link {
   color: black;
   font-size: 1.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.mp-nv-link:hover {
+.mp-nv-link:hover, mp-nv-link.hover  {
   background-color: rgba(190, 100, 255, 0.5);
   color:white;
+  transition: 0.3s ease-in-out ;
 }
 
 .deleteButtonBox{
@@ -39,25 +43,6 @@
   display: inline-block;
   margin: 0, 5px;
 }
-
-/* .allDeleteBox {
-  display: flex;
-  justify-content : right;
-}
-
-.allDeleteButton{
-  margin-right: 12px;
-  border: 0;
-  border-radius: 3px;
-  padding: 10px;
-  font-weight: bold;
-}
-
-.allDeleteButton:hover{
-  color: white;
-  font-weight: bold;
-  background-color: rgba(190, 100, 255, 0.5);
-} */
 
 .deleteButton {
   font-size: 0.8em;
@@ -72,16 +57,31 @@
   background-color: rgba(190, 100, 255, 0.5);
 }
 
+.myPageHr {
+  margin: 3rem 0;
+}
+
 /* 작성글 페이지 */
 .myPageTable {
   width: 100%;
   font-size: 1em;
 }
 
+.myPageTableTr, .ms-td-2, .ms-td-3 {
+  text-align: center;
+}
+
 .ms-th-1 {
   width: 70%;
 }
 
+.deleteButton, .mySocialTitle, .mySocialCommNum{
+  display: inline-block;
+}
+
+.mySocialCommNum {
+  color: rgb(220, 105, 252);
+}
 /* .ms-td-1 {
   overflow: hidden;
   white-space: nowrap;
@@ -95,6 +95,7 @@
   width: 50px;
 }
 
+/* 댓글 작성 페이지 */
 .msc-td:hover {
   font-weight: bold;
 }
@@ -108,6 +109,10 @@
 }
 
 /* 캘린더 페이지 */
+
+.calendarIcon {
+  width: 50px;
+}
 
 /* 일요일 날짜: 빨간색 */
 .fc-day-sun a {
@@ -126,34 +131,28 @@
   padding: 0;
 }
 
-.calCreateButtonBox > button{
-  padding: 5px, 8px;
-  margin: 10px, 0;
-  margin-right: 12px;
-  border: 0;
-  border-radius: 3px;
-  font-weight: bold;
-  width: 60px;
-}
-
 .calendarBox {
   display: block;
   width: 100%
 }
 
-/* #calCreateButton{
-  padding: 5px, 8px;
-  margin: 10px, 0;
-  margin-right: 12px;
+#calCreateButton{
+  height: 40px;
+  border: 1px solid gray !important;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 15px;
   border: 0;
   border-radius: 3px;
-  font-weight: bold;
-} */
+  color: rgb(226, 226, 226);
+  /* background-color: rgb(190, 100, 255, 0.5); */
+  background-color: rgba(155, 33, 242, 0.568);
+}
 
 #calCreateButton:hover {
-  color: white;
+  color: rgba(155, 33, 242, 0.568);
+  background-color: rgb(223, 223, 223);
   font-weight: bold;
-  background-color: rgb(190, 100, 255, 0.5);
 }
 
 .fc-event-main {
@@ -162,4 +161,13 @@
 
 .fc-header-toolbar {
   margin-left: 18px;
+}
+
+/* 작성댓글 페이지 */
+.commnetContent, .commnetPostDate {
+  display: inline-block;
+  margin-right: 10px;
+}
+.commnetPostDate {
+  color: gray;
 }

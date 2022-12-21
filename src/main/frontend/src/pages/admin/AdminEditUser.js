@@ -153,79 +153,6 @@ if (userUpdate.data === true) {
 }
 };
 
- // 회원정보 수정
-//  const onClickEdit2 = async () => {
-//   if (userNickname === "") {
-//     window.alert("닉네임을 입력해주세요.");
-//     return;
-//   }
-
-//   if (phone === "") {
-//     window.alert("전화번호를 입력해주세요.");
-//     return;
-//   }
-
-//   if (window.confirm("회원정보를 수정하시겠습니까?")) {
-//     if (true) {
-//       let profileImage = null;
-//       let nowProfileImage = imgFile;
-
-//       // 이미지가 바뀌는 경우
-//       if (changeImgFile !== "") {
-//         //새로운 파일이름 생성
-//         profileImage = uuidv4();
-//       } else {
-//         //기존이미지이름 넣기
-//         profileImage = nowProfileImage;
-//       }
-
-//       const userUpdate = await AdminApi.AdUserUpdate(
-//         userEmail,
-//         password,
-//         userNickname,
-//         phone,
-//         profileImage
-//       );
-
-//       if (userUpdate.data !== false) {
-//         if (imgFile !== "") {
-//           // 기존 이미지가 존재하는 경우
-//           if (nowProfileImage !== null) {
-//             // 이미지가 바뀌는 경우
-//             if (changeImgFile !== "") {
-//               const attachmentRefDelete = ref(
-//                 storageService,
-//                 `/USER/${nowProfileImage}`
-//               );
-//               //storage 참조 경로로 기존 이미지 삭제
-//               await deleteObject(attachmentRefDelete);
-
-//               // 바꿀 이미지 업로드
-//               const attachmentRefUpload = ref(
-//                 storageService,
-//                 `/USER/${profileImage}`
-//               );
-//               await uploadString(attachmentRefUpload, imgFile, "data_url");
-//             }
-//           } else {
-//             if (changeImgFile !== "") {
-//               // 바꿀 이미지 업로드
-//               const attachmentRefUpload = ref(
-//                 storageService,
-//                 `/USER/${profileImage}`
-//               );
-//               await uploadString(attachmentRefUpload, imgFile, "data_url");
-//             }
-//           }
-//         }
-//         window.alert("회원정보 수정이 완료되었습니다.");
-//         window.location.replace("/AdminMemberList");
-//       }
-//     }
-//   } else {
-//     return;
-//   }
-// };
 
 ////////////////////////// 온체인지 
 
@@ -302,7 +229,7 @@ const onChangePassword = (e) => {
           <Link to="/AdminMemberList">
             <MdArrowBack size="24" style={{ margin: 10 }} />
           </Link>
-          <h1 class="form-title">Edit Account Information</h1>
+          <h1 class="form-title">관리자 수정</h1>
           <div>
             <form className="edit-form">
               <img

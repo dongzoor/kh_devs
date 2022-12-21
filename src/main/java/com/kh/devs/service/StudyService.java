@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -25,7 +26,7 @@ public class StudyService {
     private final UserRepository userRepository;
 
     public Boolean writeStudy(StudyDTO studyDTO) {
-        User user = userRepository.findByUserEmail(studyDTO.getWriter()).get(0);
+        User user = userRepository.findByUserId(Long.parseLong(studyDTO.getUserId())).get(0);
         Study study = Study.builder()
                 .user(user)
                 .title(studyDTO.getTitle())
@@ -33,7 +34,6 @@ public class StudyService {
                 .regTime(LocalDateTime.now())
                 .goalTime(studyDTO.getGoalTime())
                 .cnt(0)
-                .writer(studyDTO.getWriter())
                 .imgUrl(studyDTO.getImgUrl())
                 .hashtag(studyDTO.getHashtag())
                 .addr(studyDTO.getAddr())
@@ -76,6 +76,11 @@ public class StudyService {
         Study study = studyRepository.findById(id).orElseThrow(() -> new NotFoundStudyException("study is not Found!"));
         if(!studyDTO.getTitle().equals("")) study.setTitle(studyDTO.getTitle()); // 제목이 바뀐 경우
         if(!studyDTO.getContent().equals("")) study.setContent(studyDTO.getContent()); // 내용이 바뀐 경우
+        if(!studyDTO.getHashtag().isEmpty()) study.setHashtag(studyDTO.getHashtag()); // 해시태그가 바뀐 경우
+        if(studyDTO.getGoalPeople() != 0) study.setGoalPeople(studyDTO.getGoalPeople()); // 목표 인원이 바뀐 경우
+        study.setApplyPeople(studyDTO.getApplyPeople()); // 모집 배열이 바뀐 경우
+        study.setAddr(studyDTO.getAddr());
+        study.setGoalTime(studyDTO.getGoalTime());
         study.setImgUrl(studyDTO.getImgUrl());
         study.setUpdateTime(LocalDateTime.now());
     }

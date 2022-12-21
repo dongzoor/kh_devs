@@ -109,7 +109,7 @@ function OffcanvasExample() {
                       </NavDropdown.Item>
                     )}
                   </NavDropdown>
-                  <Nav.Link href="/studies">스터디</Nav.Link>
+                  <Nav.Link href="/studies">Study</Nav.Link>
                   <Nav.Link href="/social">Social</Nav.Link>
                   <Nav.Link href="/AdminLogin">관리자모드</Nav.Link>
                 </Nav>

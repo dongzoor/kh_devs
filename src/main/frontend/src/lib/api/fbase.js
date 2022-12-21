@@ -21,4 +21,5 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
+
 export const storageService = getStorage(app);

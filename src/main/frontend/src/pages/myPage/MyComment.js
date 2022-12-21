@@ -10,7 +10,7 @@ const MyComment = () => {
 
   // 로그인 시 세션 스토리지에 설정한 userId 가져오기
   const userId = sessionStorage.getItem("userId");
-  // 작성글(소셜 게시판) 조회
+  // 작성 댓글(소셜 게시판) 조회
   const [myCommentList, setMyCommentList] = useState("");
   const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
@@ -38,22 +38,22 @@ const MyComment = () => {
     return <p>∘✧₊⁺ 𝑳𝒐𝒅𝒊𝒏𝒈... ⁺₊✧∘</p>
   }
 
-    // 작성글 개별 삭제
-    const delConfirmSccModal = async (e) => {
-      console.log("삭제 버튼 클릭");
-      setModalOpen(false);
-      const response = await MyPageApi.myCommnetDelete(e);
+  // 작성 댓글 삭제
+  const delConfirmSccModal = async (e) => {
+    console.log("삭제 버튼 클릭");
+    setModalOpen(false);
+    const response = await MyPageApi.myCommnetDelete(e);
   
-      if (response.data.result === "OK") {
-        console.log("삭제 완료");
-        setLoading(true);
-        window.location.reload();
-      } else {
-        console.log("삭제 실패");
-        console.log(response.data.result);
-        setLoading(false);
-      }
-    };
+    if (response.data.result === "OK") {
+      console.log("삭제 완료");
+      setLoading(true);
+      window.location.reload();
+    } else {
+      console.log("삭제 실패");
+      console.log(response.data.result);
+      setLoading(false);
+    }
+  };
 
   const openModal = (e) => {
     setModalData(e);
@@ -64,26 +64,22 @@ const MyComment = () => {
     setModalOpen(false);
   };
 
-  const onClickAllDelete = () => {
-    
-  }
-
   return (
     <div className='myPageContainer'>
         <MyPageNav />
         <div className='myPageTable'>
           <Table className='myCommentTable' striped bordered hover size="sm">
             <thead>
-              <tr>
+              <tr className='myPageTableTr'>
                 <th>댓글 / 작성일</th>
               </tr>
             </thead>
             <tbody>
               {myCommentList && myCommentList.map((list) => (
-                <tr key={list.socialId}>
+                <tr key={list.id}>
                   <td className='msc-td'>
                     <button className='deleteButton' onClick={() => openModal
-                    (list.socialId)}>
+                    (list.id)}>
                         삭제
                     </button>
                     {modalOpen && (
@@ -92,8 +88,8 @@ const MyComment = () => {
                       </JwModal>
                     )}
                     <Link to={`/social/${list.socialId}`} style={{ textDecoration: 'none', color: 'black'}} >
-                      <span className='commnetContent'>{list.comment_content}</span>
-                      <span className='commnetCreate'>{list.commnet_create}</span>
+                      <div className='commnetContent'>{list.content}</div>
+                      <div className='commnetPostDate'>{list.postDate}</div>
                     </Link>
                   </td>
                 </tr>

@@ -27,6 +27,10 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+  @media screen and (max-width: 580px) {
+    width: 90%;
+    min-height: 90vh;
+  }
 `;
 
 const Content = styled.div`
@@ -95,7 +99,7 @@ function FindInfo() {
     if (res.data !== false) {
       console.log(res.data);
       // window.alert("test");
-      window.alert(`아이디는 ${res.data.userEmail} 입니다.`);
+      window.alert(`찾으신 아이디는 ${res.data.userEmail} 입니다.`);
     } else {
       window.alert("입력하신 정보를 확인해주세요.");
     }
@@ -132,7 +136,7 @@ function FindInfo() {
     if (res.data === true) {
       console.log(res.data);
       window.alert(
-        "입력하신 메일로 임시 비밀번호를 전송하였습니다. \n새로운 비밀번호로 로그인 해주세요."
+        "입력하신 메일주소로 임시 비밀번호를 전송하였습니다. \n새로운 비밀번호로 로그인 해주세요."
       );
       navigate("/");
     } else {

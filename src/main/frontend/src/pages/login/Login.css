@@ -3,18 +3,18 @@
 .screen {
   background: linear-gradient(90deg, #5d54a4, #7c78b8);
   position: relative;
-  height: 70vh;
-  min-width: 40vw;
+  height: 55vh;
+  min-width: 35%;
   box-shadow: 0px 0px 24px #5c5696;
+  @media screen and (max-width: 768px) {
+    min-width: none;
+  }
 }
 
 .screen__content {
   z-index: 1;
   position: relative;
   height: 100%;
-  @media (max-width: 768px) {
-    width: 100%;
-  }
 }
 
 .screen__background {
@@ -72,11 +72,7 @@
 .login {
   width: 80%;
   padding: 30px;
-  padding-top: 100px;
-  @media (max-width: 768px) {
-    width: 100%;
-    padding: 10px;
-  }
+  padding-top: 8vh;
 }
 
 .login__field {
@@ -102,7 +98,7 @@
   background: none;
   padding: 10px 10px 10px 24px;
   font-weight: 700;
-  width: 85%;
+  width: 80%;
   transition: 0.2s;
 }
 
@@ -110,13 +106,14 @@
 .login__input:focus,
 .login__input:hover {
   outline: none;
+  border-bottom-width: 2px;
   border-bottom-color: #6a679e;
 }
 
 .login_btn {
   background: #fff;
-  font-size: 14px;
-  margin: 20px 0px 20px 0px;
+  font-size: 16px;
+  margin: 10px 0px 20px 0px;
   padding: 16px 20px;
   border-radius: 26px;
   border: 1px solid #d4d3e8;
@@ -124,18 +121,23 @@
   font-weight: 700;
   display: flex;
   align-items: center;
-  width: 80%;
+  width: 70%;
   color: #4c489d;
-  box-shadow: 0px 2px 2px #5c5696;
+  box-shadow: 0px 5px 5px #5c5696;
   cursor: pointer;
   transition: 0.2s;
 }
 
+.login_btn:hover,
 .login_btn:active,
-.login_btn:focus,
-.login_btn:hover {
+.login_btn:focus {
+  opacity: 1;
   border-color: #6a679e;
+  background-color: #eceafe;
+  box-shadow: 0px 1px 1px #5c5696;
   outline: none;
+  cursor: pointer;
+  transform: translateY(5%);
 }
 
 .button__icon {
@@ -146,7 +148,7 @@
 
 .social-login {
   position: absolute;
-  width: 160px;
+  width: 30%;
   text-align: center;
   bottom: 20px;
   right: 0px;
@@ -159,13 +161,25 @@
   justify-content: center;
 }
 
-.kakaoIcon {
-  color: #fff;
-  text-decoration: none;
-  text-shadow: 0px 0px 8px #7875b5;
-}
-
 .kakaoIcon:hover {
   transform: scale(1.1);
   color: #8e8caf;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 1024px) {
+  .login_btn {
+    font-size: 0.8rem;
+  }
+  .menu_link {
+    display: flex;
+    flex-direction: column;
+  }
+  .menu {
+    font-size: 0.9rem;
+  }
+
+  .social-login {
+    padding-right: 15px;
+  }
 }

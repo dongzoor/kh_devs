@@ -61,9 +61,12 @@ function Login() {
     const res = await UserApi.userLogin(inputId, inputPw);
 
     console.log(res.data);
-
+    if (res.data === "BAN_USER") {
+      window.alert("차단된 유저입니다 서비스이용이 불가합니다.");
+      window.location.replace("/");
+    }
     // 로그인을 성공하는 경우
-    if (res.data !== false) {
+    else if (res.data !== false) {
       // 사람정보에 이미지가 존재하는 경우
 
       sessionStorage.setItem("profileImage", res.data.profileImage);
@@ -159,32 +162,42 @@ function Login() {
               >
                 Log in now
               </button>
-
-              <Link to="/user/register" className="linktoReg">
-                <label
-                  style={{
-                    textDecoration: "none",
-                    margin: "10px 10px 20px 0px",
-                    color: "#7875b5",
-                  }}
-                >
-                  <div className="linktoReg">Register</div>
-                </label>
-              </Link>
-              <Link to="/user/find">
-                <label
-                  style={{
-                    textDecoration: "none",
-                    margin: "10px ",
-                    color: "#7875b5",
-                  }}
-                >
-                  Find Id/Pw
-                </label>
-              </Link>
+              <div className="menu_link">
+                <Link to="/user/register">
+                  <label
+                    className="menu"
+                    style={{
+                      textDecoration: "none",
+                      margin: "10px 10px 20px 10px",
+                      color: "#7875b5",
+                      fontWeight: 600,
+                    }}
+                  >
+                    Register
+                  </label>
+                </Link>
+                <Link to="/user/find">
+                  <label
+                    className="menu"
+                    style={{
+                      textDecoration: "none",
+                      margin: "10px 10px 20px 10px",
+                      color: "#7875b5",
+                      fontWeight: 600,
+                    }}
+                  >
+                    Find Id/Pw
+                  </label>
+                </Link>
+              </div>
             </form>
             <div className="social-login">
-              <h3>log in via</h3>
+              <label
+                className="login_via"
+                style={{ fontSize: "1.2rem", fontWeight: 500 }}
+              >
+                log in via
+              </label>
               <div className="social-icons">
                 <KakaoLogin
                   // rest api 키가 아닌 js 키를 사용

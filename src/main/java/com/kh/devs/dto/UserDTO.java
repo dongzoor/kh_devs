@@ -22,6 +22,7 @@ public class UserDTO {
     private String password;
     private String phone;
     private String profileImage;
+    private String profileImagePath;
 
     @Enumerated(EnumType.STRING)
     private UserRole userRole;

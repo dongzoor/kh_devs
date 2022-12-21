@@ -39,6 +39,7 @@
 .find__input:focus,
 .find__input:hover {
   outline: none;
+  border-bottom-width: 2px;
   border-bottom-color: #6a679e;
 }
 
@@ -56,13 +57,18 @@
   align-items: center;
   width: 100%;
   color: #4c489d;
-  box-shadow: 0px 2px 2px #5c5696;
+  box-shadow: 0px 5px 5px #5c5696;
   cursor: pointer;
   transition: 0.2s;
 }
 .submit_btn:hover,
 .submit_btn:focus,
 .submit_btn:active {
+  opacity: 1;
   border-color: #6a679e;
+  background-color: #eceafe;
+  box-shadow: 0px 1px 1px #5c5696;
   outline: none;
+  cursor: pointer;
+  transform: translateY(5%);
 }

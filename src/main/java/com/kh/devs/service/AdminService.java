@@ -1,11 +1,16 @@
 package com.kh.devs.service;
 
 import com.kh.devs.dao.AdminRepository;
+import com.kh.devs.dao.BanRepository;
 import com.kh.devs.entity.Admin;
+import com.kh.devs.entity.Ban;
+import com.kh.devs.entity.User;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Transactional
@@ -13,11 +18,12 @@ import java.util.List;
 @Slf4j
 public class AdminService {
 
-
+    private BanRepository banRepository;
     private AdminRepository adminRepository;
 
-    public AdminService(AdminRepository adminRepository) {
+    public AdminService(AdminRepository adminRepository, BanRepository banRepository) {
         this.adminRepository = adminRepository;
+        this.banRepository = banRepository;
     }
 
     // 어드민 로그인 체크
@@ -25,6 +31,23 @@ public class AdminService {
         List<Admin> AdminList = adminRepository.findByAdminEmailAndPassword(adminEmail, password);
         return AdminList;
     }
+
+    public boolean updateAdBanUser(Long userId ,String userEmail,String userNickname,String phone) {
+        Ban banUser = new Ban();
+        banUser.setUserId(userId);
+        banUser.setUserEmail(userEmail);
+        banUser.setUserNickname(userNickname);
+        banUser.setPhone(phone);
+        banUser.setModifyDate(LocalDateTime.now());  // 수정일 정보 자동 기입
+        Ban rst = banRepository.save(banUser);
+//        log.warn(rst.toString());
+        return true;
+    }
+    public List<Ban> banUserSearch(String userEmail) {
+        List<Ban> banUser = banRepository.findByUserEmail(userEmail);
+        return banUser;
+    }
+
 
 //    // 어드민 유저 상세조회
 //    public UserDTO getAdUserList(Long userId) {
