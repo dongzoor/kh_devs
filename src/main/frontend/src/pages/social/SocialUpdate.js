@@ -6,11 +6,11 @@ import {
   uploadString,
 } from "@firebase/storage";
 import { useNavigate, useParams } from "react-router-dom";
-
 import SocialApi from "../../api/SocialApi";
 import { storageService } from "../../lib/api/fbase";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
+import { Badge, Button, Form, InputGroup } from "react-bootstrap";
 
 const WriteBox = styled.div`
   & > * {
@@ -119,9 +119,27 @@ const SocialUpdate = () => {
   const [inputVal, setInputVal] = useState("");
   const [status, setStatus] = useState(true);
 
+  const [hashtag, setHashtag] = useState("");
+  const [hashtags, setHashtags] = useState([]);
+
   const onChangeTitle = (title) => setTitleInput(title.target.value);
   const onChangeContent = (content) => setContentInput(content.target.value);
-  // const onChangeTag = (tag) => setTagInput(tag.target.value);
+
+  const onChangeHashtag = (e) => {
+    const {
+      target: { value },
+    } = e;
+    setHashtag(value);
+  };
+  const addHashtag = (e) => {
+    setHashtags([...hashtags, hashtag]);
+    setHashtag("");
+  };
+  const onDeleteHash = (e) => {
+    const { target: target2 } = e;
+    hashtags.pop(target2.innerHTML);
+    target2.innerHTML = "";
+  };
 
   // 문자로 된 파일을 이미지로 보여줌 - 미리보기 코드
   const onChangeImage = (e) => {
@@ -186,6 +204,7 @@ const SocialUpdate = () => {
             params,
             titleInput,
             contentInput,
+            hashtags.join(","),
             attachmentUrl,
             imageName
           );
@@ -207,6 +226,7 @@ const SocialUpdate = () => {
           params,
           titleInput,
           contentInput,
+          hashtags.join(","),
           attachment,
           imageId
         );
@@ -239,6 +259,7 @@ const SocialUpdate = () => {
           params,
           titleInput,
           contentInput,
+          hashtags.join(","),
           attachmentUrl,
           imageName
         );
@@ -261,7 +282,7 @@ const SocialUpdate = () => {
           params,
           titleInput,
           contentInput,
-          tagInput,
+          hashtags.join(","),
           attachmentUrl
         );
         if (res.data === true) {
@@ -284,7 +305,7 @@ const SocialUpdate = () => {
         // 기존 데이터를 useState 값에 다 따로 받아주기 !
         setTitleInput(response.data.title);
         setContentInput(response.data.content);
-        // setTagInput(response.data.tag);
+        setHashtags(response.data.hashtag);
         setAttachment(response.data.image);
         console.log(response.data);
       } catch (e) {
@@ -315,8 +336,28 @@ const SocialUpdate = () => {
           onChange={onChangeContent}
         />
         <hr />
-        {/* <label>#해시태그</label>
-        <textarea className="hashTag" value={tagInput} onChange={onChangeTag} /> */}
+        {/* 해시태그 */}
+        <div className="hastag-box">
+          <label  className="tag-label">
+            Hashtag
+          </label>
+          <div>
+            <textarea
+              placeholder="태그하고 싶은 단어를 입력하세요."
+              value={hashtag}
+              onChange={onChangeHashtag}
+            />
+            <button onClick={addHashtag}>Add</button>
+          </div>
+        </div>
+        <div>
+          {hashtags.map((e, index) => (
+            <span onClick={onDeleteHash} key={index}>
+              {e}{" "}
+            </span>
+          ))}
+        </div>
+
         <label htmlFor="formFile" className="form-label">
           이미지 첨부
         </label>

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import Cam from "./cam.png";
-import Add from "./add.png";
-import More from "./more.png";
+import Cam from "./images/cam.png";
+import Add from "./images/add.png";
+import More from "./images/more.png";
 import Messages from "./Messages";
 import Input from "./Input";
 import { ChatContext } from "../context/ChatContext";

@@ -119,15 +119,13 @@ const ListBlock = styled.div`
     align-items: center;
   }
   .content-title {
+    font-size: 1.2em;
+    font-weight: 550;
     width: 750px;
     margin: 5px;
   }
   .content-title-noPic {
     margin: 5px;
-  }
-  .hashtag {
-    padding: 10px;
-    font-style: italic;
   }
   .publisher-info {
     display: flex;
@@ -145,16 +143,18 @@ const ListBlock = styled.div`
   .date {
     color: grey;
     margin: 0 5px;
+    font-size: 0.8em;
   }
   .count {
     padding: 5px;
   }
   .hashtag-box {
-    margin: 10px;
+    margin: 15px 0px;
   }
   .hashtag {
+    font-size: 0.7em;
     margin: 0px 3px;
-    padding: 8px;
+    padding: 10px;
     font-style: italic;
     background-color: rgba(219, 219, 219, 0.5);
     border-radius: 10px;
@@ -182,6 +182,7 @@ const ListBlock = styled.div`
 const Social = () => {
   const [socialList, setSocialList] = useState("");
   const [loading, setLoading] = useState(false);
+  const [inputTags, setInputTags] = useState([]);
   // const [userImageUrl, setUserImageUrl] = useState("");
 
   useEffect(() => {
@@ -190,6 +191,7 @@ const Social = () => {
       try {
         const response = await SocialApi.socialList();
         setSocialList(response.data);
+        setInputTags(response.data.hashtag);
         console.log("★ Social List ", response.data);
       } catch (e) {
         console.log(e);
@@ -220,6 +222,14 @@ const Social = () => {
                   </div>
                   <div className="flex-box2">
                     <div className="content-title">{social.title}</div>
+                    <div className="hashtag-box">
+                      {social.hashtag &&
+                        social.hashtag.map((e, index) => (
+                          <span className="hashtag" key={index}>
+                            #{e}
+                          </span>
+                        ))}
+                    </div>
                     <div className="flex-box3">
                       <div className="publisher-info">
                         <img
@@ -252,6 +262,14 @@ const Social = () => {
                 <div className="childBox-noPic">
                   <div className="flex-box2">
                     <div className="content-title-noPic">{social.title}</div>
+                    <div className="hashtag-box">
+                      {social.hashtag &&
+                        social.hashtag.map((e, index) => (
+                          <span className="hashtag" key={index}>
+                            #{e}
+                          </span>
+                        ))}
+                    </div>
                     <div className="flex-box3">
                       <div className="publisher-info">
                         <img
