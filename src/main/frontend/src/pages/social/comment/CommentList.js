@@ -6,12 +6,16 @@ import CommentWriter from "./CommentWriter";
 
 const BOX = styled.div`
   margin: 5px 20px;
-  * {
-    font-family: "Song Myung", serif;
-  }
   .comment-box {
     display: flex;
     flex-direction: column;
+    margin-top: 10px;
+  }
+  .parent-box{
+    border-radius: 5px;
+    background-color: rgba(255,255,255,0.2);
+    margin-top: 10px;
+    padding: 5px;
   }
   .child-box {
     display: flex;
@@ -27,8 +31,6 @@ const BOX = styled.div`
   }
   .comment-text {
     padding: 0px 5px 20px;
-    border-bottom: 1px dashed rgba(209, 209, 209, 0.8);
-    // text 개행 처리 !
     white-space: pre-wrap;
   }
   .userImage {
@@ -36,6 +38,9 @@ const BOX = styled.div`
     border-radius: 50%;
     width: 40px;
     height: 40px;
+  }
+  .deleteBt{
+    float: right;
   }
 `;
 
@@ -102,7 +107,11 @@ const CommentList = () => {
                   }
                 />
                 <span className="comment-writer">{comment.userNickName}</span>
-                <span className="comment-date">| {comment.postDate}</span>
+                <span className="comment-date">
+                  | {comment.postDate[0]}-{comment.postDate[1]}-
+                  {comment.postDate[2]} {comment.postDate[3]}:
+                  {comment.postDate[4]}
+                </span>
               </div>
               <p className="comment-text">{comment.content}</p>
               {getUserId === comment.userId && (

@@ -120,15 +120,10 @@ const ListBlock = styled.div`
   }
   .content-title {
     width: 750px;
-    /* white-space:wrap;  */
-    /* overflow:hidden; */
-    /* text-overflow:ellipsis; */
-    /* white-space:pre-wrap; */
-    /* word-break:break-all; */
-    white-space: normal;
-    word-break: break-all;
     margin: 5px;
-    /* border: 1px solid grey; */
+  }
+  .content-title-noPic {
+    margin: 5px;
   }
   .hashtag {
     padding: 10px;
@@ -225,9 +220,6 @@ const Social = () => {
                   </div>
                   <div className="flex-box2">
                     <div className="content-title">{social.title}</div>
-                    {/* <div className="hashtag-box">
-                                            <span className="hashtag">{social.tag}</span>
-                                        </div> */}
                     <div className="flex-box3">
                       <div className="publisher-info">
                         <img
@@ -259,10 +251,7 @@ const Social = () => {
               <Link to={`/social/${social.socialId}`} key={social.socialId}>
                 <div className="childBox-noPic">
                   <div className="flex-box2">
-                    <div className="content-title">{social.title}</div>
-                    {/* <div className="hashtag-box">
-                                            <span className="hashtag">{social.tags.tag}</span>
-                                        </div> */}
+                    <div className="content-title-noPic">{social.title}</div>
                     <div className="flex-box3">
                       <div className="publisher-info">
                         <img
