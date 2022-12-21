@@ -21,7 +21,6 @@ public class SocialDTO {
     private String imageId;         // 첨부 이미지 ID
     private int like;               // 좋아요 수
     private int view;               // 조회수
-    private int comment;            // 댓글 수
     private int saved;              // 저장 횟수
     // USER DATA
     private String userEmail;       // 작성자 email

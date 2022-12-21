@@ -1,7 +1,6 @@
 package com.kh.devs.service;
 
 import com.kh.devs.dao.CommentRepository;
-import com.kh.devs.dao.HashTagRepository;
 import com.kh.devs.dao.SocialRepository;
 import com.kh.devs.dao.UserRepository;
 import com.kh.devs.dto.CommentDTO;
@@ -25,7 +24,6 @@ public class SocialService {
     private final SocialRepository socialRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
-    private final HashTagRepository hashTagRepository;
 
     // Social 전체 조회
     public List<SocialDTO> getSocialList() {
@@ -41,13 +39,25 @@ public class SocialService {
             socialDTO.setUserImageUrl(e.getUser().getProfileImagePath());   // 작성자 사진 URL
             socialDTO.setTitle(e.getTitle());
             socialDTO.setContent(e.getContent());
-//            socialDTO.setTag(e.getTag());
             socialDTO.setPostDate(e.getPostDate());
             socialDTO.setImage(e.getImage());
             socialDTO.setLike(e.getLike());
-            socialDTO.setComment(e.getComment());
             socialDTO.setView(e.getView());
             socialDTOS.add(socialDTO);
+            // 댓글 list 조회
+            List<Comment> list = commentRepository.findBySocial_SocialIdOrderByPostDateDesc(socialDTO.getSocialId());
+            List<CommentDTO> CommentDTOs = new ArrayList<>();
+            for (Comment c : list) {
+                CommentDTO commentDTO = new CommentDTO();
+                commentDTO.setId(c.getId());
+                commentDTO.setContent(c.getContent());
+                commentDTO.setPostDate(c.getPostDate());
+                commentDTO.setUserId(c.getUser().getUserId());
+                commentDTO.setUserNickName(c.getUser().getUserNickname());
+                commentDTO.setUserImageUrl(c.getUser().getProfileImagePath());
+                CommentDTOs.add(commentDTO);    // CommentDTOs list에 값을 담는다
+            }
+            socialDTO.setComments(CommentDTOs); // 모든 댓글 list 값을 socialDTO에 담기
         }
         return socialDTOS;
     }
@@ -67,7 +77,6 @@ public class SocialService {
         socialDTO.setImage(social.getImage());
         socialDTO.setImageId(social.getImageId());
         socialDTO.setView(social.getView());
-        socialDTO.setComment(social.getComment());
         socialDTO.setPostDate(social.getPostDate());
 //        // hashtag list 조회
 //        List<HashTag> hashTags = hashTagRepository.findBySocial_SocialId(socialId);
