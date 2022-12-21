@@ -114,7 +114,8 @@ const SocialUpdate = () => {
   const [contentInput, setContentInput] = useState("");
   const [tagInput, setTagInput] = useState("");
   const [attachment, setAttachment] = useState(""); // 이미지를 string 으로 변환한 값
-  // firebase 참조 주소(파일주소)
+  // firebase 참조 주소(파일주소) : const로 바꿈
+  //const [attachmentRef, setAttachmentRef] = useState("");
   const [inputVal, setInputVal] = useState("");
   const [status, setStatus] = useState(true);
 
@@ -155,6 +156,7 @@ const SocialUpdate = () => {
         const deleteAttachmentRef = ref(storageService, `/SOCIAL/${imageId}`);
         // 참조경로로 firebase 이미지 삭제
         await deleteObject(deleteAttachmentRef)
+          // then이하 코드는 안타고, catch이하부터 탑니다 - J2
           .then(() => {
             console.log("Firebase File deleted successfully !");
             setStatus(true);
@@ -166,7 +168,9 @@ const SocialUpdate = () => {
           // =============== 신규 이미지 저장 =================
           var attachmentUrl = null; // 이미지 URL
           var imageName = uuidv4(); // 이미지 UUID
+
           // 참조경로로 storage에 저장
+          // 기존 setAttachmentRef 를 const로 변환 - J2
           const uploadAttachmentRef = ref(
             storageService,
             `/SOCIAL/${imageName}`
