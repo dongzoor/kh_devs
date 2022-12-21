@@ -24,6 +24,10 @@ const Box = styled.div`
   margin: -0.8vh 0.2vh 1vh 0;
   }
 
+  .hashtag-badge {
+    margin-right: 0.5vw; 
+  }
+
   .inputContainer {
     width: 60vw;
     height: 115vh;
@@ -32,6 +36,33 @@ const Box = styled.div`
     background-color: #FFF;
     box-shadow: 0px 0px 24px #5c5696;
     border-radius: 25px;
+  }
+
+  .option-container {
+    display: flex;
+  }
+
+  .form-select {
+    width: 7vw;
+    margin-bottom: 2vh;
+  }
+
+  .addr-container {
+    margin-left: 5vw;
+  }
+  .addr-label {
+    margin-bottom: 0.6vh;
+  }
+
+  .calendar-container {
+    margin-left: 5vw;
+  }
+  .calendar-label {
+    margin-bottom: 0.6vh;
+  }
+
+  .btn-submit {
+    float: right;
   }
 `;
 
@@ -42,9 +73,9 @@ const StudyWrite = (studyObj) => {
   const [hashtag, setHashtag] = useState("");
   const [hashtags, setHashtags] = useState([]);
   const [valueDate, setValueDate] = useState(new Date());
-  const [people, setPeople] = useState("");
+  const [people, setPeople] = useState(""); // 모집 인원
   const [addr, setAddr] = useState("");
-  const [applyPeople, setApplyPeople] = useState([]);
+  const [applyPeople, setApplyPeople] = useState([]); //지원자 목록
 
   const navigate = useNavigate();
   const userId = sessionStorage.getItem("userId");
@@ -87,6 +118,7 @@ const StudyWrite = (studyObj) => {
   const onSubmit = async (e) => {
 
     e.preventDefault();
+
 
     //이미지 첨부하지 않고 텍스트만 올리고 싶을 때도 있기 때문에 attachment가 있을때만 아래 코드 실행
     //이미지 첨부하지 않은 경우엔 attachmentUrl=""이 된다.
@@ -180,7 +212,7 @@ const StudyWrite = (studyObj) => {
           <input type="text" className="form-control" id="title-input" placeholder="제목을 입력하세요." onChange={titleChange} />
         </div>
 
-        <div className="mb-3" style={{}}>
+        <div className="mb-3" >
           <label htmlFor="content-textarea" className="form-label">Content</label>
           <textarea className="form-control" id="content-textarea" rows="9" placeholder="내용을 입력하세요." onChange={contentChange}></textarea>
         </div>
@@ -203,13 +235,13 @@ const StudyWrite = (studyObj) => {
 
         <div className="hashtag-container">
           {hashtags.map(e =>
-            <Badge bg="info" style={{ "marginRight": "0.5vw" }} onClick={onDeleteHash}>{e}</Badge>)}
+            <Badge bg="info" className="hashtag-badge" onClick={onDeleteHash}>{e}</Badge>)}
         </div>
 
         <div style={{ "display": "flex" }}>
           <div>
             <label htmlFor="memberCount" className="form-label">인원</label>
-            <Form.Select aria-label="memberCount" style={{ "width": "7vw", "marginBottom": "2vh" }}
+            <Form.Select aria-label="memberCount" className="form-select"
               onChange={(e) => {
                 setPeople(e.target.value);
                 setApplyPeople([userId]);
@@ -223,15 +255,15 @@ const StudyWrite = (studyObj) => {
             </Form.Select>
           </div>
 
-          <div style={{ "marginLeft": "5vw" }}>
-            <label htmlFor="addr" className="addr-label" style={{ "marginBottom": "0.6vh" }}>스터디 지역</label>
+          <div className="addr-container">
+            <label htmlFor="addr" className="addr-label">스터디 지역</label>
             <div className="addr" >
               <Addr propFunction={getAddr} />
             </div>
           </div>
 
-          <div style={{ "marginLeft": "5vw" }}>
-            <label htmlFor="calendar" className="calendar-label" style={{ "marginBottom": "0.6vh" }}>스터디 시작 날짜</label>
+          <div className="calendar-container">
+            <label htmlFor="calendar" className="calendar-label" >스터디 시작 날짜</label>
             <div className="calendar" >
               <Calendar onChange={(e) => setValueDate(e)}
                 formatDay={(locale, date) => moment(date).format("DD")} />
@@ -243,9 +275,11 @@ const StudyWrite = (studyObj) => {
           <label htmlFor="formFile" className="form-label">Upload Image</label>
           <input className="form-control" type="file" id="formFile" onChange={imgChange} />
         </div>
-        <button type="button" className="btn btn-light" style={{ "float": "right" }} onClick={onSubmit}>
-          Submit
-        </button>
+        <div className="btn-submit">
+          <button type="button" className="btn btn-light" onClick={onSubmit}>
+            Submit
+          </button>
+        </div>
       </div>
     </Box >
   )
