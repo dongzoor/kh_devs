@@ -1,6 +1,5 @@
 package com.kh.devs.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -8,14 +7,9 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.kh.devs.constant.ApplyStatus;
 import com.kh.devs.controller.StringListConverter;
 import lombok.*;
-
 import javax.persistence.*;
-import java.lang.reflect.Array;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity @Table(name = "study") @Getter @Setter @NoArgsConstructor( access = AccessLevel.PROTECTED)
 public class Study {

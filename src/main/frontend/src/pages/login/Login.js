@@ -11,6 +11,8 @@ import KakaoLogin from "react-kakao-login";
 import UserApi from "../../api/UserApi";
 import kakaoimages from "./images/kakao_login_small.png";
 import styled from "styled-components";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../lib/api/fbase";
 
 const Box = styled.div`
   margin: 0 auto;
@@ -59,6 +61,8 @@ function Login() {
   const onClickLogin = async () => {
     // 로그인을 위한 axios 호출
     const res = await UserApi.userLogin(inputId, inputPw);
+
+    await signInWithEmailAndPassword(auth, inputId, inputPw);
 
     console.log(res.data);
     if (res.data === "BAN_USER") {

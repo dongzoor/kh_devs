@@ -53,7 +53,6 @@ function OffcanvasExample() {
           bg="light"
           expand={expand}
           className="mb-3"
-          style={{ fontFamily: "JEJU" }}
         >
           <Container fluid>
             <Navbar.Brand href="#">DevS</Navbar.Brand>
