@@ -1,15 +1,10 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { deleteObject, ref } from "@firebase/storage";
 import { storageService } from "../../lib/api/fbase";
 import CommentList from "./comment/CommentList";
 import SocialApi from "../../api/SocialApi";
-import {
-  IoChatboxOutline,
-  IoEyeOutline,
-  IoHeartOutline,
-} from "react-icons/io5";
 
 const DetailBox = styled.div`
   & > * {
@@ -26,6 +21,24 @@ const DetailBox = styled.div`
     padding: 10px;
     margin: 20px;
   }
+  .subtitle {
+    display: flex;
+    flex-basis: 100%;
+    align-items: center;
+    color: rgba(0, 0, 0, 0.35);
+    font-size: 25px;
+    margin: 8px 0px;
+  }
+  .subtitle::before,
+  .subtitle::after {
+    content: "";
+    flex-grow: 1;
+    background: rgba(0, 0, 0, 0.35);
+    height: 1px;
+    font-size: 0px;
+    line-height: 0px;
+    margin: 0px 16px;
+  }
   .parentBox {
     font-family: "Gowun Dodum", sans-serif;
     width: 1024px;
@@ -41,14 +54,14 @@ const DetailBox = styled.div`
     border-radius: 5px;
     padding: 5px 10px;
     margin: 5px;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.8);
     font-size: 25px;
   }
   hr {
     width: 98%;
-    height: 1px;
+    height: 3px;
     border: 0;
-    background-color: rgba(209, 209, 209, 0.8);
+    background-color: rgba(209, 209, 209);
   }
   .content-text {
     padding: 10px;
@@ -63,7 +76,7 @@ const DetailBox = styled.div`
     display: flex;
     align-items: center;
   }
-  .icon-box {
+  .button-box {
     display: flex;
     align-items: center;
     margin-right: 15px;
@@ -94,6 +107,54 @@ const DetailBox = styled.div`
     align-items: center;
     justify-content: center;
   }
+
+  .goList {
+    float: right;
+    margin: 20px;
+    padding: 10px;
+    border-radius: 50px;
+    border-color: #8e44ad;
+    border-radius: 0;
+    color: #8e44ad;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: color 150ms ease-in-out;
+    &:after {
+      content: "";
+      position: absolute;
+      display: block;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 100%;
+      background: #8e44ad;
+      z-index: -1;
+      transition: width 150ms ease-in-out;
+    }
+    &:hover {
+      color: #fff;
+      &:after {
+        width: 110%;
+      }
+    }
+  }
+  .deleteBt,
+  .updateBt {
+    border: 0;
+    border-radius: 10px;
+    padding: 5px 10px;
+    margin: 5px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 255, 0.2);
+    transition-duration: 0.5s;
+    &:hover {
+      color: white;
+      background-color: rgba(190, 100, 255, 0.5);
+      box-shadow: 5px 5px 10px rgba(190, 100, 255, 0.2);
+      box-shadow: none;
+    }
+  }
 `;
 
 const SocialDetail = () => {
@@ -117,6 +178,9 @@ const SocialDetail = () => {
     "social_imageUrl",
     socialDetail.image
   );
+  const goList = () => {
+    navigate("/social");
+  };
   // 게시글 수정 화면으로 전환
   const onClickUpdate = async () => {
     navigate(`/social/${params}/update`);
@@ -189,15 +253,22 @@ const SocialDetail = () => {
                 ></img>
                 <span className="nickName">{socialDetail.userNickName}</span>
                 <span className="date">
-                  | {postDate[0]}-{postDate[1]}-
-                  {postDate[2]} {postDate[3]}:{postDate[4]}
+                  | {postDate[0]}-{postDate[1]}-{postDate[2]} {postDate[3]}:
+                  {postDate[4]}
                 </span>
               </div>
-              <div className="icon-box">
-                <IoHeartOutline />
-                <span className="count">{socialDetail.like}</span>
-                {/* <IoChatboxOutline />
-                <span className="count">{comments.length}</span> */}
+              <div className="button-box">
+                {/* 게시글 작성자 email = 로그인한 유저 email 이면 출력 */}
+                {userEmail === socialDetail.userEmail && (
+                  <>
+                    <button className="deleteBt" onClick={onClickDelete}>
+                      삭제
+                    </button>
+                    <button className="updateBt" onClick={onClickUpdate}>
+                      수정
+                    </button>
+                  </>
+                )}
               </div>
             </div>
             <div className="attachedImg">
@@ -206,23 +277,11 @@ const SocialDetail = () => {
               )}
             </div>
             <div className="content-text">{socialDetail.content}</div>
-            <div className="hashtag-box">{/*<HashTagList />*/}</div>
-            {/* 게시글 작성자 email = 로그인한 유저 email 이면 출력 */}
-            {userEmail === socialDetail.userEmail && (
-              <>
-                <button className="deleteBt" onClick={onClickDelete}>
-                  삭제
-                </button>
-                <button className="updateBt" onClick={onClickUpdate}>
-                  수정
-                </button>
-              </>
-            )}
-            <Link to="/social">
-              <button>목록보기</button>
-            </Link>
-            <hr />
+            <hr className="line" />
             <CommentList />
+            <button className="goList" onClick={goList}>
+              GO LIST
+            </button>
           </div>
         </div>
       </DetailBox>
