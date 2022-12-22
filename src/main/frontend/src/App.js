@@ -1,5 +1,8 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
+import "./lib/api/fbase";
+import "./pages/admin/firebase-messaging-sw";
+
 
 import { Route, BrowserRouter as Router, Routes, Navigate } from "react-router-dom";
 

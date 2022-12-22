@@ -8,13 +8,13 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 
 function Adminheader() {
 
-  const userId = sessionStorage.getItem("userId");
+  const userId = localStorage.getItem("userId");
   const [isLogin, setIslogin] = useState("");
 
   useEffect(() => {
-    const sessioninfo = sessionStorage.getItem("userEmail");
-    if (sessioninfo !== null) {
-      setIslogin(sessioninfo);
+    const localinfo = localStorage.getItem("adminEmail");
+    if (localinfo !== null) {
+      setIslogin(localinfo);
     }
   }, []);
 
@@ -22,7 +22,7 @@ function Adminheader() {
 
 
   const onClickLogout = (e) => {
-    sessionStorage.clear();
+    localStorage.clear();
     window.alert("로그아웃 되었습니다.");
   };
 
@@ -30,7 +30,7 @@ function Adminheader() {
   return (
     <Navbar id='adminNav' expand="lg">
       <Container>
-        <Navbar.Brand href="#home">DEVS 관리페이지&nbsp;<i class="fi fi-rr-home"></i></Navbar.Brand>
+        <Navbar.Brand href="/AdminMemberList">DEVS 관리페이지&nbsp;<i class="fi fi-rr-home"></i></Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">

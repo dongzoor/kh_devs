@@ -48,6 +48,24 @@ function Login() {
   const onChangeId = (e) => {
     setInputId(e.target.value);
   };
+  // useEffect(() => {
+  //   const Data = async () => {
+  //     try {
+  //       requestPermission()
+  //     } catch (e) {
+  //       console.log(e);
+  //     }
+  //   };
+  //   Data();
+  // }, []);
+
+
+  // function requestPermission() {
+  //   console.log('Requesting permission...');
+  //   Notification.requestPermission().then((permission) => {
+  //     if (permission === 'granted') {
+  //       console.log('Notification permission granted.')}})
+  //     };
 
   const onChangePw = (e) => {
     const passwordCurrent = e.target.value;
