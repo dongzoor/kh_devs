@@ -107,6 +107,11 @@ function EditInfo() {
   const [isConId, setIsConId] = useState(false);
   const [ConIdMessage, setConIdMessage] = useState("");
 
+  //유효한 비밀번호 체크
+  const [isValidPw, setIsValidPw] = useState(false);
+  const [pwMessage, setPwMessage] = useState("");
+
+  // 비밀번호 일치 체크
   const [isConPw, setIsConPw] = useState(false);
   const [conPwMessage, setConPwMessage] = useState("");
 
@@ -156,7 +161,19 @@ function EditInfo() {
   };
 
   const onChangePassword = (e) => {
-    setPassword(e.target.value);
+    const pwdCheck = e.target.value;
+    setPassword(pwdCheck);
+
+    const regExp =
+      /(?=.*\d{1,50})(?=.*[~`!@#$%\\^&*()-+=]{1,50})(?=.*[a-zA-Z]{1,50}).{8,50}$/;
+
+    if (regExp.test(pwdCheck) !== true) {
+      setPwMessage("8자리 이상 영문, 숫자, 특수문자를 혼합하여 입력해 주세요.");
+      setIsValidPw(false);
+    } else {
+      setPwMessage("");
+      setIsValidPw(true);
+    }
   };
 
   // 휴대폰 번호 오토하이픈 추가
@@ -411,6 +428,12 @@ function EditInfo() {
                 value={password}
                 onChange={onChangePassword}
               />
+              <span
+                className={`message ${isValidPw ? "success" : "error"}`}
+                style={{ color: "#ff0000", fontSize: "0.8rem" }}
+              >
+                {pwMessage}
+              </span>
               <input
                 type="password"
                 placeholder="VERIFY PASSWORD"
