@@ -22,7 +22,7 @@ const Container = styled.div`
 `;
 
 function Profile() {
-  const userId = sessionStorage.getItem;
+  const userId = sessionStorage.getItem("userId");
   return (
     <Box>
       <Container>
@@ -51,7 +51,11 @@ function Profile() {
           </Link>
         </div>
         <div className="todays_info" style={{ textAlign: "center" }}>
-          <h1 className="todays_schedule">오늘의 일정을 확인하세요.</h1>
+          <Link to={`/myPage/myCalendar/${userId}`}>
+            <label style={{ fontSize: "1.3rem", color: "#6a679e" }}>
+              오늘의 일정을 확인하세요.
+            </label>
+          </Link>
           <Quote />
         </div>
       </Container>
