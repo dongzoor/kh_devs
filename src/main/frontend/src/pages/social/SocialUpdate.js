@@ -58,17 +58,11 @@ const WriteBox = styled.div`
   .content {
     height: 600px;
   }
-  .hashTag {
-    height: 50px;
-  }
   hr {
     width: 98%;
     height: 1px;
     border: 0;
     background-color: rgba(209, 209, 209, 0.8);
-  }
-  .hashTag-input {
-    margin: 5px 20px;
   }
   .editBt {
     width: 96%;
@@ -99,6 +93,19 @@ const WriteBox = styled.div`
     color: rgb(98, 98, 112);
     margin-right: 10px;
   }
+  .hashtags-box {
+    margin: 15px;
+  }
+  .hashtags {
+    margin: 0px 5px;
+    padding: 8px;
+    font-style: italic;
+    background-color: rgba(219, 219, 219);
+    background-color: rgba(219, 219, 219, 0.5);
+    background-color: rgba(3, 0, 209, 0.2);
+    border-radius: 10px;
+    box-shadow: 0 1px 3px grey;
+  }
 `;
 
 const SocialUpdate = () => {
@@ -117,13 +124,14 @@ const SocialUpdate = () => {
   //const [attachmentRef, setAttachmentRef] = useState("");
   const [inputVal, setInputVal] = useState("");
   const [status, setStatus] = useState(true);
-
+  const [tagStatus, setTagStatus] = useState(false);
   const [hashtag, setHashtag] = useState("");
   const [hashtags, setHashtags] = useState([]);
 
   const onChangeTitle = (title) => setTitleInput(title.target.value);
   const onChangeContent = (content) => setContentInput(content.target.value);
 
+  // # 해시태그
   const onChangeHashtag = (e) => {
     const {
       target: { value },
@@ -131,14 +139,23 @@ const SocialUpdate = () => {
     setHashtag(value);
   };
   const addHashtag = (e) => {
-    setHashtags([...hashtags, hashtag]);
+    if (e.key === "Enter") {
+      if (hashtag.length > 10 || hashtags.length > 4) {
+        alert("해시태그는 10자 이하의 단어로 최대 5개까지 입력 가능합니다.");
+      } else {
+        setHashtags([...hashtags, hashtag]);
+        setTagStatus(true);
+      }
+    }
+  };
+  const onDeleteHash = (index) => {
+    hashtags.splice(index, 1);
+    setTagStatus(true);
+  };
+  useEffect(() => {
+    setTagStatus(false);
     setHashtag("");
-  };
-  const onDeleteHash = (e) => {
-    const { target: target2 } = e;
-    hashtags.pop(target2.innerHTML);
-    target2.innerHTML = "";
-  };
+  }, [tagStatus, hashtags]);
 
   // 문자로 된 파일을 이미지로 보여줌 - 미리보기 코드
   const onChangeImage = (e) => {
@@ -340,21 +357,22 @@ const SocialUpdate = () => {
         />
         <hr />
         {/* 해시태그 */}
-        <div className="hastag-box">
-          <label className="tag-label">Hashtag</label>
-          <div>
-            <textarea
-              placeholder="태그하고 싶은 단어를 입력하세요."
-              value={hashtag}
-              onChange={onChangeHashtag}
-            />
-            <button onClick={addHashtag}>Add</button>
-          </div>
-        </div>
-        <div>
+        <label className="tag-label">#Hashtag</label>
+        <textarea
+          className="hashtag-textarea"
+          value={hashtag}
+          onKeyPress={addHashtag}
+          onChange={onChangeHashtag}
+          placeholder="태그하고 싶은 단어를 입력하세요."
+        />
+        <div className="hashtags-box">
           {hashtags.map((e, index) => (
-            <span onClick={onDeleteHash} key={index}>
-              {e}{" "}
+            <span
+              className="hashtags"
+              onClick={() => onDeleteHash(index)}
+              key={index}
+            >
+              #{e}
             </span>
           ))}
         </div>
