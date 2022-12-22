@@ -34,7 +34,7 @@ const Container = styled.div`
 const Content = styled.div`
   display: block;
   align-items: center;
-  width: 30vw;
+  width: 40vw;
   justify-content: center;
   background-color: white;
   box-shadow: 0px 0px 24px #5c5696;
@@ -105,11 +105,13 @@ function Register() {
   const [isConId, setIsConId] = useState(false);
   const [ConIdMessage, setConIdMessage] = useState("");
 
-  const [isConPw, setIsConPw] = useState(false);
-  const [conPwMessage, setConPwMessage] = useState("");
-
+  //유효한 비밀번호 체크
   const [isValidPw, setIsValidPw] = useState(false);
   const [pwMessage, setPwMessage] = useState("");
+
+  //비밀번호 일치여부 체크
+  const [isConPw, setIsConPw] = useState(false);
+  const [conPwMessage, setConPwMessage] = useState("");
 
   const [isChecked, setIsChecked] = useState(false);
   const [isDuplCheck, setIsDuplCheck] = useState(true);
@@ -290,46 +292,6 @@ function Register() {
       let profileImage = null;
       let profileImagePath = null;
 
-      // 이미지가 존재하는 경우
-      if (imgFile !== "") {
-        //파일 랜덤 이름 생성(FireBase에 저장할 파일 이름)
-        profileImage = uuidv4();
-
-        const result = await createUserWithEmailAndPassword(
-          auth,
-          userEmail,
-          password
-        );
-        // 업로드파일 참조
-        const attachmentRef = ref(storageService, `/USER/${profileImage}`);
-        //storage 참조 경로로 파일 업로드 하기
-        await uploadString(attachmentRef, imgFile, "data_url");
-        //storage 참조 경로로 파일경로 가져오기
-        await getDownloadURL(attachmentRef).then(async (downloadURL) => {
-          // 파이어베이스
-          try {
-            //Update profile
-            await updateProfile(result.user, {
-              displayName,
-              photoURL: downloadURL,
-            });
-            //create user on firestore
-            await setDoc(doc(db, "users", result.user.uid), {
-              uid: result.user.uid,
-              displayName,
-              userEmail,
-              photoURL: downloadURL,
-            });
-
-            //create empty user chats on firestore
-            await setDoc(doc(db, "userChats", result.user.uid), {});
-            profileImagePath = downloadURL;
-          } catch (err) {
-            console.log(err); // 여기까지 파이어베이스
-          }
-        });
-      }
-
       // 필수 입력항목 미입력 시 에러메세지
       if (userEmail === "") {
         window.alert("ID(EMAIL)을 입력해주세요.");
@@ -376,6 +338,19 @@ function Register() {
         return;
       }
 
+      // 이미지가 존재하는 경우
+      if (imgFile !== "") {
+        //파일 랜덤 이름 생성(FireBase에 저장할 파일 이름)
+        profileImage = uuidv4();
+
+        // 업로드파일 참조
+        const attachmentRef = ref(storageService, `/USER/${profileImage}`);
+        //storage 참조 경로로 파일 업로드 하기
+        await uploadString(attachmentRef, imgFile, "data_url");
+        //storage 참조 경로로 파일경로 가져오기
+        profileImagePath = await getDownloadURL(attachmentRef);
+      }
+
       // 회원가입
       const userReg = await UserApi.userReg(
         userEmail,
@@ -387,8 +362,36 @@ function Register() {
       );
 
       //회원가입 성공 여부 메시지
-      if (userReg.data === true) {
+      if (userReg.data !== null) {
         sessionStorage.clear();
+        // ----------------------firebase 가입 여기로 내렸습니다!-----------------------------------
+        const result = await createUserWithEmailAndPassword(
+          auth,
+          userEmail,
+          userReg.data.password
+        );
+
+        // 파이어베이스
+        try {
+          //Update profile
+          await updateProfile(result.user, {
+            displayName,
+            photoURL: profileImagePath,
+          });
+          //create user on firestore
+          await setDoc(doc(db, "users", result.user.uid), {
+            uid: result.user.uid,
+            displayName,
+            userEmail,
+            photoURL: profileImagePath,
+          });
+
+          //create empty user chats on firestore
+          await setDoc(doc(db, "userChats", result.user.uid), {});
+          // profileImagePath = profileImagePath;
+        } catch (err) {
+          console.log(err);
+        }
         window.confirm("회원가입이 완료되었습니다.");
         window.location.replace("/");
       } else {

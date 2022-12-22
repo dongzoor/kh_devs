@@ -82,7 +82,7 @@ function Login() {
       sessionStorage.setItem("userId", res.data.userId);
 
       // Fire베이스에 로그인
-      await signInWithEmailAndPassword(auth, inputId, inputPw);
+      await signInWithEmailAndPassword(auth, inputId, res.data.password);
 
       window.location.replace("/user/profile");
     } else if (res.data === false) {

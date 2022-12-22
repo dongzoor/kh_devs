@@ -64,20 +64,22 @@ public class UserController {
     public ResponseEntity<Map<String, String>> userRegister(@RequestBody Map<String, String> regData) throws Exception {
         String getUserEmail = regData.get("userEmail");
         String getUserNickname = regData.get("userNickname");
-//        String getPassword = bCryptPasswordEncoder.encode(regData.get("password"));
-        String getPassword = regData.get("password");
+        String getPassword = bCryptPasswordEncoder.encode(regData.get("password"));
+//        String getPassword = regData.get("password");
         String getPhone = regData.get("phone");
         String getProfileImage = regData.get("profileImage");
         String getProfileImagePath = regData.get("profileImagePath");
 
         boolean result = userService.regUser(getUserEmail, getUserNickname, getPassword, getPhone, getProfileImage, getProfileImagePath);
+
         if (result) {
-            return new ResponseEntity(true, HttpStatus.OK);
+            // 회원가입 성공 시 유저 정보를 던져 줌
+            List<User> users = userService.userSearch(getUserEmail);
+            return new ResponseEntity(users.get(0), HttpStatus.OK);
         } else {
             return new ResponseEntity(false, HttpStatus.BAD_REQUEST);
         }
     }
-
 
     // 일반 로그인
     @PostMapping("/login")
@@ -90,24 +92,22 @@ public class UserController {
         List<Ban> banUsers = adminService.banUserSearch(userEmail);
 
         // 아이디가 틀린경우
-//        if (users.size() == 0) {
-//            return new ResponseEntity(false, HttpStatus.OK);
-//        }
+        if (users.size() == 0) {
+            return new ResponseEntity(false, HttpStatus.OK);
+        }
 
-//        Boolean result = bCryptPasswordEncoder.matches(password, users.get(0).getPassword());
+        Boolean result = bCryptPasswordEncoder.matches(password, users.get(0).getPassword());
 
-        if (users.size() > 0) {
+        if (result == true) {
             // return new ResponseEntity(users.get(0), HttpStatus.OK);
             if (banUsers.size() == 0) return new ResponseEntity(users.get(0), HttpStatus.OK);
             else return new ResponseEntity("BAN_USER", HttpStatus.OK);
 
-        } else if (users.size() == 0) {
+        } else if (result == false) {
             return new ResponseEntity(false, HttpStatus.OK);
         } else {
             return new ResponseEntity(false, HttpStatus.BAD_REQUEST);
         }
-
-
     }
 
     // 카카오 로그인
