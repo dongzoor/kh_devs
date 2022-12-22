@@ -215,7 +215,7 @@ public class UserController {
 
             mail.setContent(password);
             mail.setSender(userInfo.getUserEmail());
-            mail.setTitle("[DevS]" + userInfo.getUserNickname() + "님의 비밀번호 찾기 메일입니다.");
+            mail.setTitle("[DevS] " + userInfo.getUserNickname() + "님의 비밀번호 찾기 메일입니다.");
             sendmail.sendMail(mail);
 
             return new ResponseEntity(true, HttpStatus.OK);
