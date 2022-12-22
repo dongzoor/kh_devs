@@ -48,12 +48,7 @@ function OffcanvasExample() {
   return (
     <>
       {[false].map((expand) => (
-        <Navbar
-          key={expand}
-          bg="light"
-          expand={expand}
-          className="mb-3"
-        >
+        <Navbar key={expand} bg="light" expand={expand} className="mb-3">
           <Container fluid>
             <Navbar.Brand href="#">DevS</Navbar.Brand>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
@@ -111,10 +106,10 @@ function OffcanvasExample() {
                   <Nav.Link href="/studies">Study</Nav.Link>
                   <Nav.Link href="/social">Social</Nav.Link>
                   {isLogin !== "" ? (
-                    <Nav.Link href="/AdminMemberList">관리자모드</Nav.Link> 
-                        ) : (
-                      <Nav.Link href="/AdminLogin">관리자모드</Nav.Link>   
-                    )}
+                    <Nav.Link href="/AdminMemberList">관리자모드</Nav.Link>
+                  ) : (
+                    <Nav.Link href="/AdminLogin">관리자모드</Nav.Link>
+                  )}
                 </Nav>
                 <Form className="d-flex" style={{ marginTop: "20px" }}>
                   <Form.Control

@@ -388,7 +388,7 @@ function Register() {
 
           //create empty user chats on firestore
           await setDoc(doc(db, "userChats", result.user.uid), {});
-          // profileImagePath = profileImagePath;
+          profileImagePath = profileImagePath;
         } catch (err) {
           console.log(err);
         }

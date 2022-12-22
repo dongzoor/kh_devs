@@ -181,12 +181,14 @@ public class UserController {
 
     // 회원정보 찾기 - 비밀번호 찾기
     @PostMapping("/findPwd")
-    public ResponseEntity<User> findPwd(@RequestBody Map<String, String> findData) {
+    public String findPwd(@RequestBody Map<String, String> findData) {
         String userEmail = findData.get("userEmail");
         String phone = findData.get("phone");
 
         // 사용자 정보 조회
         List<User> user = userService.getPwd(userEmail, phone);
+
+//        Map<String, String> map = new HashMap<String, String>();
 
         if (user.size() > 0) {
 
@@ -202,9 +204,8 @@ public class UserController {
 
             String password = "devs" + newPw + "!";
 
-            // 랜덤생성한 비밀번호 저장
-//            userInfo.setPassword(bCryptPasswordEncoder.encode(newPw));
-            userInfo.setPassword(password);
+            //랜덤생성한 비밀번호 저장
+            userInfo.setPassword(bCryptPasswordEncoder.encode(password));
             userService.UserUpdate(userInfo);
 
             // 메일생성
@@ -216,9 +217,9 @@ public class UserController {
             mail.setTitle("[DevS] " + userInfo.getUserNickname() + "님의 비밀번호 찾기 메일입니다.");
             sendmail.sendMail(mail);
 
-            return new ResponseEntity(true, HttpStatus.OK);
+            return userInfo.getPassword();
         } else {
-            return new ResponseEntity(false, HttpStatus.OK);
+            return "error";
         }
     }
 
