@@ -1,10 +1,10 @@
-import { useNavigate } from "react-router-dom";
-import React, { useState } from "react";
+import {useNavigate} from "react-router-dom";
+import React, {useState} from "react";
 import styled from "styled-components";
 import SocialApi from "../../api/SocialApi";
-import { storageService } from "../../lib/api/fbase";
-import { v4 as uuidv4 } from "uuid";
-import { ref, uploadString, getDownloadURL } from "@firebase/storage";
+import {storageService} from "../../lib/api/fbase";
+import {v4 as uuidv4} from "uuid";
+import {getDownloadURL, ref, uploadString} from "@firebase/storage";
 
 const WriteBox = styled.div`
   & > * {
@@ -20,7 +20,8 @@ const WriteBox = styled.div`
     margin: 20px;
   }
   .parentBox {
-    font-family: "Gowun Dodum", sans-serif;    width: 1024px;
+    font-family: "Gowun Dodum", sans-serif;
+    width: 1024px;
     margin: 0px auto;
     padding: 5px;
     /* border: 1px solid black; */
@@ -100,178 +101,163 @@ const WriteBox = styled.div`
 `;
 
 const SocialWrite = () => {
-  const navigate = useNavigate();
-  const userEmail = sessionStorage.getItem("userEmail");
-  const socialId = sessionStorage.getItem("social_id");
+    const navigate = useNavigate();
+    const userEmail = sessionStorage.getItem("userEmail");
+    const [hashtag, setHashtag] = useState("");
+    const [hashtags, setHashtags] = useState([]);
+    const [titleInput, setTitleInput] = useState("");
+    const [contentInput, setContentInput] = useState("");
+    const [attachment, setAttachment] = useState("");
 
-  const [titleInput, setTitleInput] = useState("");
-  const [contentInput, setContentInput] = useState("");
-  const [attachment, setAttachment] = useState("");
+    const onChangeTitle = (title) => setTitleInput(title.target.value);
+    const onChangeContent = (content) => setContentInput(content.target.value);
 
-  // // #################해시태그
-  // const [socialData, setSocialData] = useState("");
-  // const [tags, setTags] = useState([]);
-  // const [inputTag, setInputTag] = useState("");
-  // const [nextId, setNextId] = useState(0);
-  // const onTagChange = (e) => setInputTag(e.target.value);
-  // const onClickTag = () => {
-  //   const nextTags = tags.concat({
-  //     id: nextId,
-  //     name: inputTag,
-  //     userEmail: userEmail,
-  //   });
-  //   console.log(nextTags);
-  //   setNextId(nextId + 1);
-  //   setTags(nextTags);
-  //   setInputTag("");
-  // };
-  // const onRemoveTag = (id) => {
-  //   const nextTags = tags.filter((tag) => tag.id !== id);
-  //   setTags(nextTags);
-  // };
-  // const tagsList = tags.map((tag) => (
-  //   <span
-  //     className="hashtag"
-  //     key={tag.id}
-  //     onDoubleClick={() => {
-  //       onRemoveTag(tag.id);
-  //     }}
-  //   >
-  //     {tag.name}
-  //   </span>
-  // ));
+    // 문자로 된 파일을 이미지로 보여줌 - 미리보기 코드
+    const onFileChange = (e) => {
+        const {
+            target: {files},
+        } = e;
+        const theFile = files[0];
+        console.log(theFile);
 
-  const onChangeTitle = (title) => setTitleInput(title.target.value);
-  const onChangeContent = (content) => setContentInput(content.target.value);
-
-  // 문자로 된 파일을 이미지로 보여줌 - 미리보기 코드
-  const onFileChange = (e) => {
-    const {
-      target: { files },
-    } = e;
-    const theFile = files[0];
-    console.log(theFile);
-
-    const reader = new FileReader();
-    reader.onloadend = (finishedEvent) => {
-      const {
-        currentTarget: { result },
-      } = finishedEvent;
-      setAttachment(result);
+        const reader = new FileReader();
+        reader.onloadend = (finishedEvent) => {
+            const {
+                currentTarget: {result},
+            } = finishedEvent;
+            setAttachment(result);
+        };
+        reader.readAsDataURL(theFile);
     };
-    reader.readAsDataURL(theFile);
-  };
+    // # 해시태그
+    const onChangeHashtag = (e) => {
+        const {
+            target: {value},
+        } = e;
+        setHashtag(value);
+    };
+    const addHashtag = (e) => {
+        setHashtags([...hashtags, hashtag]);
+        setHashtag("");
+    };
+    const onDeleteHash = (e) => {
+        const {target: target} = e;
 
-  const onClickSubmit = async () => {
-    if (true) {
-      // 변수 scope 때문에 함수로 묶어놓음
-      let attachmentUrl = null;
-      let imageName = null;
+        hashtags.pop(target.innerHTML);
+        console.log(hashtags);
+        target.innerHTML = "";
+    };
+    console.log(hashtags);
 
-      if (attachment !== "") {
-        // 파일 참조 경로 지정
-        imageName = uuidv4(); // 이미지 UUID
-        const attachmentRef = ref(storageService, `/SOCIAL/${imageName}`);
-        // 참조경로로 storage에 저장
-        const response = await uploadString(
-          attachmentRef,
-          attachment,
-          "data_url"
-        );
-        attachmentUrl = await getDownloadURL(response.ref);
-        console.log("★ 이미지 주소 : " + attachmentUrl);
-        console.log("★ 이미지 UUID : " + imageName);
-      }
-      console.log("###############################");
-      console.log("★ 이미지 주소 : " + attachmentUrl);
-      console.log("★ 이미지 UUID : " + imageName);
+    const onClickSubmit = async () => {
+        if (titleInput === "" || contentInput === "") {
+            alert("⚡ 제목과 내용은 필수 입력사항입니다. 꼭 작성해주세요 ⚡");
+        } else {
+            let attachmentUrl = null;
+            let imageName = null;
 
-      const res = await SocialApi.socialWrite(
-        userEmail,
-        titleInput,
-        contentInput,
-        attachmentUrl,
-        imageName
-      );
-      console.log("제출 버튼 클릭");
-      if (res.data.result === "SUCCESS") {
-        window.alert("Social 게시글 작성 완료 !");
-        navigate(`/social`);
-      } else {
-        window.alert("Social 게시글 작성 실패 ㅜ");
-        console.log(res.data);
-      }
-      // if (res.data.result === "SUCCESS") {
-      //   setSocialData(res.data.socialId);
-      //   const resTag = await SocialApi.hashtagWrite(socialData, tags);
-      //   console.log(resTag);
-      //
-      //   if (resTag === true) {
-      //     console.log("back 에서 가져온 소셜아이디 : ", res.data.socialId);
-      //     window.alert("Social 게시글 작성 완료");
-      //     navigate(`/social`);
-      //   } else {
-      //     window.alert("Social 게시글 작성 실패 ㅜ");
-      //     console.log(res.data);
-      //   }
-      // }
-    }
-  };
+            if (attachment !== "") {
+                // 파일 참조 경로 지정
+                imageName = uuidv4(); // 이미지 UUID
+                const attachmentRef = ref(storageService, `/SOCIAL/${imageName}`);
+                // 참조경로로 storage에 저장
+                const response = await uploadString(
+                    attachmentRef,
+                    attachment,
+                    "data_url"
+                );
+                attachmentUrl = await getDownloadURL(response.ref);
+                console.log("★ 이미지 주소 : " + attachmentUrl);
+                console.log("★ 이미지 UUID : " + imageName);
+            }
+            const res = await SocialApi.socialWrite(
+                userEmail,
+                titleInput,
+                contentInput,
+                hashtags.join(","),
+                attachmentUrl,
+                imageName
+            );
+            console.log("제출 버튼 클릭");
+            if (res.data.result === "SUCCESS") {
+                window.alert("Social 게시글 작성 완료 !");
+                navigate(`/social`);
+            } else {
+                window.alert("Social 게시글 작성 실패 ㅜ");
+                console.log(res.data);
+            }
+        }
+    };
 
-  return (
-    <WriteBox>
-      <div className="subtitle">Write anything you want 👩🏻‍💻✨</div>
-      <div className="parentBox">
-        <label>제목</label>
-        <textarea
-          className="title"
-          placeholder="게시글의 제목을 입력해주세요."
-          value={titleInput}
-          onChange={onChangeTitle}
-        ></textarea>
-        <hr />
-        <label>내용</label>
-        <textarea
-          className="content"
-          placeholder="개발, 비개발 무엇이든 작성해주세요 (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧^"
-          value={contentInput}
-          onChange={onChangeContent}
-        />
-        {/* 해시태그 */}
-        {/*<div>*/}
-        {/*  <textarea value={inputTag} onChange={onTagChange}></textarea>*/}
-        {/*  <button onClick={onClickTag}>입력</button>*/}
-        {/*  <div>{tagsList}</div>*/}
-        {/*</div>*/}
-        <hr />
-        <label htmlFor="formFile" className="form-label">
-          이미지 첨부
-        </label>
-        <div className="image-box">
-          <input
-            className="form-control"
-            type="file"
-            id="formFile"
-            accept="image/*"
-            onChange={onFileChange}
-          />
-          {/* 이미지 미리보기 */}
-          {attachment && (
-            <img
-              src={attachment}
-              className="preview"
-              width="50px"
-              height="50px"
-              alt=""
+    return (
+        <WriteBox>
+            <div className="subtitle">Write anything you want 👩🏻‍💻✨</div>
+            <div className="parentBox">
+                <label>제목</label>
+                <textarea
+                    className="title"
+                    placeholder="게시글의 제목을 입력해주세요."
+                    value={titleInput}
+                    onChange={onChangeTitle}
+                ></textarea>
+                <hr/>
+                <label>내용</label>
+                <textarea
+                    className="content"
+                    placeholder="개발, 비개발 무엇이든 작성해주세요 (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧^"
+                    value={contentInput}
+                    onChange={onChangeContent}
+                />
+
+                {/* 해시태그 */}
+                <div className="hastag-box">
+                    <label className="tag-label">Hashtag</label>
+                    <div>
+            <textarea
+                placeholder="태그하고 싶은 단어를 입력하세요."
+                value={hashtag}
+                onChange={onChangeHashtag}
             />
-          )}
-        </div>
-        <button className="submitBt" onClick={onClickSubmit}>
-          제 출
-        </button>
-      </div>
-    </WriteBox>
-  );
+                        <button onClick={addHashtag}>Add</button>
+                    </div>
+                </div>
+                <div>
+                    {hashtags.map((e, index) => (
+                        <span onClick={onDeleteHash} key={index}>
+              {e}{" "}
+            </span>
+                    ))}
+                </div>
+
+                <hr/>
+                <label htmlFor="formFile" className="form-label">
+                    이미지 첨부
+                </label>
+                <div className="image-box">
+                    <input
+                        className="form-control"
+                        type="file"
+                        id="formFile"
+                        accept="image/*"
+                        onChange={onFileChange}
+                    />
+                    {/* 이미지 미리보기 */}
+                    {attachment && (
+                        <img
+                            src={attachment}
+                            className="preview"
+                            width="50px"
+                            height="50px"
+                            alt=""
+                        />
+                    )}
+                </div>
+                <button className="submitBt" onClick={onClickSubmit}>
+                    제 출
+                </button>
+            </div>
+        </WriteBox>
+    );
 };
 
 export default SocialWrite;

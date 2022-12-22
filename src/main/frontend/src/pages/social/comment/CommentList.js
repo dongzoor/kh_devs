@@ -11,9 +11,9 @@ const BOX = styled.div`
     flex-direction: column;
     margin-top: 10px;
   }
-  .parent-box{
+  .parent-box {
     border-radius: 5px;
-    background-color: rgba(255,255,255,0.2);
+    background-color: rgba(255, 255, 255, 0.2);
     margin-top: 10px;
     padding: 5px;
   }
@@ -30,7 +30,7 @@ const BOX = styled.div`
     font-size: 0.9em;
   }
   .comment-text {
-    padding: 0px 5px 20px;
+    /* padding: 0px 5px 20px; */
     white-space: pre-wrap;
   }
   .userImage {
@@ -39,7 +39,7 @@ const BOX = styled.div`
     width: 40px;
     height: 40px;
   }
-  .deleteBt{
+  .deleteBt {
     float: right;
   }
 `;
@@ -64,7 +64,6 @@ const CommentList = () => {
         // rendering 을 위한 의존성배열 값 초기화
         setDeleteComplete(false);
         setIsSubmit(false);
-        console.log(commentList);
       } catch (e) {
         console.log(e);
       }

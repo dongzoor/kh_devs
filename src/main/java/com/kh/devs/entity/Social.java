@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.kh.devs.controller.StringListConverter;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,25 +37,22 @@ public class Social {
     private String image;           // 이미지 Link
     @Column(name = "image_id")
     private String imageId;         // 이미지  UUID
-    //    @Column(name = "social_tag")
-//    private String tag;             // 해시태그
     @Column(name = "social_like")
     private int like;               // 좋아요 수
-    // 조회수의 기본 값을 0으로 지정, null 불가 처리
-    @Column(name = "social_view", columnDefinition = "integer default 0", nullable = false)
+    @Column(name = "social_view", columnDefinition = "integer default 0")
     private int view;               // 조회수
     @Column(name = "social_saved")
     private int saved;              // 저장 횟수
 
+    // 해시태그
+    @Convert(converter = StringListConverter.class)
+    private List<String> hashtag;
+
     // 댓글
-    @OneToMany(mappedBy = "social", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     // CascadeType.REMOVE : 게시글이 삭제되면 댓글 또한 삭제
+    @OneToMany(mappedBy = "social", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @OrderBy("id DESC") // 댓글 정렬
     private List<Comment> comments = new ArrayList<>();
-
-    // 해시태그
-    @OneToMany(mappedBy = "social", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<HashTag> hashTags = new ArrayList<>();
 
     // 작성 일자
     @JsonSerialize(using = LocalDateTimeSerializer.class)

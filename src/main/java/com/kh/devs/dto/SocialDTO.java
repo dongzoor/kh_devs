@@ -27,8 +27,7 @@ public class SocialDTO {
     private String userNickName;    // 작성자 nickname
     private String userImageId;     // 작성자 이미지 ID
     private String userImageUrl;    // 작성자 이미지 URL
-
-    private List<HashTagDTO> tags = new ArrayList<>();     // 해시태그
+    private List<String> hashtag;   // 해시태그
     private List<CommentDTO> comments = new ArrayList<>(); // 댓글
 
     // 작성 일자

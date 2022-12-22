@@ -43,6 +43,7 @@ public class SocialService {
             socialDTO.setImage(e.getImage());
             socialDTO.setLike(e.getLike());
             socialDTO.setView(e.getView());
+            socialDTO.setHashtag(e.getHashtag());
             socialDTOS.add(socialDTO);
             // 댓글 list 조회
             List<Comment> list = commentRepository.findBySocial_SocialIdOrderByPostDateDesc(socialDTO.getSocialId());
@@ -73,21 +74,13 @@ public class SocialService {
         socialDTO.setUserImageUrl(social.getUser().getProfileImagePath());  // 작성자 사진 URL
         socialDTO.setTitle(social.getTitle());
         socialDTO.setContent(social.getContent());
+        socialDTO.setHashtag(social.getHashtag());
         socialDTO.setLike(social.getLike());
         socialDTO.setImage(social.getImage());
         socialDTO.setImageId(social.getImageId());
         socialDTO.setView(social.getView());
         socialDTO.setPostDate(social.getPostDate());
-//        // hashtag list 조회
-//        List<HashTag> hashTags = hashTagRepository.findBySocial_SocialId(socialId);
-//        List<HashTagDTO> HashTagDTOs = new ArrayList<>();
-//        for (HashTag e : hashTags) {
-//            HashTagDTO hashTagDTO = new HashTagDTO();
-//            hashTagDTO.setId(e.getId());
-//            hashTagDTO.setTag(e.getTag());
-//            HashTagDTOs.add(hashTagDTO);    // CommentDTOs list에 값을 담는다
-//        }
-//        socialDTO.setTags(HashTagDTOs); // 모든 댓글 list 값을 socialDTO에 담기
+        
         // 댓글 list 조회
         List<Comment> list = commentRepository.findBySocial_SocialIdOrderByPostDateDesc(socialId);
         List<CommentDTO> CommentDTOs = new ArrayList<>();
@@ -106,7 +99,7 @@ public class SocialService {
     }
 
     // Social Write 등록
-    public Map<String, Object> regSocial(String userEmail, String title, String content, String image, String imageId) throws Exception { // 결과값은 성공,실패만 알려주면 되니까 boolean
+    public Map<String, Object> regSocial(String userEmail, String title, String content, List<String> hashtag, String image, String imageId) throws Exception { // 결과값은 성공,실패만 알려주면 되니까 boolean
         Map<String, Object> response = new HashMap<>();
         try {
             User user = (userRepository.findByUserEmail(userEmail)).get(0); // 객체로 user 정보를 다시 찾아와서 넣어주기 위함
@@ -116,10 +109,10 @@ public class SocialService {
             social.setContent(content);
             social.setImage(image);
             social.setImageId(imageId);
+            social.setHashtag(hashtag);
             social.setPostDate(LocalDateTime.now());  // 게시일 정보 자동 기입
             Social rst = socialRepository.save(social);
             Long socialIdData = rst.getSocialId();  // 게시글 ID 받아옴
-
             System.out.println(socialIdData);
             response.put("result", "true");
             response.put("socialId", socialIdData); // 받아온 게시글 ID를 넘겨줌
@@ -130,14 +123,14 @@ public class SocialService {
     }
 
     @Transactional  // 수정
-    public boolean updateSocial(Long socialId, String title, String content, String image, String imageId) {
+    public boolean updateSocial(Long socialId, String title, String content, List<String> hashtag, String image, String imageId) {
         Social social = socialRepository.findById(socialId)
                 .orElseThrow(() -> {
                     return new IllegalArgumentException("글 찾기 실패: 아이디를 찾을 수 없습니다.");
                 });
         social.setTitle(title);
-//        social.setTag(tag);
         social.setContent(content);
+        social.setHashtag(hashtag);
         social.setImage(image);
         social.setImageId(imageId);
         social.setUpDate(LocalDateTime.now());  // 수정일 정보 자동 기입

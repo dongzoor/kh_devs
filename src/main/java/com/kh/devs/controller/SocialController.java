@@ -1,7 +1,6 @@
 package com.kh.devs.controller;
 
 import com.kh.devs.dto.SocialDTO;
-import com.kh.devs.entity.Social;
 import com.kh.devs.service.SocialService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,14 +37,16 @@ public class SocialController {
     // social 작성(등록)
     @PostMapping("/write")
     public Map<String, Object> socialWrite(@RequestBody Map<String, String> regData) throws Exception {
-        Social social = new Social();
+        SocialDTO socialDTO = new SocialDTO();
+        String[] strToArray = regData.get("hashtags").split(","); // front 에서 배열을 ","로 join 해서 보냈기 때문
         Map<String, Object> response = new HashMap<>();
         String userEmail = regData.get("userEmail");
         String title = regData.get("title");
         String content = regData.get("content");
         String image = regData.get("image");
         String imageId = regData.get("imageId");
-        Map<String, Object> result = socialService.regSocial(userEmail, title, content, image, imageId);
+        List<String> hashtagList = List.of(strToArray);
+        Map<String, Object> result = socialService.regSocial(userEmail, title, content, hashtagList, image, imageId);
         if (result.get("result") == "true") {
             response.put("result", "SUCCESS");
             response.put("socialId", result.get("socialId"));
@@ -59,13 +60,14 @@ public class SocialController {
     // social 수정
     @PutMapping("/{Id}/update")
     public ResponseEntity<Boolean> socialUpdate(@PathVariable("Id") long pathSocialId, @RequestBody Map<String, String> editData) throws Exception {
+        String[] strToArray = editData.get("hashtags").split(","); // front 에서 배열을 ","로 join 해서 보냈기 때문
         Long socialId = pathSocialId;
         String title = editData.get("title");
         String content = editData.get("content");
-//        String tag = editData.get("tag");
+        List<String> hashtagList = List.of(strToArray);
         String image = editData.get("image");
         String imageId = editData.get("imageId");
-        boolean result = socialService.updateSocial(socialId, title, content, image, imageId);
+        boolean result = socialService.updateSocial(socialId, title, content, hashtagList, image, imageId);
         if (result) {
             return new ResponseEntity<>(true, HttpStatus.OK);  // 프론트의 res.data 값(true)으로 넘어온다!!!
         } else {
