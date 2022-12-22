@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SocialApi from "../../api/SocialApi";
 import { RxReset } from "react-icons/rx";
-import { GrPowerReset } from "react-icons/gr";
-import {
-  IoChatboxOutline,
-  IoEyeOutline,
-  IoHeartOutline,
-} from "react-icons/io5";
+import { IoChatboxOutline, IoHeartOutline } from "react-icons/io5";
 
 const ListBlock = styled.div`
   overflow-x: hidden;
@@ -56,6 +51,15 @@ const ListBlock = styled.div`
       box-shadow: 5px 5px 10px rgba(190, 100, 255, 0.2);
       margin-top: 5px;
     }
+  }
+  .search-type-selector {
+    margin: 10px 10px;
+    margin-right: 0;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px grey;
+    background-color: rgba(3, 0, 209, 0.2);
   }
   .search {
     margin: 10px 10px;
@@ -142,6 +146,9 @@ const ListBlock = styled.div`
     }
   }
   .flex-box1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     overflow: hidden;
     position: relative;
     min-width: 206px;
@@ -153,12 +160,12 @@ const ListBlock = styled.div`
   }
   .insertImg {
     height: 90%;
-    /* width: 100%; */
     width: 200px;
-    border-radius: 10px;
+    height: 170px;
+    border-radius: 5px;
     position: absolute; // = 부모 기준 배치
-    left: 5px;
-    top: 5px;
+    /* left: 5px;
+    top: 5px; */
   }
   .flex-box3 {
     display: flex;
@@ -205,7 +212,7 @@ const ListBlock = styled.div`
   .hashtag {
     word-break: keep-all;
     font-size: 0.7em;
-    margin: 0px 3px;
+    margin: 15px 3px;
     padding: 10px;
     font-style: italic;
     background-color: rgba(219, 219, 219, 0.5);
@@ -230,6 +237,9 @@ const ListBlock = styled.div`
         .flex-box2 {
           width: 50vw;
         }
+        .insertImg {
+          min-height: 170px;
+        }
       }
       .childBox-noPic {
         align-items: center;
@@ -247,7 +257,12 @@ const Social = () => {
   const [inputTags, setInputTags] = useState([]);
   const [searchData, setSearchData] = useState("");
   const [reset, setReset] = useState(false);
+  const [typeSelect, setTypeSelect] = useState("one");
 
+  const onSelectType = (e) => {
+    setTypeSelect(e.target.value);
+    console.log(e.target.value);
+  };
   // const [userImageUrl, setUserImageUrl] = useState("");
   const searchTag = async (e) => {
     if (e.key === "Enter") {
@@ -257,17 +272,35 @@ const Social = () => {
       if (value === "") {
         alert("검색어가 없습니다. 다시 입력해주세요.");
       } else {
-        setSearchData(value);
-        // console.log(value);
-        const res = await SocialApi.hashTagSearch(value);
-        setSocialList(res.data);
-        setInputTags(res.data.hashtag);
+        if (typeSelect === "one") {
+          // [제목+내용] 검색
+          console.log("[제목+내용] 검색");
+          setSearchData(value);
+          console.log(value);
+          const res = await SocialApi.titleContentSearch(value);
+          setSocialList(res.data);
+        } else if (typeSelect === "two") {
+          // [해시태그] 검색
+          console.log("[해시태그] 검색");
+          setSearchData(value);
+          console.log(value);
+          const res = await SocialApi.hashTagSearch(value);
+          setSocialList(res.data);
+          setInputTags(res.data.hashtag);
+        } else {
+          // [작성자 닉네임] 기준 검색
+          console.log("[작성자 닉네임] 검색");
+          setSearchData(value);
+          const res = await SocialApi.userSearch(value);
+          setSocialList(res.data);
+        }
       }
     }
   };
   const goPost = () => {
     navigate("/social/write");
   };
+  // 검색 초기화 버튼
   const onClickReset = () => {
     setReset(true);
   };
@@ -279,6 +312,7 @@ const Social = () => {
         setSocialList(response.data);
         setInputTags(response.data.hashtag);
         setReset(false);
+        setTypeSelect("one");
         console.log("★ Social List ", response.data);
       } catch (e) {
         console.log(e);
@@ -302,6 +336,13 @@ const Social = () => {
       </div>
       <div className="parentBox">
         <div className="search-box">
+          <select className="search-type-selector" onChange={onSelectType}>
+            <option value="one" defaultChecked>
+              제목+내용
+            </option>
+            <option value="two">해시태그</option>
+            <option value="three">닉네임</option>
+          </select>
           <input
             type="text"
             placeholder="🔎 검색어를 입력해주세요!"
@@ -309,7 +350,7 @@ const Social = () => {
             onKeyPress={searchTag}
           />
           <button className="resetBt" onClick={onClickReset}>
-            <RxReset size="25px" color="rgba(3, 0, 209, 0.4)"/>
+            <RxReset size="25px" color="rgba(3, 0, 209, 0.4)" />
           </button>
         </div>
         {socialList &&
