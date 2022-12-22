@@ -99,7 +99,6 @@ public class UserController {
         Boolean result = bCryptPasswordEncoder.matches(password, users.get(0).getPassword());
 
         if (result == true) {
-            // return new ResponseEntity(users.get(0), HttpStatus.OK);
             if (banUsers.size() == 0) return new ResponseEntity(users.get(0), HttpStatus.OK);
             else return new ResponseEntity("BAN_USER", HttpStatus.OK);
 
@@ -150,8 +149,7 @@ public class UserController {
             result.get(0).setProfileImagePath(profileImagePath);
 
             if (!"".equals(password)) {
-//                result.get(0).setPassword(bCryptPasswordEncoder.encode(password));
-                result.get(0).setPassword(password);
+                result.get(0).setPassword(bCryptPasswordEncoder.encode(password));
             }
 
             rst = userService.UserUpdate(result.get(0));
