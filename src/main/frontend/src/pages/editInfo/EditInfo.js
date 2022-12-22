@@ -3,18 +3,24 @@
 import "./EditInfo.css";
 
 import React, { useEffect, useRef, useState } from "react";
+import { db, storageService } from "../../lib/api/fbase";
 import {
   deleteObject,
   getDownloadURL,
   ref,
   uploadString,
 } from "@firebase/storage";
-import { deleteUser, getAuth } from "firebase/auth";
+import {
+  deleteUser,
+  getAuth,
+  updatePassword,
+  updateProfile,
+} from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 
 import { Link } from "react-router-dom";
 import { MdArrowBack } from "react-icons/md";
 import UserApi from "../../api/UserApi";
-import { storageService } from "../../lib/api/fbase";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 
@@ -344,6 +350,19 @@ function EditInfo() {
           sessionStorage.setItem("userEmail", userUpdate.data.userEmail);
           sessionStorage.setItem("userNickname", userUpdate.data.userNickname);
           sessionStorage.setItem("phone", userUpdate.data.phone);
+          const auth = getAuth();
+          const user = auth.currentUser;
+          await updatePassword(user, userUpdate.data.password);
+          await updateProfile(user, {
+            displayName: userNickname,
+            photoURL: profileImagePath,
+          });
+          await setDoc(doc(db, "users", user.uid), {
+            uid: user.uid,
+            displayName: userNickname,
+            userEmail,
+            photoURL: profileImagePath,
+          });
           window.location.replace("/user/profile");
         }
       }
