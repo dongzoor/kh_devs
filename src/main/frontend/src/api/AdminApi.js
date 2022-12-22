@@ -25,11 +25,11 @@ const AdminApi = {
   },
 // 어드민 유저멤버 수정 
 // 
-  AdUserUpdate: async function ( userid , userNickname, password, phone, profileImage, profileImagePath) {
+  AdUserUpdate: async function ( userid , userNickname, phone, profileImage, profileImagePath) {
     const updateObj = {
     
       userNickname: userNickname,
-      password: password,
+      // password: password,
       phone: phone,
       profileImage: profileImage,
       profileImagePath:profileImagePath

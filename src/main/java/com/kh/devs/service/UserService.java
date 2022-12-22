@@ -132,13 +132,13 @@ public class UserService {
 
     // 어드민이 회원정보 수정
     @Transactional
-    public boolean updateAdUser(Long userId ,String userNickname , String password , String phone ,String profileImage,String profileImagePath) {
+    public boolean updateAdUser(Long userId ,String userNickname , String phone ,String profileImage,String profileImagePath) {
         User user = userRepository.findById(userId)
                 .orElseThrow(()->{
                     return new IllegalArgumentException("아이디 찾기 실패: 아이디를 찾을 수 없습니다.");
                 });
         user.setUserNickname(userNickname);
-        user.setPassword(password);
+//        user.setPassword(password);
         user.setPhone(phone);
         user.setProfileImage(profileImage);
         user.setProfileImagePath(profileImagePath);

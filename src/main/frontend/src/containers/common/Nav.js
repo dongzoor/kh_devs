@@ -16,13 +16,17 @@ const NAVI = styled.div`
 `;
 function OffcanvasExample() {
   const userId = sessionStorage.getItem("userId");
+  const adminId = localStorage.getItem("adminId")
   const [isLogin, setIslogin] = useState("");
+  const [isAdLogin, setIsAdlogin] = useState("");
 
   // 초기값 설정(세션에 이메일 정보가 있을때)
   useEffect(() => {
+    const localinfo = localStorage.getItem("adminEmail")
     const sessioninfo = sessionStorage.getItem("userEmail");
     if (sessioninfo !== null) {
       setIslogin(sessioninfo);
+      setIsAdlogin(localinfo);
     }
   }, []);
 
@@ -110,6 +114,11 @@ function OffcanvasExample() {
                   </NavDropdown>
                   <Nav.Link href="/studies">Study</Nav.Link>
                   <Nav.Link href="/social">Social</Nav.Link>
+                  {localStorage.getItem("adminEmail") !== "" ? (
+                    <Nav.Link href="/AdminLogin">관리자모드</Nav.Link>
+                        ) : (
+                      <Nav.Link href="/AdminMemberList">관리자모드</Nav.Link>
+                    )}
                   <Nav.Link href="/chat">Chat</Nav.Link>
                   {isLogin !== "" ? (
                     <Nav.Link href="/AdminMemberList">관리자모드</Nav.Link>

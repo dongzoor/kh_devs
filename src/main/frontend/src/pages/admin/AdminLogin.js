@@ -1,7 +1,7 @@
 import "../login/Login.css";
 
 import { FaLock, FaUser } from "react-icons/fa";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import AdminApi from "../../api/AdminApi";
@@ -22,8 +22,15 @@ const Container = styled.div`
 `;
 
 function AdminLogin() {
-  // 세션이 존재하는 경우 프로필 화면으로
-  
+
+  useEffect(() => {
+    // 세션이 존재하는 경우 프로필 화면으로
+    if (localStorage.getItem("adminEmail") !== null) {
+      navigate("/AdminMemberList");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const navigate = useNavigate();
 
   // 키보드 입력
@@ -45,11 +52,11 @@ function AdminLogin() {
     
     // 로그인을 성공하는 경우
     if (res.data !== false) {
-      sessionStorage.setItem("profileImage", res.data.profileImage);
-      sessionStorage.setItem("profileImagePath", res.data.profileImagePath);
-      sessionStorage.setItem("userEmail", res.data.userEmail);
-      sessionStorage.setItem("userNickname", res.data.userNickname);
-      sessionStorage.setItem("phone", res.data.phone);
+      localStorage.setItem("profileImage", res.data.profileImage);
+      localStorage.setItem("profileImagePath", res.data.profileImagePath);
+      localStorage.setItem("adminEmail", res.data.adminEmail);
+      localStorage.setItem("userNickname", res.data.adminNickname);
+      localStorage.setItem("phone", res.data.phone);
       navigate("/AdminMemberList")
       } else if (res.data === false) {
         window.alert("이메일이나 비밀번호를 확인해주세요.");
