@@ -102,6 +102,7 @@ const DetailBox = styled.div`
   .hashtags {
     margin: 0px 3px;
     padding: 8px;
+    font-size: 0.75em;
     font-style: italic;
     background-color: rgba(219, 219, 219);
     background-color: rgba(219, 219, 219, 0.5);

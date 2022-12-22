@@ -9,6 +9,10 @@ const SocialApi = {
   socialDetail: async function (socialId) {
     return await axios.get(`/api/social/${socialId}`);
   },
+  // 게시글 검색 - 해시태그
+  hashTagSearch: async function (tag) {
+    return await axios.get(`/api/social/hashtag/${tag}`);
+  },
   // 게시글 작성
   socialWrite: async function (
     userEmail,
