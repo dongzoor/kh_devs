@@ -8,16 +8,25 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { useNavigate } from "react-router-dom";
-
+import styled from "styled-components";
+const NAVI = styled.div`
+  * {
+    font-family: "Gowun Dodum", sans-serif;
+  }
+`;
 function OffcanvasExample() {
   const userId = sessionStorage.getItem("userId");
+  const adminId = localStorage.getItem("adminId")
   const [isLogin, setIslogin] = useState("");
+  const [isAdLogin, setIsAdlogin] = useState("");
 
   // 초기값 설정(세션에 이메일 정보가 있을때)
   useEffect(() => {
+    const localinfo = localStorage.getItem("adminEmail")
     const sessioninfo = sessionStorage.getItem("userEmail");
     if (sessioninfo !== null) {
       setIslogin(sessioninfo);
+      setIsAdlogin(localinfo);
     }
   }, []);
 
@@ -46,7 +55,7 @@ function OffcanvasExample() {
   };
 
   return (
-    <>
+    <NAVI>
       {[false].map((expand) => (
         <Navbar key={expand} bg="light" expand={expand} className="mb-3">
           <Container fluid>
@@ -105,6 +114,12 @@ function OffcanvasExample() {
                   </NavDropdown>
                   <Nav.Link href="/studies">Study</Nav.Link>
                   <Nav.Link href="/social">Social</Nav.Link>
+                  {localStorage.getItem("adminEmail") !== "" ? (
+                    <Nav.Link href="/AdminLogin">관리자모드</Nav.Link>
+                        ) : (
+                      <Nav.Link href="/AdminMemberList">관리자모드</Nav.Link>
+                    )}
+                  <Nav.Link href="/chat">Chat</Nav.Link>
                   {isLogin !== "" ? (
                     <Nav.Link href="/AdminMemberList">관리자모드</Nav.Link>
                   ) : (
@@ -125,7 +140,7 @@ function OffcanvasExample() {
           </Container>
         </Navbar>
       ))}
-    </>
+    </NAVI>
   );
 }
 

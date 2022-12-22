@@ -22,7 +22,25 @@ const Container = styled.div`
 `;
 
 function Profile() {
-  const userId = sessionStorage.getItem("userId");
+  const userId = sessionStorage.getItem;
+  // useEffect(() => {
+  //   const Data = async () => {
+  //     try {
+  //       requestPermission()
+  //     } catch (e) {
+  //       console.log(e);
+  //     }
+  //   };
+  //   Data();
+  // }, []);
+
+
+  // function requestPermission() {
+  //   console.log('Requesting permission...');
+  //   Notification.requestPermission().then((permission) => {
+  //     if (permission === 'granted') {
+  //       console.log('Notification permission granted.')}})
+  //     };
   return (
     <Box>
       <Container>
