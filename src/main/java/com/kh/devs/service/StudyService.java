@@ -14,9 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Slf4j
@@ -46,6 +44,7 @@ public class StudyService {
         log.warn(rst.toString());
         return true;
     }
+
     public List<Study> getStudyList() {
         return studyRepository.findAll();
     }
@@ -74,10 +73,10 @@ public class StudyService {
     @Transactional
     public void updateStudy(Long id, StudyDTO studyDTO) {
         Study study = studyRepository.findById(id).orElseThrow(() -> new NotFoundStudyException("study is not Found!"));
-        if(!studyDTO.getTitle().equals("")) study.setTitle(studyDTO.getTitle()); // 제목이 바뀐 경우
-        if(!studyDTO.getContent().equals("")) study.setContent(studyDTO.getContent()); // 내용이 바뀐 경우
-        if(!studyDTO.getHashtag().isEmpty()) study.setHashtag(studyDTO.getHashtag()); // 해시태그가 바뀐 경우
-        if(studyDTO.getGoalPeople() != 0) study.setGoalPeople(studyDTO.getGoalPeople()); // 목표 인원이 바뀐 경우
+        if (!studyDTO.getTitle().equals("")) study.setTitle(studyDTO.getTitle()); // 제목이 바뀐 경우
+        if (!studyDTO.getContent().equals("")) study.setContent(studyDTO.getContent()); // 내용이 바뀐 경우
+        if (!studyDTO.getHashtag().isEmpty()) study.setHashtag(studyDTO.getHashtag()); // 해시태그가 바뀐 경우
+        if (studyDTO.getGoalPeople() != 0) study.setGoalPeople(studyDTO.getGoalPeople()); // 목표 인원이 바뀐 경우
         study.setApplyPeople(studyDTO.getApplyPeople()); // 모집 배열이 바뀐 경우
         study.setAddr(studyDTO.getAddr());
         study.setGoalTime(studyDTO.getGoalTime());
@@ -97,6 +96,12 @@ public class StudyService {
         study.setStudyApplyCount(studyDTO.getApplyCnt());
     }
 
+    @Transactional
+    public void updateCnt(Long id) {   //스터디 지원
+        Study study = studyRepository.findById(id).orElseThrow(() -> new NotFoundStudyException("study is not Found!"));
+        study.setCnt(study.getCnt() + 1);
+        studyRepository.save(study);
+    }
 
 
 //    @Transactional

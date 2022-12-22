@@ -11,8 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 
 @RestController
@@ -25,7 +23,7 @@ public class StudyController {
     private final StudyRepository studyRepository;
 
     @GetMapping("/studies")
-    public ResponseEntity<List<Study>> studyList(){
+    public ResponseEntity<List<Study>> studyList() {
         List<Study> list = studyService.getStudyList();
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
@@ -34,7 +32,13 @@ public class StudyController {
     public ResponseEntity<StudyDTO> studyDTO(@PathVariable Long studyId) {
         Study study = studyService.getStudy(studyId);
 
-        return new ResponseEntity(study, HttpStatus.OK);
+        // J2 조회수 업데이트
+        if (study != null) {
+            studyService.updateCnt(studyId);
+        }
+        Study studyDb = studyService.getStudy(studyId);
+
+        return new ResponseEntity(studyDb, HttpStatus.OK);
     }
 
     @PostMapping("/study/write")
@@ -45,10 +49,9 @@ public class StudyController {
 
 //        if(studyService.writeStudy(studyDTO) && )
 
-        if(result){
+        if (result) {
             return new ResponseEntity(true, HttpStatus.OK);
-        }
-        else {
+        } else {
             return new ResponseEntity(false, HttpStatus.BAD_REQUEST);
         }
 
