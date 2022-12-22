@@ -9,10 +9,10 @@ import React, { useEffect, useState } from "react";
 
 import KakaoLogin from "react-kakao-login";
 import UserApi from "../../api/UserApi";
-import kakaoimages from "./images/kakao_login_small.png";
-import styled from "styled-components";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../lib/api/fbase";
+import kakaoimages from "./images/kakao_login_small.png";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import styled from "styled-components";
 
 const Box = styled.div`
   margin: 0 auto;
@@ -64,8 +64,6 @@ function Login() {
     // 로그인을 위한 axios 호출
     const res = await UserApi.userLogin(inputId, inputPw);
 
-    await signInWithEmailAndPassword(auth, inputId, inputPw);
-
     console.log(res.data);
     if (res.data === "BAN_USER") {
       window.alert("차단된 유저입니다 서비스이용이 불가합니다.");
@@ -82,6 +80,10 @@ function Login() {
       sessionStorage.setItem("phone", res.data.phone);
       // 마이페이지에서 사용
       sessionStorage.setItem("userId", res.data.userId);
+
+      // Fire베이스에 로그인
+      await signInWithEmailAndPassword(auth, inputId, inputPw);
+
       window.location.replace("/user/profile");
     } else if (res.data === false) {
       window.alert("이메일이나 비밀번호를 확인해주세요.");
@@ -120,6 +122,14 @@ function Login() {
       sessionStorage.setItem("phone", res.data.phone);
       // 마이페이지에서 사용
       sessionStorage.setItem("userId", res.data.userId);
+
+      // Fire베이스에 로그인
+      await signInWithEmailAndPassword(
+        auth,
+        res.data.userEmail,
+        res.data.password
+      );
+
       window.location.replace("/user/profile");
     } else if (res.data === false) {
       if (window.confirm("가입된 정보가 없습니다, 가입하시겠습니까?")) {

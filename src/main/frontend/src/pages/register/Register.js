@@ -1,10 +1,10 @@
 import "./Register.css";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth, db } from "../../lib/api/fbase";
-import { doc, setDoc } from "firebase/firestore"
-import { getFirestore } from "firebase/firestore";
+
 import React, { useEffect, useRef, useState } from "react";
-import { getDownloadURL, ref, uploadBytesResumable, uploadString } from "@firebase/storage";
+import { auth, db } from "../../lib/api/fbase";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { getDownloadURL, ref, uploadString } from "@firebase/storage";
 
 import { Link } from "react-router-dom";
 import { MdArrowBack } from "react-icons/md";
@@ -14,7 +14,6 @@ import UserApi from "../../api/UserApi";
 import { storageService } from "../../lib/api/fbase";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
-import { async } from "@firebase/util";
 
 const Box = styled.div`
   margin: 0 auto;
@@ -94,7 +93,7 @@ function Register() {
   const [userEmail, setUserEmail] = useState("");
   const [kakaoEmail, setKakaoEmail] = useState("");
   const [userNickname, setUserNickname] = useState("");
-  const [displayName, setDisplayName] = useState("");  // firebase에서 사용
+  const [displayName, setDisplayName] = useState(""); // firebase에서 사용
   const [password, setPassword] = useState("");
   const [inputConPw, setInputConPw] = useState("");
   const [phone, setPhone] = useState("");
@@ -109,13 +108,15 @@ function Register() {
   const [isConPw, setIsConPw] = useState(false);
   const [conPwMessage, setConPwMessage] = useState("");
 
+  const [isValidPw, setIsValidPw] = useState(false);
+  const [pwMessage, setPwMessage] = useState("");
+
   const [isChecked, setIsChecked] = useState(false);
   const [isDuplCheck, setIsDuplCheck] = useState(true);
   const [isDuplCheckYn, setIsDuplCheckYn] = useState(false);
   const [isPhoneDuplCheck, setIsPhoneDuplCheck] = useState(true);
   const [isPhoneDuplCheckYn, setIsPhoneDuplCheckYn] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-
 
   // 초기값 설정
   useEffect(() => {
@@ -125,7 +126,7 @@ function Register() {
       setKakaoEmail(originEmail);
       setUserEmail(originEmail);
       setUserNickname(originNickname);
-      setDisplayName(originNickname);  // 파이어베이스
+      setDisplayName(originNickname); // 파이어베이스
       setIsDuplCheckYn(true);
     }
   }, []);
@@ -173,7 +174,19 @@ function Register() {
   };
 
   const onChangePassword = (e) => {
-    setPassword(e.target.value);
+    const pwdCheck = e.target.value;
+    setPassword(pwdCheck);
+
+    const regExp =
+      /(?=.*\d{1,50})(?=.*[~`!@#$%\\^&*()-+=]{1,50})(?=.*[a-zA-Z]{1,50}).{8,50}$/;
+
+    if (regExp.test(pwdCheck) !== true) {
+      setPwMessage("8자리 이상 영문, 숫자, 특수문자를 혼합하여 입력해 주세요.");
+      setIsValidPw(false);
+    } else {
+      setPwMessage("");
+      setIsValidPw(true);
+    }
   };
 
   const onChecked = ({ target }) => {
@@ -282,13 +295,18 @@ function Register() {
         //파일 랜덤 이름 생성(FireBase에 저장할 파일 이름)
         profileImage = uuidv4();
 
-        const result = await createUserWithEmailAndPassword(auth, userEmail, password);
+        const result = await createUserWithEmailAndPassword(
+          auth,
+          userEmail,
+          password
+        );
         // 업로드파일 참조
         const attachmentRef = ref(storageService, `/USER/${profileImage}`);
         //storage 참조 경로로 파일 업로드 하기
         await uploadString(attachmentRef, imgFile, "data_url");
         //storage 참조 경로로 파일경로 가져오기
-        await getDownloadURL(attachmentRef).then(async (downloadURL) => {     // 파이어베이스
+        await getDownloadURL(attachmentRef).then(async (downloadURL) => {
+          // 파이어베이스
           try {
             //Update profile
             await updateProfile(result.user, {
@@ -307,7 +325,7 @@ function Register() {
             await setDoc(doc(db, "userChats", result.user.uid), {});
             profileImagePath = downloadURL;
           } catch (err) {
-            console.log(err);                                         // 여기까지 파이어베이스
+            console.log(err); // 여기까지 파이어베이스
           }
         });
       }
@@ -353,6 +371,11 @@ function Register() {
         return;
       }
 
+      if (imgFile === "") {
+        window.alert("프로필 이미지를 설정해주세요.");
+        return;
+      }
+
       // 회원가입
       const userReg = await UserApi.userReg(
         userEmail,
@@ -372,7 +395,7 @@ function Register() {
         window.confirm("회원가입에 실패했습니다.");
       }
     }
-  }
+  };
 
   return (
     <Box>
@@ -452,6 +475,12 @@ function Register() {
                 value={password}
                 onChange={onChangePassword}
               />
+              <span
+                className={`message ${isValidPw ? "success" : "error"}`}
+                style={{ color: "#ff0000", fontSize: "0.8rem" }}
+              >
+                {pwMessage}
+              </span>
               <input
                 type="password"
                 placeholder="VERIFY PASSWORD"

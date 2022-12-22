@@ -9,6 +9,7 @@ import {
   ref,
   uploadString,
 } from "@firebase/storage";
+import { deleteUser, getAuth } from "firebase/auth";
 
 import { Link } from "react-router-dom";
 import { MdArrowBack } from "react-icons/md";
@@ -337,11 +338,15 @@ function EditInfo() {
   // 회원정보 탈퇴
   const onDeleteUser = async () => {
     if (window.confirm("탈퇴하시겠습니까?")) {
-      const deleteUser = await UserApi.delete(userEmail);
+      const deleteUserInfo = await UserApi.delete(userEmail);
 
-      if (deleteUser.data === true) {
+      if (deleteUserInfo.data === true) {
         window.confirm("탈퇴를 완료하였습니다.");
         sessionStorage.clear();
+        // 탈퇴시 firebase에서도 정보를 삭제함
+        const auth = getAuth();
+        const user = auth.currentUser;
+        await deleteUser(user);
         window.location.replace("/");
       }
     }

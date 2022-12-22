@@ -28,7 +28,7 @@ public class UserController {
     @Autowired
     private AdminService adminService;
 
-    public UserController(UserService userService , AdminService adminService) {
+    public UserController(UserService userService, AdminService adminService) {
         this.userService = userService;
         this.adminService = adminService;
     }
@@ -61,10 +61,11 @@ public class UserController {
     // 회원가입
     @PostMapping("/register")
     @ResponseBody
-    public ResponseEntity<Map<String, String>> userRegister(@RequestBody Map<String, String> regData) throws Exception{
+    public ResponseEntity<Map<String, String>> userRegister(@RequestBody Map<String, String> regData) throws Exception {
         String getUserEmail = regData.get("userEmail");
         String getUserNickname = regData.get("userNickname");
-        String getPassword = bCryptPasswordEncoder.encode(regData.get("password"));
+//        String getPassword = bCryptPasswordEncoder.encode(regData.get("password"));
+        String getPassword = regData.get("password");
         String getPhone = regData.get("phone");
         String getProfileImage = regData.get("profileImage");
         String getProfileImagePath = regData.get("profileImagePath");
@@ -80,7 +81,7 @@ public class UserController {
 
     // 일반 로그인
     @PostMapping("/login")
-    public ResponseEntity<User> memberLogin(@RequestBody Map<String, String > loginData) {
+    public ResponseEntity<User> memberLogin(@RequestBody Map<String, String> loginData) {
 
         String userEmail = loginData.get("userEmail");
         String password = loginData.get("password");
@@ -89,23 +90,22 @@ public class UserController {
         List<Ban> banUsers = adminService.banUserSearch(userEmail);
 
         // 아이디가 틀린경우
-        if (users.size() == 0) {
-            return new ResponseEntity(false, HttpStatus.OK);
-        }
+//        if (users.size() == 0) {
+//            return new ResponseEntity(false, HttpStatus.OK);
+//        }
 
-        Boolean result = bCryptPasswordEncoder.matches(password, users.get(0).getPassword());
+//        Boolean result = bCryptPasswordEncoder.matches(password, users.get(0).getPassword());
 
-        if (result == true) {
-           // return new ResponseEntity(users.get(0), HttpStatus.OK);
-            if(banUsers.size() == 0) return new ResponseEntity(users.get(0), HttpStatus.OK);
-            else  return new ResponseEntity("BAN_USER", HttpStatus.OK);
+        if (users.size() > 0) {
+            // return new ResponseEntity(users.get(0), HttpStatus.OK);
+            if (banUsers.size() == 0) return new ResponseEntity(users.get(0), HttpStatus.OK);
+            else return new ResponseEntity("BAN_USER", HttpStatus.OK);
 
-        } else if (result == false) {
+        } else if (users.size() == 0) {
             return new ResponseEntity(false, HttpStatus.OK);
         } else {
             return new ResponseEntity(false, HttpStatus.BAD_REQUEST);
         }
-
 
 
     }
@@ -121,7 +121,7 @@ public class UserController {
         // 이미 가입된 정보가 있는 경우
         if (users.size() > 0) {
             return new ResponseEntity(users.get(0), HttpStatus.OK);
-        } else if(users.size() == 0) {
+        } else if (users.size() == 0) {
             return new ResponseEntity(false, HttpStatus.OK);
         } else {
             return new ResponseEntity(false, HttpStatus.BAD_REQUEST);
@@ -150,7 +150,8 @@ public class UserController {
             result.get(0).setProfileImagePath(profileImagePath);
 
             if (!"".equals(password)) {
-                result.get(0).setPassword(bCryptPasswordEncoder.encode(password));
+//                result.get(0).setPassword(bCryptPasswordEncoder.encode(password));
+                result.get(0).setPassword(password);
             }
 
             rst = userService.UserUpdate(result.get(0));
@@ -201,15 +202,18 @@ public class UserController {
             int intRanNum = (int) doubleRanNum;
             newPw = String.valueOf(intRanNum);
 
+            String password = "devs" + newPw + "!";
+
             // 랜덤생성한 비밀번호 저장
-            userInfo.setPassword(bCryptPasswordEncoder.encode(newPw));
+//            userInfo.setPassword(bCryptPasswordEncoder.encode(newPw));
+            userInfo.setPassword(password);
             userService.UserUpdate(userInfo);
 
             // 메일생성
             SendMail sendmail = new SendMail();
             MailDTO mail = new MailDTO();
 
-            mail.setContent(newPw);
+            mail.setContent(password);
             mail.setSender(userInfo.getUserEmail());
             mail.setTitle("[DevS]" + userInfo.getUserNickname() + "님의 비밀번호 찾기 메일입니다.");
             sendmail.sendMail(mail);
