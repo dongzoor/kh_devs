@@ -1,6 +1,20 @@
 import axios from "axios";
 
 const SocialApi = {
+  // ############## 게시글 검색 기능 [검색 기준] ##############
+  // [해시태그]
+  hashTagSearch: async function (tag) {
+    return await axios.get(`/api/social/hashtag/${tag}`);
+  },
+  // [제목+내용]
+  titleContentSearch: async function (titleContent) {
+    return await axios.get(`/api/social/titleContent/${titleContent}`);
+  },
+  // [작성자 닉네임]
+  userSearch: async function (nickName) {
+    return await axios.get(`/api/social/nickname/${nickName}`);
+  },
+  // ############## 기본 CRUD ##############
   // 게시글 전체 조회
   socialList: async function () {
     return await axios.get(`/api/social`);
@@ -8,10 +22,6 @@ const SocialApi = {
   // 게시글(with 댓글) 상세 조회
   socialDetail: async function (socialId) {
     return await axios.get(`/api/social/${socialId}`);
-  },
-  // 게시글 검색 - 해시태그
-  hashTagSearch: async function (tag) {
-    return await axios.get(`/api/social/hashtag/${tag}`);
   },
   // 게시글 작성
   socialWrite: async function (
@@ -54,7 +64,8 @@ const SocialApi = {
   socialDelete: async function (socialId) {
     return await axios.delete(`/api/social/${socialId}`);
   },
-  // ########################## 댓글 ##########################
+  // ############## 댓글 ##############
+
   // 입력
   commentWrite: async function (socialId, userEmail, content) {
     const regCmtObj = {
@@ -72,17 +83,11 @@ const SocialApi = {
     console.log("댓글 번호 : ", commentId, typeof commentId);
     return await axios.post(`/comment/delete`, delCmtObj);
   },
-  // ########################## 해시태그 ##########################
+  // ############## 해시태그 ##############
   // 입력
   hashtagWrite: async function (id, tags) {
-    // const regObj = {
-    //   tag:tags
-    // }
     return await axios.post(`/hashtag/post/${id}`, JSON.stringify(tags));
   },
-  // hashtagWrite: async function (id, tags) {
-  //   return await axios.post(`/hashtag/post/${id}`, JSON.stringify(tags));
-  // },
   // 삭제
   hashtagDelete: async function (tagId) {
     const delTagObj = {
