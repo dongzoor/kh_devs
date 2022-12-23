@@ -1,34 +1,22 @@
-import React from 'react';
+
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from "@fullcalendar/interaction" // needed for dayClick
+
 import './MyPage.css';
 
 const MyCalendar = () => {
 
   return (
-    <div className="myPageContainer">
-      <div className="subTitle">
-        <h1>My Calendar</h1>
-      </div>
-      <hr className="myPageHr"/>
-      <div className="calContainer">
-        <div className="calCreateButtonBox">
-          <button id="calCreateButton">+ 일정 추가</button>
-        </div>
-        <div className="calendarBox">
         <FullCalendar 
           defaultView="dayGridMonth" 
-          plugins={[ dayGridPlugin ]}
+          plugins={[ dayGridPlugin, interactionPlugin ]}
           events={[
-            { title: '파이널 마무리', date: '2022-12-23' },
-            { title: '학원 수료일', date: '2022-12-26' },
-            { title: '메롱', start: '2022-12-20', end: '2022-12-22', color: 'red'}
-        ]}
+            { title: '파이널 마무리', date: "2022-12-23", end: '2022-12-23', color: '#95e4fe'},
+            { title: '파이널 마무리2', date: '2022-12-24', end: '2022-12-24', color: '#95e4fe'},
+            // {eventList}
+          ]}
         />
-        </div>
-      </div>
-    </div>
-
   )
 }
 export default MyCalendar;

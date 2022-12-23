@@ -91,21 +91,21 @@ const StudyDetail = () => {
             <br />
             <p className="card-text">{`${studyDetail.content}`}</p>
             {`${studyDetail.hashtag}` &&
-              studyDetail.hashtag.map((e) => <Badge bg="info" style={{ "marginRight": "0.5vw" }} > {e} </Badge>)}
+              studyDetail.hashtag.map((e,index) => <Badge bg="info" key={index} style={{ "marginRight": "0.5vw" }} > {e} </Badge>)}
           </div>
           <div>
             <div style={{ "display": "flex", "alignItems": "center", "float": "right" }}>
               {userNickname !== studyDetail.user.userNickname ?
                 (
                   studyDetail.applyPeople.length === studyDetail.goalPeople ?
-                    <Button variant="light" style={{ "width": "10vw" }}>모집 완료</Button>
+                    <Button variant="light" type="submit" style={{ "width": "10vw" }}>모집 완료</Button>
                     :
-                    <Button variant="light" style={{ "width": "10vw" }} onClick={applySubmit}>스터디 신청하기</Button>
+                    <Button variant="light" type="submit" style={{ "width": "10vw" }} onClick={applySubmit}>스터디 신청하기</Button>
                 )
                 :
-                <Button variant="light" style={{ "width": "10vw" }} onClick={goToUpdate}>수정</Button>
+                <Button variant="light" type="submit" style={{ "width": "10vw" }} onClick={goToUpdate}>수정</Button>
               }
-              <Button variant="light" style={{ "width": "10vw" }} onClick={chatTest}>채팅</Button>
+              <Button variant="light" type="submit" style={{ "width": "10vw" }} onClick={chatTest}>채팅</Button>
             </div>
             <div style={{ "display": "flex", "alignItems": "center", "float": "right", "margin": "0.5vh 1vw 0 0" }}>
               <IoPersonOutline />

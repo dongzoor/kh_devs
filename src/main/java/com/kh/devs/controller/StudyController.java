@@ -11,8 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+
 
 
 @RestController
@@ -79,5 +78,13 @@ public class StudyController {
     @DeleteMapping("study/{studyId}")
     public void deleteStudy(@PathVariable Long studyId) {
         studyRepository.deleteById(studyId);
+    }
+
+
+    // hashtag 검색
+    @GetMapping("/study/hashtag/{tag}")
+    public ResponseEntity<List<StudyDTO>> searchHashtag(@PathVariable("tag") String tag) {
+        List<StudyDTO> studyDTO = studyService.searchHashtag(tag);
+        return new ResponseEntity<>(studyDTO, HttpStatus.OK);
     }
 }

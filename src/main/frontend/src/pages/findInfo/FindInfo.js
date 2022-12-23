@@ -10,6 +10,7 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import UserApi from "../../api/UserApi";
 import styled from "styled-components";
+import { getAuth, updatePassword } from "firebase/auth";
 
 const Box = styled.div`
   height: auto;
@@ -133,8 +134,13 @@ function FindInfo() {
 
   const onClickFindPwd = async () => {
     const res = await UserApi.findPwd(userEmail, pwPhone);
-    if (res.data === true) {
-      console.log(res.data);
+    console.log("res.data", res.data);
+    if (res.data !== "error") {
+      // console.log(res.data);
+      const auth = getAuth();
+      const user = auth.currentUser;
+      await updatePassword(user, res.data);
+
       window.alert(
         "입력하신 메일주소로 임시 비밀번호를 전송하였습니다. \n새로운 비밀번호로 로그인 해주세요."
       );
