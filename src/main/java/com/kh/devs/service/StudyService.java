@@ -96,8 +96,9 @@ public class StudyService {
         study.setStudyApplyCount(studyDTO.getApplyCnt());
     }
 
+
     @Transactional
-    public void updateCnt(Long id) {   //스터디 지원
+    public void updateCnt(Long id) {    //조회수 증가
         Study study = studyRepository.findById(id).orElseThrow(() -> new NotFoundStudyException("study is not Found!"));
         study.setCnt(study.getCnt() + 1);
         studyRepository.save(study);

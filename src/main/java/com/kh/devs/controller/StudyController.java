@@ -32,7 +32,7 @@ public class StudyController {
     public ResponseEntity<StudyDTO> studyDTO(@PathVariable Long studyId) {
         Study study = studyService.getStudy(studyId);
 
-        // J2 조회수 업데이트
+        // 조회수 업데이트
         if (study != null) {
             studyService.updateCnt(studyId);
         }
