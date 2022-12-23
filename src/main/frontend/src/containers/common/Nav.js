@@ -1,6 +1,5 @@
 import { getAuth, signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
-
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -10,10 +9,15 @@ import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import LogoImg from "./image/devs.png";
 
 const NAVI = styled.div`
   * {
     font-family: "Gowun Dodum", sans-serif;
+
+    .devs_nav{
+         font-size: 'bold';
+    }
   }
 `;
 function OffcanvasExample() {
@@ -60,9 +64,10 @@ function OffcanvasExample() {
   return (
     <NAVI>
       {[false].map((expand) => (
+        <>
         <Navbar key={expand} bg="light" expand={expand} className="mb-3">
           <Container fluid>
-            <Navbar.Brand href="#">DevS</Navbar.Brand>
+            <Navbar.Brand href="#" className="devs_nav">DEVS&nbsp;<img src={LogoImg} alt="" style={{  margin: '5px', width: '30px', height: '40px'}}/></Navbar.Brand>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
             <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-${expand}`}
@@ -71,7 +76,7 @@ function OffcanvasExample() {
             >
               <Offcanvas.Header closeButton>
                 <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-                  DevS
+                &nbsp;DEVS&nbsp;<img src={LogoImg} alt="" style={{  margin: '5px', width: '30px', height: '40px'}}/>
                 </Offcanvas.Title>
               </Offcanvas.Header>
               <Offcanvas.Body>
@@ -123,11 +128,6 @@ function OffcanvasExample() {
                     <Nav.Link href="/AdminMemberList">관리자모드</Nav.Link>
                   )}
                   <Nav.Link href="/chat">Chat</Nav.Link>
-                  {isLogin !== "" ? (
-                    <Nav.Link href="/AdminMemberList">관리자모드</Nav.Link>
-                  ) : (
-                    <Nav.Link href="/AdminLogin">관리자모드</Nav.Link>
-                  )}
                 </Nav>
                 <Form className="d-flex" style={{ marginTop: "20px" }}>
                   <Form.Control
@@ -142,6 +142,7 @@ function OffcanvasExample() {
             </Navbar.Offcanvas>
           </Container>
         </Navbar>
+        </>
       ))}
     </NAVI>
   );

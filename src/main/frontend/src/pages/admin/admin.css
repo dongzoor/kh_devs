@@ -151,6 +151,10 @@
   justify-content: center;
   text-align: center;
 }
+.table_scboardlist th {
+  justify-content: center;
+  text-align: center;
+}
 
 .table_boardlist th {
   justify-content: center;

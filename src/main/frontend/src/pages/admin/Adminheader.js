@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import LogoImg from "./image/devs.png";
 
 
 function Adminheader() {
@@ -30,7 +31,7 @@ function Adminheader() {
   return (
     <Navbar id='adminNav' expand="lg">
       <Container>
-        <Navbar.Brand href="/AdminMemberList">DEVS 관리페이지&nbsp;<i class="fi fi-rr-home"></i></Navbar.Brand>
+        <Navbar.Brand href="/AdminMemberList">DEVS 관리페이지&nbsp;<img src={LogoImg} alt="" style={{margin: '5px', width: '30px', height: '40px'}}/></Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">

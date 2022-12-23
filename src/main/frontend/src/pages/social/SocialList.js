@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import SocialApi from "../../api/SocialApi";
 import { RxReset } from "react-icons/rx";
-import { IoChatboxOutline, IoHeartOutline } from "react-icons/io5";
+import { IoChatboxOutline, IoEyeOutline,IoHeartOutline } from "react-icons/io5";
 
 const ListBlock = styled.div`
   overflow-x: hidden;
@@ -389,8 +389,8 @@ const Social = () => {
                         </span>
                       </div>
                       <div className="icon-box">
-                        <IoHeartOutline />
-                        <span className="count">{social.like}</span>
+                        <IoEyeOutline />
+                        <span className="count">{social.view}</span>
                         <IoChatboxOutline />
                         <span className="count">{social.comments.length}</span>
                       </div>
@@ -429,8 +429,8 @@ const Social = () => {
                         </span>
                       </div>
                       <div className="icon-box">
-                        <IoHeartOutline />
-                        <span className="count">{social.like}</span>
+                        <IoEyeOutline />
+                        <span className="count">{social.view}</span>
                         <IoChatboxOutline />
                         <span className="count">{social.comments.length}</span>
                       </div>

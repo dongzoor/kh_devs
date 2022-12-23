@@ -189,8 +189,8 @@ function AdminBoardList() {
                 .slice(items * (page - 1), items * (page - 1) + items)
                 .map((list) => (
                   <tr key={list.id}>
-                    <td>{list.title}</td>
-                    <td>{list.content.substr(0, 7)}...</td>
+                    <td>{list.title.substr(0, 10)}</td>
+                    <td>{list.content.substr(0, 10)}...</td>
                     <td><img
                           className="Boardphotos"
                           alt="게시글 사진"
