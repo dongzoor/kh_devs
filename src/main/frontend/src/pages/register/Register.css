@@ -8,13 +8,15 @@
   margin: 20px 40px 0px;
 }
 
-.register-form label {
+.profileImg-label:hover {
+  cursor: pointer;
+}
+.profileImg-label {
   margin: 5px 15px 0;
   font-weight: bold;
   font-size: 1rem;
   color: #0095f6;
   display: inline-block;
-  cursor: pointer;
 }
 
 .register-form input[type="file"] {
