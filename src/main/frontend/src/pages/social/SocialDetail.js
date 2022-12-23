@@ -7,55 +7,49 @@ import CommentList from "./comment/CommentList";
 import SocialApi from "../../api/SocialApi";
 
 const DetailBox = styled.div`
+  overflow-x: hidden;
   & > * {
     margin: 0;
     padding: 0;
     font-size: 20px;
   }
-  margin: 0px auto;
-  /* background-color: rgba(211, 188, 230, 0.25); */
   .subtitle {
-    font-family: "Alfa Slab One", cursive;
-    text-align: center;
-    font-size: 25px;
+    margin: 20px 0px;
     padding: 10px;
-    margin: 20px;
-  }
-  .subtitle {
+    text-align: center;
     display: flex;
     flex-basis: 100%;
-    align-items: center;
-    color: rgba(0, 0, 0, 0.35);
     font-size: 25px;
-    margin: 8px 0px;
+    color: rgba(0, 0, 0, 0.35);
+    font-family: "Alfa Slab One", cursive;
   }
   .subtitle::before,
   .subtitle::after {
     content: "";
-    flex-grow: 1;
-    background: rgba(0, 0, 0, 0.35);
     height: 1px;
-    font-size: 0px;
-    line-height: 0px;
     margin: 0px 16px;
+    line-height: 0px;
+    flex-grow: 1;
+    font-size: 0px;
+    background: rgba(0, 0, 0, 0.35);
   }
   .parentBox {
-    font-family: "Gowun Dodum", sans-serif;
-    width: 1024px;
+    max-width: 1024px;
+    min-width: 300px;
     margin: 0px auto;
     padding: 5px;
-    /* border: 1px solid black; */
-    background-color: rgba(211, 188, 230, 0.25);
     border-radius: 5px;
     display: flex;
     flex-direction: column;
+    font-family: "Gowun Dodum", sans-serif;
+    background-color: rgba(211, 188, 230, 0.25);
   }
   .content-title {
-    border-radius: 5px;
-    padding: 5px 10px;
     margin: 5px;
-    background-color: rgba(255, 255, 255, 0.8);
+    padding: 5px 10px;
+    border-radius: 5px;
     font-size: 25px;
+    background-color: rgba(255, 255, 255, 0.8);
   }
   hr {
     width: 98%;
@@ -93,34 +87,30 @@ const DetailBox = styled.div`
     margin: 0 5px;
     font-size: 0.8em;
   }
-  .count {
-    padding: 5px;
-  }
-  .hashtags-box {
-    margin: 10px;
-  }
-  .hashtags {
-    margin: 0px 3px;
-    padding: 8px;
-    font-size: 0.75em;
-    font-style: italic;
-    background-color: rgba(219, 219, 219);
-    background-color: rgba(219, 219, 219, 0.5);
-    background-color: rgba(3, 0, 209, 0.2);
-    border-radius: 10px;
-    box-shadow: 0 1px 3px grey;
-  }
   // 첨부 사진 최대 크기 조정
-  .preview {
-    max-width: 95%;
+  .attachedImg {
+    max-width: 90%;
   }
   // 첨부 사진 가운데 정렬
-  .attachedImg {
+  .attachedImg-box {
     display: flex;
     align-items: center;
     justify-content: center;
   }
-
+  .hashtags-box {
+    margin: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    .hashtags {
+      margin: 5px 3px;
+      padding: 8px;
+      font-size: 0.75em;
+      font-style: italic;
+      background-color: rgba(3, 0, 209, 0.2);
+      border-radius: 10px;
+      box-shadow: 0 1px 3px grey;
+    }
+  }
   .goList {
     float: right;
     margin: 20px;
@@ -284,9 +274,9 @@ const SocialDetail = () => {
                 )}
               </div>
             </div>
-            <div className="attachedImg">
+            <div className="attachedImg-box">
               {`${socialDetail.image}` != null && (
-                <img src={socialDetail.image} className="preview" alt="" />
+                <img src={socialDetail.image} className="attachedImg" alt="" />
               )}
             </div>
             <div className="content-text">{socialDetail.content}</div>
