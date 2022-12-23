@@ -5,6 +5,7 @@ import com.kh.devs.dao.SocialRepository;
 import com.kh.devs.dao.UserRepository;
 import com.kh.devs.dto.CommentDTO;
 import com.kh.devs.dto.SocialDTO;
+import com.kh.devs.dto.UserDTO;
 import com.kh.devs.entity.Comment;
 import com.kh.devs.entity.Social;
 import com.kh.devs.entity.User;
@@ -24,6 +25,124 @@ public class SocialService {
     private final SocialRepository socialRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+
+    // [해시태그] 검색
+    public List<SocialDTO> searchHashtag(String tag) {
+        List<SocialDTO> socialDTOS = new ArrayList<>();
+        List<Social> social = socialRepository.findByHashtag(tag);
+        // for(배열요소이름 변수명 : 배열이름)
+        for (Social e : social) {
+            SocialDTO socialDTO = new SocialDTO();
+            socialDTO.setSocialId(e.getSocialId());
+            socialDTO.setUserEmail(e.getUser().getUserEmail());             // 작성자 이메일
+            socialDTO.setUserNickName(e.getUser().getUserNickname());       // 작성자 닉네임
+            socialDTO.setUserImageId(e.getUser().getProfileImage());        // 작성자 사진 ID
+            socialDTO.setUserImageUrl(e.getUser().getProfileImagePath());   // 작성자 사진 URL
+            socialDTO.setTitle(e.getTitle());
+            socialDTO.setContent(e.getContent());
+            socialDTO.setPostDate(e.getPostDate());
+            socialDTO.setImage(e.getImage());
+            socialDTO.setLike(e.getLike());
+            socialDTO.setView(e.getView());
+            socialDTO.setHashtag(e.getHashtag());
+            socialDTOS.add(socialDTO);
+            // 댓글 list 조회
+            List<Comment> list = commentRepository.findBySocial_SocialIdOrderByPostDateDesc(socialDTO.getSocialId());
+            List<CommentDTO> CommentDTOs = new ArrayList<>();
+            for (Comment c : list) {
+                CommentDTO commentDTO = new CommentDTO();
+                commentDTO.setId(c.getId());
+                commentDTO.setContent(c.getContent());
+                commentDTO.setPostDate(c.getPostDate());
+                commentDTO.setUserId(c.getUser().getUserId());
+                commentDTO.setUserNickName(c.getUser().getUserNickname());
+                commentDTO.setUserImageUrl(c.getUser().getProfileImagePath());
+                CommentDTOs.add(commentDTO);    // CommentDTOs list에 값을 담는다
+            }
+            socialDTO.setComments(CommentDTOs); // 모든 댓글 list 값을 socialDTO에 담기
+        }
+        return socialDTOS;
+    }
+
+    // [제목+내용] 검색
+    public List<SocialDTO> searchTorC(String TorC) {
+        List<SocialDTO> socialDTOS = new ArrayList<>();
+        List<Social> social = socialRepository.findByTitleOrContent(TorC);
+        // for(배열요소이름 변수명 : 배열이름)
+        for (Social e : social) {
+            SocialDTO socialDTO = new SocialDTO();
+            socialDTO.setSocialId(e.getSocialId());
+            socialDTO.setUserEmail(e.getUser().getUserEmail());             // 작성자 이메일
+            socialDTO.setUserNickName(e.getUser().getUserNickname());       // 작성자 닉네임
+            socialDTO.setUserImageId(e.getUser().getProfileImage());        // 작성자 사진 ID
+            socialDTO.setUserImageUrl(e.getUser().getProfileImagePath());   // 작성자 사진 URL
+            socialDTO.setTitle(e.getTitle());
+            socialDTO.setContent(e.getContent());
+            socialDTO.setPostDate(e.getPostDate());
+            socialDTO.setImage(e.getImage());
+            socialDTO.setLike(e.getLike());
+            socialDTO.setView(e.getView());
+            socialDTO.setHashtag(e.getHashtag());
+            socialDTOS.add(socialDTO);
+            // 댓글 list 조회
+            List<Comment> list = commentRepository.findBySocial_SocialIdOrderByPostDateDesc(socialDTO.getSocialId());
+            List<CommentDTO> CommentDTOs = new ArrayList<>();
+            for (Comment c : list) {
+                CommentDTO commentDTO = new CommentDTO();
+                commentDTO.setId(c.getId());
+                commentDTO.setContent(c.getContent());
+                commentDTO.setPostDate(c.getPostDate());
+                commentDTO.setUserId(c.getUser().getUserId());
+                commentDTO.setUserNickName(c.getUser().getUserNickname());
+                commentDTO.setUserImageUrl(c.getUser().getProfileImagePath());
+                CommentDTOs.add(commentDTO);    // CommentDTOs list에 값을 담는다
+            }
+            socialDTO.setComments(CommentDTOs); // 모든 댓글 list 값을 socialDTO에 담기
+        }
+        return socialDTOS;
+    }
+
+    // [닉네임] 검색
+    public List<SocialDTO> searchNickname(String nickname) {
+        List<SocialDTO> socialDTOS = new ArrayList<>();
+        List<User> users = userRepository.findByUserNicknameLike(nickname);
+        for (User u : users) {
+            UserDTO userDTOS = new UserDTO();
+            userDTOS.setUserId(u.getUserId());
+            List<Social> socialList = socialRepository.findAllByUserId(userDTOS.getUserId());
+            for (Social e : socialList) {
+                SocialDTO socialDTO = new SocialDTO();
+                socialDTO.setSocialId(e.getSocialId());
+                socialDTO.setUserEmail(e.getUser().getUserEmail());             // 작성자 이메일
+                socialDTO.setUserNickName(e.getUser().getUserNickname());       // 작성자 닉네임
+                socialDTO.setUserImageId(e.getUser().getProfileImage());        // 작성자 사진 ID
+                socialDTO.setUserImageUrl(e.getUser().getProfileImagePath());   // 작성자 사진 URL
+                socialDTO.setTitle(e.getTitle());
+                socialDTO.setContent(e.getContent());
+                socialDTO.setPostDate(e.getPostDate());
+                socialDTO.setImage(e.getImage());
+                socialDTO.setLike(e.getLike());
+                socialDTO.setView(e.getView());
+                socialDTO.setHashtag(e.getHashtag());
+                socialDTOS.add(socialDTO);
+                // 댓글 list 조회
+                List<Comment> list = commentRepository.findBySocial_SocialIdOrderByPostDateDesc(socialDTO.getSocialId());
+                List<CommentDTO> CommentDTOs = new ArrayList<>();
+                for (Comment c : list) {
+                    CommentDTO commentDTO = new CommentDTO();
+                    commentDTO.setId(c.getId());
+                    commentDTO.setContent(c.getContent());
+                    commentDTO.setPostDate(c.getPostDate());
+                    commentDTO.setUserId(c.getUser().getUserId());
+                    commentDTO.setUserNickName(c.getUser().getUserNickname());
+                    commentDTO.setUserImageUrl(c.getUser().getProfileImagePath());
+                    CommentDTOs.add(commentDTO);    // CommentDTOs list에 값을 담는다
+                }
+                socialDTO.setComments(CommentDTOs); // 모든 댓글 list 값을 socialDTO에 담기
+            }
+        }
+        return socialDTOS;
+    }
 
     // Social 전체 조회
     public List<SocialDTO> getSocialList() {
@@ -80,7 +199,7 @@ public class SocialService {
         socialDTO.setImageId(social.getImageId());
         socialDTO.setView(social.getView());
         socialDTO.setPostDate(social.getPostDate());
-        
+
         // 댓글 list 조회
         List<Comment> list = commentRepository.findBySocial_SocialIdOrderByPostDateDesc(socialId);
         List<CommentDTO> CommentDTOs = new ArrayList<>();
@@ -97,6 +216,7 @@ public class SocialService {
         socialDTO.setComments(CommentDTOs); // 모든 댓글 list 값을 socialDTO에 담기
         return socialDTO;
     }
+
 
     // Social Write 등록
     public Map<String, Object> regSocial(String userEmail, String title, String content, List<String> hashtag, String image, String imageId) throws Exception { // 결과값은 성공,실패만 알려주면 되니까 boolean

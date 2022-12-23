@@ -71,6 +71,7 @@ const StudyWrite = (studyObj) => {
   const [studyDetail, setStudyDetail] = useState("");
   const [hashtag, setHashtag] = useState("");
   const [hashtags, setHashtags] = useState([]);
+  const [tagStatus, setTagStatus] = useState(false);
   const params = useParams().studyId;
   const [valueDate, setValueDate] = useState(new Date());
   const [people, setPeople] = useState("");
@@ -248,8 +249,6 @@ const StudyWrite = (studyObj) => {
     }
   };
 
-
-
   const onChangeHashtag = (e) => {
     const {
       target: { value }
@@ -259,18 +258,19 @@ const StudyWrite = (studyObj) => {
 
   const addHashtag = (e) => {
     setHashtags([...hashtags, hashtag]);
-    setHashtag('');
+
+    setTagStatus(true);
   }
 
   const onDeleteHash = (e) => {
-    const {
-      target: target2
-    } = e;
 
-    hashtags.pop(target2.innerHTML);
-    console.log(hashtags);
-    target2.innerHTML = "";
+    hashtags.splice(e, 1);
+    setTagStatus(true);
   }
+  useEffect(() => {
+    setTagStatus(false);
+    setHashtag("");
+  }, [tagStatus, hashtags]);
 
   const getAddr = (e) => {
     setAddr(e);
@@ -308,7 +308,7 @@ const StudyWrite = (studyObj) => {
         </div>
 
         <div className="hashtag-container">
-          {hashtags.map(e => <Badge bg="info" className="hashtag-badge" onClick={onDeleteHash}>{e} </Badge>)}
+          {hashtags.map((e, index) => <Badge bg="info" className="hashtag-badge" key={index} onClick={() =>onDeleteHash(index)}>{e} </Badge>)}
         </div>
 
         <div className="option-container">

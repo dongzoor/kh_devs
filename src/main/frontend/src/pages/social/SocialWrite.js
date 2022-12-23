@@ -145,7 +145,7 @@ const SocialWrite = () => {
   const addHashtag = (e) => {
     if (e.key === "Enter") {
       if (hashtag.length > 10 || hashtags.length > 4) {
-        alert("해시태그는 10자 이하의 단어로 최대 5개까지 입력 가능합니다.");
+        alert("⚡ 해시태그는 10자 이하의 단어로 최대 5개까지 입력 가능합니다 ⚡");
       } else {
         setHashtags([...hashtags, hashtag]);
         setTagStatus(true);

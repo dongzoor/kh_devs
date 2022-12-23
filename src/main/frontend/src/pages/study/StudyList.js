@@ -199,7 +199,7 @@ const Study = () => {
                             <br />
                             <p className="card-text">{`${list.content}`}</p>
                             {list.hashtag &&
-                              list.hashtag.map((e) => <Badge bg="info" style={{ "marginRight": "0.5vw" }} > {e} </Badge>)}
+                              list.hashtag.map((e, index) => <Badge bg="info" key={index} style={{ "marginRight": "0.5vw" }} > {e} </Badge>)}
                           </div>
 
                           <div className="icon-box">

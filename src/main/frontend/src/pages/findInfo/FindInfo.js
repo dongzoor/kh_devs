@@ -4,11 +4,13 @@ import "./FindInfo.css";
 
 import { Link, useNavigate } from "react-router-dom";
 import React, { useRef, useState } from "react";
+import { signInWithEmailAndPassword, updatePassword } from "firebase/auth";
 
 import { MdArrowBack } from "react-icons/md";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import UserApi from "../../api/UserApi";
+import { auth } from "../../lib/api/fbase";
 import styled from "styled-components";
 
 const Box = styled.div`
@@ -133,8 +135,11 @@ function FindInfo() {
 
   const onClickFindPwd = async () => {
     const res = await UserApi.findPwd(userEmail, pwPhone);
-    if (res.data === true) {
+    if (res.data !== false) {
       console.log(res.data);
+      await signInWithEmailAndPassword(auth, userEmail, res.data.bfPwd);
+      const user = auth.currentUser;
+      await updatePassword(user, res.data.afPwd);
       window.alert(
         "입력하신 메일주소로 임시 비밀번호를 전송하였습니다. \n새로운 비밀번호로 로그인 해주세요."
       );
