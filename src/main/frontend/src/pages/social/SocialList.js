@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SocialApi from "../../api/SocialApi";
-import {
-  IoChatboxOutline,
-  IoEyeOutline,
-  IoHeartOutline,
-} from "react-icons/io5";
+import { RxReset } from "react-icons/rx";
+import { IoChatboxOutline, IoHeartOutline } from "react-icons/io5";
 
 const ListBlock = styled.div`
+  overflow-x: hidden;
   * {
     margin: 0;
     padding: 0;
@@ -33,16 +31,66 @@ const ListBlock = styled.div`
     text-align: center;
     font-family: "Alfa Slab One", cursive;
   }
-  .parentBox {
-    /* font-family: "Song Myung", serif; */
+  .post-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  .postBt {
+    width: 10rem;
+    height: 40px;
+    border: none;
+    border-radius: 20px;
+    margin: 20px 0;
+    box-shadow: 5px 5px 10px rgba(0, 0, 255, 0.2);
+    transition-duration: 0.3s;
+    font-family: "Alfa Slab One", cursive;
+    &:hover {
+      color: white;
+      background-color: rgba(190, 100, 255, 0.5);
+      box-shadow: 5px 5px 10px rgba(190, 100, 255, 0.2);
+      margin-top: 5px;
+    }
+  }
+  .search-type-selector {
+    margin: 10px 10px;
+    margin-right: 0;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px grey;
+    background-color: rgba(3, 0, 209, 0.2);
+  }
+  .search {
+    margin: 10px 10px;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px grey;
+    background-color: rgba(3, 0, 209, 0.2);
     font-family: "Gowun Dodum", sans-serif;
-    width: 1024px;
+    width: 250px;
+  }
+  .resetBt {
+    border-radius: 5px;
+    border: 1px solid rgba(3, 0, 209, 0.4);
+    height: 40px;
+    width: 40px;
+    background-color: none;
+  }
+  .parentBox {
+    font-family: "Gowun Dodum", sans-serif;
+    max-width: 1024px;
+    min-width: 480px;
     padding: 5px;
     border-radius: 10px;
     margin: 0px auto;
     background-color: rgba(255, 255, 255, 0.35);
+    min-width: 486px;
   }
   .childBox {
+    max-width: 990px;
+    min-width: 480px;
     display: flex;
     height: 100%;
     margin: 20px 10px;
@@ -53,6 +101,10 @@ const ListBlock = styled.div`
     transition-duration: 0.3s;
     & > * {
       font-size: 20px;
+    }
+    & > .flex-box2 {
+      max-width: 760px;
+      min-width: 220px;
     }
     &:hover {
       color: white;
@@ -68,6 +120,8 @@ const ListBlock = styled.div`
     }
   }
   .childBox-noPic {
+    max-width: 990px;
+    min-width: 480px;
     height: 100%;
     margin: 20px 10px;
     border: 2px solid grey;
@@ -91,23 +145,27 @@ const ListBlock = styled.div`
       }
     }
   }
+  .flex-box1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    min-width: 206px;
+  }
   .flex-box2 {
     display: flex;
     flex-direction: column;
     padding: 10px;
   }
-  .flex-box1 {
-    flex-grow: 1.5;
-    overflow: hidden;
-    position: relative;
-  }
   .insertImg {
     height: 90%;
-    width: 100%;
-    border-radius: 10px;
+    width: 200px;
+    height: 170px;
+    border-radius: 5px;
     position: absolute; // = 부모 기준 배치
-    left: 5px;
-    top: 5px;
+    /* left: 5px;
+    top: 5px; */
   }
   .flex-box3 {
     display: flex;
@@ -119,7 +177,6 @@ const ListBlock = styled.div`
     align-items: center;
   }
   .content-title {
-    font-size: 1.2em;
     font-weight: 550;
     width: 750px;
     margin: 5px;
@@ -149,42 +206,104 @@ const ListBlock = styled.div`
     padding: 5px;
   }
   .hashtag-box {
+    word-break: keep-all;
     margin: 15px 0px;
   }
   .hashtag {
+    word-break: keep-all;
     font-size: 0.7em;
-    margin: 0px 3px;
+    margin: 15px 3px;
     padding: 10px;
     font-style: italic;
     background-color: rgba(219, 219, 219, 0.5);
     border-radius: 10px;
   }
-  .postBt {
-    width: 10rem;
-    height: 40px;
-    margin: 0px auto;
-    border: none;
-    border-radius: 20px;
-    box-shadow: 5px 5px 10px rgba(0, 0, 255, 0.2);
-    transition-duration: 0.3s;
-    font-family: "Alfa Slab One", cursive;
-    &:hover {
-      color: white;
-      background-color: rgba(190, 100, 255, 0.5);
-      box-shadow: 5px 5px 10px rgba(190, 100, 255, 0.2);
-      left: 5px;
-      margin-top: 5px;
-      box-shadow: none;
+
+  @media (width < 768px) {
+    & {
+      display: flex;
+      flex-direction: column;
+    }
+    .parentBox {
+      width: 95vw;
+      flex-direction: column;
+      display: flex;
+      align-items: center;
+      flex-wrap: nowrap;
+      .childBox {
+        align-items: center;
+        justify-content: center;
+        width: 80vw;
+        .flex-box2 {
+          width: 50vw;
+        }
+        .insertImg {
+          min-height: 170px;
+        }
+      }
+      .childBox-noPic {
+        align-items: center;
+        justify-content: center;
+        width: 80vw;
+      }
     }
   }
 `;
 
 const Social = () => {
+  const navigate = useNavigate();
   const [socialList, setSocialList] = useState("");
   const [loading, setLoading] = useState(false);
   const [inputTags, setInputTags] = useState([]);
-  // const [userImageUrl, setUserImageUrl] = useState("");
+  const [searchData, setSearchData] = useState("");
+  const [reset, setReset] = useState(false);
+  const [typeSelect, setTypeSelect] = useState("one");
 
+  const onSelectType = (e) => {
+    setTypeSelect(e.target.value);
+    console.log(e.target.value);
+  };
+  // const [userImageUrl, setUserImageUrl] = useState("");
+  const searchTag = async (e) => {
+    if (e.key === "Enter") {
+      const {
+        target: { value },
+      } = e;
+      if (value === "") {
+        alert("검색어가 없습니다. 다시 입력해주세요.");
+      } else {
+        if (typeSelect === "one") {
+          // [제목+내용] 검색
+          console.log("[제목+내용] 검색");
+          setSearchData(value);
+          console.log(value);
+          const res = await SocialApi.titleContentSearch(value);
+          setSocialList(res.data);
+        } else if (typeSelect === "two") {
+          // [해시태그] 검색
+          console.log("[해시태그] 검색");
+          setSearchData(value);
+          console.log(value);
+          const res = await SocialApi.hashTagSearch(value);
+          setSocialList(res.data);
+          setInputTags(res.data.hashtag);
+        } else {
+          // [작성자 닉네임] 기준 검색
+          console.log("[작성자 닉네임] 검색");
+          setSearchData(value);
+          const res = await SocialApi.userSearch(value);
+          setSocialList(res.data);
+        }
+      }
+    }
+  };
+  const goPost = () => {
+    navigate("/social/write");
+  };
+  // 검색 초기화 버튼
+  const onClickReset = () => {
+    setReset(true);
+  };
   useEffect(() => {
     const socialData = async () => {
       setLoading(true);
@@ -192,6 +311,8 @@ const Social = () => {
         const response = await SocialApi.socialList();
         setSocialList(response.data);
         setInputTags(response.data.hashtag);
+        setReset(false);
+        setTypeSelect("one");
         console.log("★ Social List ", response.data);
       } catch (e) {
         console.log(e);
@@ -199,19 +320,39 @@ const Social = () => {
       setLoading(false);
     };
     socialData();
-  }, []);
+  }, [reset]);
 
   if (loading) {
     return <ListBlock>조금만 기다려주세요...👩‍💻</ListBlock>;
   }
   return (
     <ListBlock>
-      <div className="subtitle">Dev' Social</div>
+      <div className="subtitle">Dev' Social Community</div>
       <div className="inducer"> Share anything you want 👩🏻‍💻✨</div>
+      <div className="post-box">
+        <button className="postBt" onClick={goPost}>
+          P O S T
+        </button>
+      </div>
       <div className="parentBox">
-        <Link to="/social/write">
-          <button className="postBt">P O S T</button>
-        </Link>
+        <div className="search-box">
+          <select className="search-type-selector" onChange={onSelectType}>
+            <option value="one" defaultChecked>
+              제목+내용
+            </option>
+            <option value="two">해시태그</option>
+            <option value="three">닉네임</option>
+          </select>
+          <input
+            type="text"
+            placeholder="🔎 검색어를 입력해주세요!"
+            className="search"
+            onKeyPress={searchTag}
+          />
+          <button className="resetBt" onClick={onClickReset}>
+            <RxReset size="25px" color="rgba(3, 0, 209, 0.4)" />
+          </button>
+        </div>
         {socialList &&
           socialList.map((social) =>
             social.image ? (

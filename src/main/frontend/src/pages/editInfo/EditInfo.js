@@ -390,13 +390,34 @@ function EditInfo() {
 
       if (deleteUserInfo.data === true) {
         window.confirm("탈퇴를 완료하였습니다.");
+
+        // 세션에서 정보 삭제
         sessionStorage.clear();
-        // 탈퇴시 firebase에서도 정보를 삭제함
+
+        // 탈퇴시 firebase에서도 정보를 삭제
         const auth = getAuth();
         const user = auth.currentUser;
         await deleteUser(user);
+
+        //카카오 로그인 정보도 삭제
+        KakaoLogout();
+
         window.location.replace("/");
       }
+    }
+  };
+  const KakaoLogout = () => {
+    if (window.Kakao.Auth.getAccessToken()) {
+      window.Kakao.API.request({
+        url: "/v1/user/unlink",
+        success: function (response) {
+          console.log(response);
+        },
+        fail: function (error) {
+          console.log(error);
+        },
+      });
+      window.Kakao.Auth.setAccessToken(undefined);
     }
   };
 

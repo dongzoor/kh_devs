@@ -22,6 +22,25 @@ const Container = styled.div`
 `;
 
 function Profile() {
+  const userId = sessionStorage.getItem;
+  // useEffect(() => {
+  //   const Data = async () => {
+  //     try {
+  //       requestPermission()
+  //     } catch (e) {
+  //       console.log(e);
+  //     }
+  //   };
+  //   Data();
+  // }, []);
+
+
+  // function requestPermission() {
+  //   console.log('Requesting permission...');
+  //   Notification.requestPermission().then((permission) => {
+  //     if (permission === 'granted') {
+  //       console.log('Notification permission granted.')}})
+  //     };
   return (
     <Box>
       <Container>
@@ -50,7 +69,11 @@ function Profile() {
           </Link>
         </div>
         <div className="todays_info" style={{ textAlign: "center" }}>
-          <h1 className="todays_schedule">오늘은 n개의 일정이 있습니다.</h1>
+          <Link to={`/myPage/myCalendar/${userId}`}>
+            <label style={{ fontSize: "1.3rem", color: "#6a679e" }}>
+              오늘의 일정을 확인하세요.
+            </label>
+          </Link>
           <Quote />
         </div>
       </Container>

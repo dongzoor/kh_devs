@@ -82,11 +82,11 @@ public class AdminController {
     public ResponseEntity<Boolean> adUserUpdate(@PathVariable("Id") long pathUserId, @RequestBody Map<String, String> editData) throws Exception {
         Long userId = pathUserId;
         String userNickname = editData.get("userNickname");
-        String password = editData.get("password");
+//        String password = editData.get("password");
         String phone = editData.get("phone");
         String profileImage = editData.get("profileImage");
         String profileImagePath = editData.get("profileImagePath");
-        boolean result = userService.updateAdUser(userId, userNickname, password, phone, profileImage,profileImagePath);
+        boolean result = userService.updateAdUser(userId, userNickname, phone, profileImage,profileImagePath);
         if (result) {
             return new ResponseEntity<>(true, HttpStatus.OK);  // 프론트의 res.data 값(true)으로 넘어옴
         } else {

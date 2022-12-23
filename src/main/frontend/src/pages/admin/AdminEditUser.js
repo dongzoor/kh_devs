@@ -122,7 +122,7 @@ console.log("이메일 확인 : " , originEmail )
   var changeImgFileUrl = null;
   var imageid = uuidv4(); // 이미지 UUID
   const changeImgRef = ref(storageService, `/USER/${imageid}`);
-  // 참조경로로 storage에 저장
+  
   const response = await uploadString(
     changeImgRef,
     changeImgFile,
@@ -136,7 +136,6 @@ console.log("이메일 확인 : " , originEmail )
 const userUpdate = await AdminApi.AdUserUpdate(
   params,
   userNickname,
-  password,
   phone,
   imageid,
   changeImgFileUrl,
@@ -275,7 +274,7 @@ const onChangePassword = (e) => {
                 value={userNickname}
                 onChange={onChangeNickname}
               />
-              <input
+              {/* <input
                 type="password"
                 placeholder="NEW PASSWORD"
                 value={password}
@@ -286,7 +285,7 @@ const onChangePassword = (e) => {
                 placeholder="VERIFY PASSWORD"
                 value={inputConPw}
                 onChange={onChangeConPw}
-              />
+              /> */}
               <span
                 className={`message ${isConPw ? "success" : "error"}`}
                 style={{ color: "#ff0000" }}

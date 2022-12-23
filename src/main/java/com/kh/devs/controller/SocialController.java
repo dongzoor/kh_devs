@@ -20,6 +20,27 @@ import java.util.Map;
 public class SocialController {
     private final SocialService socialService; // Controller 는 넘어온 요청을 처리하기 위해 Service 를 호출한다.
 
+    // [hashtag] 검색
+    @GetMapping("/hashtag/{tag}")
+    public ResponseEntity<List<SocialDTO>> searchHashtag(@PathVariable("tag") String tag) {
+        List<SocialDTO> socialDTO = socialService.searchHashtag(tag);
+        return new ResponseEntity<>(socialDTO, HttpStatus.OK);
+    }
+
+    // [제목+내용] 검색
+    @GetMapping("/titleContent/{tc}")
+    public ResponseEntity<List<SocialDTO>> searchTorC(@PathVariable("tc") String tc) {
+        List<SocialDTO> socialDTO = socialService.searchTorC(tc);
+        return new ResponseEntity<>(socialDTO, HttpStatus.OK);
+    }
+
+    // [작성자 닉네임] 검색
+    @GetMapping("/nickname/{nickname}")
+    public ResponseEntity<List<SocialDTO>> searchNickname(@PathVariable("nickname") String nickname) {
+        List<SocialDTO> socialDTO = socialService.searchNickname(nickname);
+        return new ResponseEntity<>(socialDTO, HttpStatus.OK);
+    }
+
     // social 전체 목록 조회
     @GetMapping
     public ResponseEntity<List<SocialDTO>> socialList() {
@@ -28,7 +49,7 @@ public class SocialController {
     }
 
     // social 디테일 페이지 조회
-    @GetMapping("/{Id}")  // 이름으로 회원 조회
+    @GetMapping("/{Id}")
     public ResponseEntity<SocialDTO> socialList(@PathVariable Long Id) {
         SocialDTO socialDTO = socialService.getSocialList(Id);
         return new ResponseEntity<>(socialDTO, HttpStatus.OK);
