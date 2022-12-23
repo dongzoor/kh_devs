@@ -9,6 +9,7 @@ import com.kh.devs.dto.UserDTO;
 import com.kh.devs.entity.Comment;
 import com.kh.devs.entity.Social;
 import com.kh.devs.entity.User;
+import com.kh.devs.exception.NotFoundStudyException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -25,6 +26,13 @@ public class SocialService {
     private final SocialRepository socialRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+
+    @Transactional
+    public void updateCnt(Long id) {   //스터디 지원
+        Social social = socialRepository.findById(id).orElseThrow(() -> new NotFoundStudyException("social is not Found!"));
+        social.setView(social.getView() + 1);
+        socialRepository.save(social);
+    }
 
     // [해시태그] 검색
     public List<SocialDTO> searchHashtag(String tag) {
