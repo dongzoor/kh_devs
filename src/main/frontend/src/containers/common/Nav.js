@@ -122,10 +122,10 @@ function OffcanvasExample() {
                   </NavDropdown>
                   <Nav.Link href="/studies">Study</Nav.Link>
                   <Nav.Link href="/social">Social</Nav.Link>
-                  {localStorage.getItem("adminEmail") !== "" ? (
-                    <Nav.Link href="/AdminLogin">관리자모드</Nav.Link>
-                  ) : (
+                  {localStorage.getItem("adminEmail") !== null ? (
                     <Nav.Link href="/AdminMemberList">관리자모드</Nav.Link>
+                  ) : (
+                    <Nav.Link href="/AdminLogin">관리자모드</Nav.Link>
                   )}
                   <Nav.Link href="/chat">Chat</Nav.Link>
                 </Nav>
