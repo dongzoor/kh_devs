@@ -54,6 +54,7 @@ public class Study {
     private List<String> applyPeople;
     private int studyApplyCount; // 지원자 수
     private int goalPeople;
+
 //
 //    public void createdByUser(User user) {
 //        this.user = user;
