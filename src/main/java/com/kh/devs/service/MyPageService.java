@@ -3,12 +3,10 @@ package com.kh.devs.service;
 import com.kh.devs.dao.*;
 import com.kh.devs.dto.CommentDTO;
 import com.kh.devs.dto.SocialDTO;
-import com.kh.devs.dto.StudyDTO;
-import com.kh.devs.entity.Comment;
-import com.kh.devs.entity.Social;
-import com.kh.devs.entity.Study;
+import com.kh.devs.entity.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -25,7 +23,9 @@ public class MyPageService {
     private final MyCommentRepository myCommentRepository;
     private final MyStudyRepository myStudyRepository;
     private final CommentRepository commentRepository;
-    private final StudyRepository studyRepository;
+    private final CalendarRepository calendarRepository;
+    private final UserRepository userRepository;
+    private final SocialRepository socialRepository;
 
     // 작성글 전체 조회
     public List<SocialDTO> getSocialList(Long userId) {
@@ -36,7 +36,7 @@ public class MyPageService {
             socialDTO.setSocialId(e.getSocialId());
             socialDTO.setTitle(e.getTitle());
             socialDTO.setPostDate(e.getPostDate());
-//            socialDTO.setComment(e.getComment()); 코맨트 컬럼 삭제해서 주석처리 했습니다.
+//            socialDTO.setComment(e.getComment());
             socialDTO.setView(e.getView());
             socialDTOS.add(socialDTO);
         }
@@ -48,18 +48,24 @@ public class MyPageService {
         List<Comment> list = myCommentRepository.findAllByUserId(userId);
         List<CommentDTO> CommentDTOs = new ArrayList<>();
         for (Comment e : list) {
+//            Social social = socialRepository.findBy...().get(0);
             CommentDTO commentDTO = new CommentDTO();
             commentDTO.setId(e.getId()); // 댓글 ID
             commentDTO.setContent(e.getContent());
             commentDTO.setPostDate(e.getPostDate());
             commentDTO.setUserId(e.getUser().getUserId());
 //            SocialId가 Null값으로 불려와짐....
-//            commentDTO.setSocialId(e.getSocial().getSocialId());
+//            commentDTO.setSocialId(e.getSocial().getSocialId(socialId));
 //            commentDTO.setSocialId(e.getSocial());
             CommentDTOs.add(commentDTO);
         }
         return CommentDTOs;
     }
+
+//    public List<Comment> getCommentList(Long userId) {
+//        return myCommentRepository.findAllByUserId(userId);
+//    }
+
 
     // 작성 댓글 삭제
     @Transactional
@@ -74,19 +80,49 @@ public class MyPageService {
     }
 
     // 가입한 스터디 조회
-    public List<StudyDTO> getStudyList(Long userId) {
-        List<StudyDTO> studyDTOS = new ArrayList<>();
-        List<Study> studyList = myStudyRepository.findByApplyPeople(userId);
-        for (Study e : studyList) {
-            StudyDTO studyDTO = new StudyDTO();
-            studyDTO.setStudyId(e.getId());
-            studyDTO.setImgUrl(e.getImgUrl());
-//            studyDTO.setWriter(e.getWriter());
-            studyDTO.setTitle((e.getTitle()));
-            studyDTO.setContent(e.getContent());
-            studyDTO.setHashtag(e.getHashtag());
-            studyDTOS.add(studyDTO);
-        }
-        return studyDTOS;
+    public List<Study> getStudyList(Long userId) {
+        return myStudyRepository.findByApplyPeople(userId);
     }
+
+    // 캘린더 일정 조회
+    public List<Calendar> getCalendarList(Long userId) {
+        return calendarRepository.findByUserId(userId);
+    }
+
+    // 캘린더 일정 입력
+    public boolean regCalendar(String userId, String title, String content, String color, String startDate, String endDate) throws Exception {
+        try {
+            User user = userRepository.findByUserId(Long.parseLong(userId)).get(0);
+            Calendar calendar = new Calendar();
+            calendar.setUser(user);
+            calendar.setTitle(title);
+            calendar.setContent(content);
+            calendar.setColor(color);
+            calendar.setStartDate(startDate);
+            calendar.setEndDate(endDate);
+            Calendar rst = calendarRepository.save(calendar);
+            return true;
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
+    }
+
+    // 나의 스터디 캘린더에 일정 추가
+    public boolean addCalendar(String userId, String title, String color, String startDate) throws Exception {
+        try {
+            User user = userRepository.findByUserId(Long.parseLong(userId)).get(0);
+            Calendar calendar = new Calendar();
+            calendar.setUser(user);
+            calendar.setTitle(title);
+            calendar.setColor(color);
+            calendar.setStartDate(startDate);
+            Calendar rst = calendarRepository.save(calendar);
+            return true;
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
+    }
+
+
+
 }

@@ -171,3 +171,67 @@
 .commnetPostDate {
   color: gray;
 }
+
+/* 일정 상세 페이지 */
+.calendarDetailBox {
+  width: 320px;
+  border: 3px solid rgba(128, 128, 128, 0.482);
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.338);
+  padding: 20px;
+}
+
+  /* 가로, 세로 가운데 정렬 필요 */
+/* .calDetailPagecenter {
+} */
+
+.calendarDetailPageTitle {
+  font-size: 1.9em;
+  text-align: center;
+}
+
+.calendarDetailPagebuttonBox>button {
+  border: none;
+  border-radius: 3px;
+  margin: 5px;
+  background-color: rgb(200, 154, 244);
+}
+
+.calendarDetailPagebuttonBox>button:hover {
+  background-color: rgb(158, 72, 239);
+  color: white;
+}
+
+.backButtonBox{
+  float: right;
+  margin-right: 10px;
+}
+
+.backButton {
+  width: 25px;
+  height: 25px;
+  border: 1px solid gray;
+  border-radius: 3px;
+  text-align: center;
+}
+
+.backButton:hover {
+  background-color: rgb(193, 191, 191);
+}
+
+.calendarDetailPagebuttonBox {
+  text-align: center;
+}
+
+.colorPrint {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.eventTitle {
+  display: inline-block;
+}

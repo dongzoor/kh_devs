@@ -16,7 +16,7 @@ import {
   updatePassword,
   updateProfile,
 } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { arrayUnion, doc, setDoc, updateDoc } from "firebase/firestore";
 
 import { Link } from "react-router-dom";
 import { MdArrowBack } from "react-icons/md";
@@ -363,6 +363,18 @@ function EditInfo() {
             userEmail,
             photoURL: profileImagePath,
           });
+          // messages: arrayUnion({
+          //   id: uuid(),
+          //   text,
+          //   senderId: currentUser.uid,
+          //   date: Timestamp.now(),
+          // }),
+          // await updateDoc(doc(db, "userChats", user.uid), {
+          //   uid : arrayUnion({
+          //     photoURL: profileImagePath
+          //   })
+          //   });
+        
           window.location.replace("/user/profile");
         }
       }

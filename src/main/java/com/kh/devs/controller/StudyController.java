@@ -23,7 +23,7 @@ public class StudyController {
     private final StudyRepository studyRepository;
 
     @GetMapping("/studies")
-    public ResponseEntity<List<Study>> studyList() {
+    public ResponseEntity<List<Study>> studyList(){
         List<Study> list = studyService.getStudyList();
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
@@ -82,5 +82,13 @@ public class StudyController {
     @DeleteMapping("study/{studyId}")
     public void deleteStudy(@PathVariable Long studyId) {
         studyRepository.deleteById(studyId);
+    }
+
+
+    // hashtag 검색
+    @GetMapping("/study/hashtag/{tag}")
+    public ResponseEntity<List<StudyDTO>> searchHashtag(@PathVariable("tag") String tag) {
+        List<StudyDTO> studyDTO = studyService.searchHashtag(tag);
+        return new ResponseEntity<>(studyDTO, HttpStatus.OK);
     }
 }

@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -103,6 +105,29 @@ public class StudyService {
         study.setCnt(study.getCnt() + 1);
         studyRepository.save(study);
     }
+    // hashtag 검색
+    public List<StudyDTO> searchHashtag(String tag) {
+        List<StudyDTO> studyDTOS = new ArrayList<>();
+        List<Study> study = studyRepository.findByHashtag(tag);
+        // for(배열요소이름 변수명 : 배열이름)
+        for (Study e : study) {
+            StudyDTO studyDTO = new StudyDTO();
+            studyDTO.setStudyId(e.getId());
+            studyDTO.setTitle(e.getTitle());
+            studyDTO.setContent(e.getContent());
+            studyDTO.setImgUrl(e.getImgUrl());
+            studyDTO.setAddr(e.getAddr());
+            studyDTO.setHashtag(e.getHashtag());
+            studyDTO.setGoalPeople(e.getGoalPeople());
+            studyDTO.setApplyPeople(e.getApplyPeople());
+            studyDTO.setReadCount(e.getCnt());
+            log.warn(studyDTO.toString());
+
+            studyDTOS.add(studyDTO);
+        }
+        return studyDTOS;
+    }
+
 
 
 //    @Transactional
