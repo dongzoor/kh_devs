@@ -23,20 +23,64 @@ const MyPageApi = {
     return await axios.delete(`/api/myPage/myComment/delete/${commentId}`);  
   },
 
+  // 좋아요한 글 조회
+
+  // 좋아요 취소
+
   // 가입한 스터디 조회
   myStudyList: async function (userId) {
     return await axios.get(`/api/myPage/myStudy/${userId}`);
   },
 
   // 캘린더 조회
+  calendarList: async function (userId) {
+    return await axios.get(`/api/myPage/myCalendar/${userId}`);
+  },
 
   // 일정 상세 조회
+  calendarDetail: async function (calendarId) {
+    return await axios.get(`/api/myPage/myCalendar/${calendarId}`);
+  },
 
-  // 일정 작성
+  // 일정 등록
+  calendarEventAdd: async function (userId, titleInput, contentInput, colorInput, startDateInput, endDateInput) {
+    const eventObj = {
+      userId: userId,
+      title: titleInput,
+      content: contentInput,
+      color: colorInput,
+      startDate: startDateInput,
+      endDate: endDateInput,
+    };
+    return await axios.post(`/api/myPage/myCalendar/add`, eventObj);
+  },
+
+  // 나의 스터디 일정 등록
+  myStudyAddCalendar: async function (userId, title, color, startDate) {
+    const eventObj = {
+      userId: userId,
+      title: title,
+      color: color,
+      startDate: startDate
+    };
+    return await axios.post(`/api/myPage/myStudy/add`, eventObj);
+  },
 
   // 일정 수정
+  calendarUpdate: async function (calendarId, titleInput, contentInput, colorInput, startDateInput, endDateInput) {
+    const updateObj = {
+      title: titleInput,
+      content: contentInput,
+      color: colorInput,
+      startDate: startDateInput,
+      endDate: endDateInput,
+    };
+    return await axios.put(`/api/myPage/myCalendar/${calendarId}/update`, updateObj);
+  },
 
   // 일정 삭제
-
+  calendarDelete: async function (calendarId) {
+    return await axios.delete(`/api/myPage/myCalendar/${calendarId}`);
+  },
 };
 export default MyPageApi;

@@ -28,7 +28,7 @@ const MySocial = () => {
           // 로그인된 userId로 작성된 글 조회
           const response = await MyPageApi.mySocialList(userId)
           setMySocialList(response.data);  
-          console.log("작성글 리스트" + response.data);
+          console.log("작성글 리스트", response.data);
         } catch (e) {
           console.log(e);
         }
@@ -38,7 +38,7 @@ const MySocial = () => {
   }, []);
 
   if (loading) {
-    return <p>∘✧₊⁺ 𝑳𝒐𝒅𝒊𝒏𝒈... ⁺₊✧∘</p>
+    return <h2>∘✧₊⁺ 𝑳𝒐𝒅𝒊𝒏𝒈... ⁺₊✧∘</h2>
   }
 
   // 작성글 개별 삭제
@@ -57,23 +57,6 @@ const MySocial = () => {
       setLoading(false);
     }
   };
-
-  // 작성글 전체 삭제
-  // const allDelConfirmScModal = async (e) => {
-  //   console.log("전체 삭제 버튼 클릭");
-  //   setModalOpen(false);
-  //   const response = await MyPageApi.mySocialAllDelete(e);
-  //   console.log(response.data.userId);
-  //   if (response.data) {
-  //     console.log("삭제 완료");
-  //     setLoading(true);
-  //     window.location.reload();
-  //   } else {
-  //     console.log("삭제 실패");
-  //     console.log(response.data.result);
-  //     setLoading(false)
-  //   };
-  // };
 
   const openModal = (e) => {
     setModalData(e);
@@ -110,10 +93,11 @@ const MySocial = () => {
                       )}
                       <Link to={`/social/${list.socialId}`} style={{ textDecoration: 'none', color: 'black'}}>
                         <div className='mySocialTitle'>{list.title}　</div>
-                        <div className='mySocialCommNum'>[{list.comment}]</div>
+                        {/* 수정 필요 */}
+                        {/* <div className='mySocialCommNum'>[{list.comments.length}]</div> */}
                       </Link>
                     </td>
-                    <td className='ms-td-2'>{list.postDate}</td>
+                    <td className='ms-td-2'>{list.postDate.slice(0, 3).join("-")}</td>
                     <td className='ms-td-3'>{list.view}</td>
                   </tr>
                 ))}

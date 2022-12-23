@@ -1,9 +1,11 @@
 package com.kh.devs.controller;
 
 import com.kh.devs.dao.MySocialRepository;
+import com.kh.devs.dto.CalendarDTO;
 import com.kh.devs.dto.CommentDTO;
 import com.kh.devs.dto.SocialDTO;
 import com.kh.devs.dto.StudyDTO;
+import com.kh.devs.entity.Calendar;
 import com.kh.devs.entity.Comment;
 import com.kh.devs.entity.Study;
 import com.kh.devs.entity.User;
@@ -17,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,10 +30,7 @@ import java.util.Map;
 public class MyPageController {
 
     private final MyPageService myPageService;
-    private final MySocialRepository mySocialRepository;
     private final SocialService socialService;
-    private final StudyService studyService;
-    private final CommentService commentService;
 
     // 작성글 조회
     @GetMapping("/api/myPage/mySocial/{userId}")
@@ -59,6 +59,7 @@ public class MyPageController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+
     // 작성 댓글 삭제
     @DeleteMapping("/api/myPage/myComment/delete/{Id}")
     public Map<String, Object> commentDelete(@PathVariable("Id") long commentId) {
@@ -74,9 +75,51 @@ public class MyPageController {
 
     // 가입한 스터디 조회
     @GetMapping("/api/myPage/myStudy/{userId}")
-    public ResponseEntity<List<StudyDTO>> studyList(@PathVariable Long userId){
-        List<StudyDTO> list = myPageService.getStudyList(userId);
+    public ResponseEntity<List<Study>> studyList(@PathVariable Long userId){
+        List<Study> list = myPageService.getStudyList(userId);
         return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    // 캘린더 일정 조회
+    @GetMapping("/api/myPage/myCalendar/{userId}")
+    public ResponseEntity<List<Calendar>> CalendarList(@PathVariable Long userId) {
+        List<Calendar> list = myPageService.getCalendarList(userId);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+
+    // 캘린더 일정 입력
+    @PostMapping("/api/myPage/myCalendar/add")
+    public ResponseEntity<Boolean> calendarAdd(@RequestBody Map<String, String> regData) throws Exception {
+        String userId = regData.get("userId");
+        String title = regData.get("title");
+        String content = regData.get("content");
+        String color = regData.get("color");
+        String startDate = regData.get("startDate");
+        String endDate = regData.get("endDate");
+
+        boolean result = myPageService.regCalendar(userId, title, content, color, startDate, endDate);
+        if (result) {
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // 마이스터디 캘린더에 일정 추가
+    @PostMapping("/api/myPage/myStudy/add")
+    public ResponseEntity<Boolean> myStudyAddCalendar(@RequestBody Map<String, String> regData) throws Exception {
+        String userId = regData.get("userId");
+        String title = regData.get("title");
+        String color = regData.get("color");
+        String startDate = regData.get("startDate");
+
+        boolean result = myPageService.addCalendar(userId, title, color, startDate);
+        if (result) {
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        }
     }
 
 

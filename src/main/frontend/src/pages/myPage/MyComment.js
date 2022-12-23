@@ -25,7 +25,7 @@ const MyComment = () => {
           // 로그인된 userId로 작성된 댓글 조회
           const response = await MyPageApi.myCommentList(userId)
           setMyCommentList(response.data);  
-          console.log("작성글 리스트" + response.data);
+          console.log("작성 댓글 리스트", response.data);
         } catch (e) {
           console.log(e);
         }
@@ -35,7 +35,7 @@ const MyComment = () => {
   }, []);
 
   if (loading) {
-    return <p>∘✧₊⁺ 𝑳𝒐𝒅𝒊𝒏𝒈... ⁺₊✧∘</p>
+    return <h2>∘✧₊⁺ 𝑳𝒐𝒅𝒊𝒏𝒈... ⁺₊✧∘</h2>
   }
 
   // 작성 댓글 삭제
@@ -89,7 +89,7 @@ const MyComment = () => {
                     )}
                     <Link to={`/social/${list.socialId}`} style={{ textDecoration: 'none', color: 'black'}} >
                       <div className='commnetContent'>{list.content}</div>
-                      <div className='commnetPostDate'>{list.postDate}</div>
+                      <div className='commnetPostDate'>{list.postDate.slice(0, 3).join("-")}</div>
                     </Link>
                   </td>
                 </tr>

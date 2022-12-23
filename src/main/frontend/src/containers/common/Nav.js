@@ -1,3 +1,4 @@
+import { getAuth, signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
 
 import Button from "react-bootstrap/Button";
@@ -7,8 +8,9 @@ import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+
 const NAVI = styled.div`
   * {
     font-family: "Gowun Dodum", sans-serif;
@@ -16,13 +18,13 @@ const NAVI = styled.div`
 `;
 function OffcanvasExample() {
   const userId = sessionStorage.getItem("userId");
-  const adminId = localStorage.getItem("adminId")
+  const adminId = localStorage.getItem("adminId");
   const [isLogin, setIslogin] = useState("");
   const [isAdLogin, setIsAdlogin] = useState("");
 
   // 초기값 설정(세션에 이메일 정보가 있을때)
   useEffect(() => {
-    const localinfo = localStorage.getItem("adminEmail")
+    const localinfo = localStorage.getItem("adminEmail");
     const sessioninfo = sessionStorage.getItem("userEmail");
     if (sessioninfo !== null) {
       setIslogin(sessioninfo);
@@ -32,8 +34,9 @@ function OffcanvasExample() {
 
   const navigate = useNavigate();
   const onClickLogout = (e) => {
+    const auth = getAuth();
+    signOut(auth);
     sessionStorage.clear();
-
     // 카카오 로그아웃
     KakaoLogout();
     window.alert("로그아웃 되었습니다.");
@@ -116,9 +119,9 @@ function OffcanvasExample() {
                   <Nav.Link href="/social">Social</Nav.Link>
                   {localStorage.getItem("adminEmail") !== "" ? (
                     <Nav.Link href="/AdminLogin">관리자모드</Nav.Link>
-                        ) : (
-                      <Nav.Link href="/AdminMemberList">관리자모드</Nav.Link>
-                    )}
+                  ) : (
+                    <Nav.Link href="/AdminMemberList">관리자모드</Nav.Link>
+                  )}
                   <Nav.Link href="/chat">Chat</Nav.Link>
                   {isLogin !== "" ? (
                     <Nav.Link href="/AdminMemberList">관리자모드</Nav.Link>

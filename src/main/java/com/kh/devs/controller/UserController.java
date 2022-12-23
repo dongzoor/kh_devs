@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -181,18 +182,20 @@ public class UserController {
 
     // 회원정보 찾기 - 비밀번호 찾기
     @PostMapping("/findPwd")
-    public String findPwd(@RequestBody Map<String, String> findData) {
+    public ResponseEntity<Map<String, String>> findPwd(@RequestBody Map<String, String> findData) {
         String userEmail = findData.get("userEmail");
         String phone = findData.get("phone");
 
         // 사용자 정보 조회
         List<User> user = userService.getPwd(userEmail, phone);
 
-//        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<String, String>();
 
         if (user.size() > 0) {
 
             User userInfo = user.get(0);
+
+            map.put("bfPwd", userInfo.getPassword());
 
             // 비밀번호 랜덤생성
             String newPw = null;
@@ -208,6 +211,8 @@ public class UserController {
             userInfo.setPassword(bCryptPasswordEncoder.encode(password));
             userService.UserUpdate(userInfo);
 
+            map.put("afPwd", userInfo.getPassword());
+
             // 메일생성
             SendMail sendmail = new SendMail();
             MailDTO mail = new MailDTO();
@@ -217,9 +222,9 @@ public class UserController {
             mail.setTitle("[DevS] " + userInfo.getUserNickname() + "님의 비밀번호 찾기 메일입니다.");
             sendmail.sendMail(mail);
 
-            return userInfo.getPassword();
+            return new ResponseEntity(map, HttpStatus.OK);
         } else {
-            return "error";
+            return new ResponseEntity(false, HttpStatus.OK);
         }
     }
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid"
 import { ref, uploadString, getDownloadURL, deleteObject } from "@firebase/storage";
@@ -72,6 +72,7 @@ const StudyWrite = (studyObj) => {
   const [content, setContent] = useState("");
   const [hashtag, setHashtag] = useState("");
   const [hashtags, setHashtags] = useState([]);
+  const [tagStatus, setTagStatus] = useState(false);
   const [valueDate, setValueDate] = useState(new Date());
   const [people, setPeople] = useState(""); // 모집 인원
   const [addr, setAddr] = useState("");
@@ -178,18 +179,25 @@ const StudyWrite = (studyObj) => {
 
   const addHashtag = (e) => {
     setHashtags([...hashtags, hashtag]);
-    setHashtag('');
+    // setHashtag('');
+    setTagStatus(true);
   }
 
   const onDeleteHash = (e) => {
-    const {
-      target: target
-    } = e;
+    // const {
+    //   target: target
+    // } = e;
 
-    hashtags.pop(target.innerHTML);
-    console.log(hashtags);
-    target.innerHTML = "";
+    // hashtags.pop(target.innerHTML);
+    // console.log(hashtags);
+    // target.innerHTML = "";
+    hashtags.splice(e, 1);
+    setTagStatus(true);
   }
+  useEffect(() => {
+    setTagStatus(false);
+    setHashtag("");
+  }, [tagStatus, hashtags])
 
   const getAddr = (e) => {
     setAddr(e);
@@ -234,8 +242,8 @@ const StudyWrite = (studyObj) => {
         </div>
 
         <div className="hashtag-container">
-          {hashtags.map(e =>
-            <Badge bg="info" className="hashtag-badge" onClick={onDeleteHash}>{e}</Badge>)}
+          {hashtags.map((e, index) =>
+            <Badge bg="info" className="hashtag-badge" key={index} onClick={() => onDeleteHash(index)}>{e}</Badge>)}
         </div>
 
         <div style={{ "display": "flex" }}>
@@ -276,7 +284,7 @@ const StudyWrite = (studyObj) => {
           <input className="form-control" type="file" id="formFile" onChange={imgChange} />
         </div>
         <div className="btn-submit">
-          <button type="button" className="btn btn-light" onClick={onSubmit}>
+          <button type="submit" className="btn btn-light" onClick={onSubmit}>
             Submit
           </button>
         </div>
