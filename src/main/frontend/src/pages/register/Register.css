@@ -8,10 +8,11 @@
   margin: 20px 40px 0px;
 }
 
-.profileImg-label:hover {
+.register-form label:hover {
   cursor: pointer;
+  transform: translateY(5%);
 }
-.profileImg-label {
+.register-form label {
   margin: 5px 15px 0;
   font-weight: bold;
   font-size: 1rem;
