@@ -28,10 +28,10 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  min-height: 90vh;
   @media screen and (max-width: 580px) {
     width: 90%;
-    min-height: 90vh;
+    min-height: 70vh;
   }
 `;
 

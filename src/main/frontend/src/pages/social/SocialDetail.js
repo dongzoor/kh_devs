@@ -1,10 +1,11 @@
-import { useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import { deleteObject, ref } from "@firebase/storage";
-import { storageService } from "../../lib/api/fbase";
+import { useNavigate, useParams } from "react-router-dom";
+
 import CommentList from "./comment/CommentList";
 import SocialApi from "../../api/SocialApi";
+import { storageService } from "../../lib/api/fbase";
+import styled from "styled-components";
 
 const DetailBox = styled.div`
   & > * {
@@ -233,6 +234,7 @@ const SocialDetail = () => {
       try {
         console.log("★ 게시글 번호 : " + params);
         const response = await SocialApi.socialDetail(params);
+        await SocialApi.socialViewUpdate(params);
         setSocialDetail(response.data);
         setPostDate(response.data.postDate);
         console.log("★ 게시글 내용 ", response.data);
@@ -243,6 +245,7 @@ const SocialDetail = () => {
     };
     socialData();
   }, []);
+
   if (loading) {
     return <DetailBox>조금만 기다려주세요...👩‍💻</DetailBox>;
   }

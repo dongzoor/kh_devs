@@ -52,11 +52,18 @@ public class SocialController {
     @GetMapping("/{Id}")
     public ResponseEntity<SocialDTO> socialList(@PathVariable Long Id) {
         SocialDTO socialDTO = socialService.getSocialList(Id);
-        // J2 조회수 업데이트
-        if (socialDTO != null) {
-            socialService.updateCnt(Id);
-        }
         return new ResponseEntity<>(socialDTO, HttpStatus.OK);
+    }
+
+    // J2 : social 조회수 증가
+    @GetMapping("/socialViewUpdate/{Id}")
+    public ResponseEntity<Boolean> socialViewUpdate(@PathVariable Long Id) {
+        SocialDTO socialDTO = socialService.getSocialList(Id);
+        boolean result = false;
+        if (socialDTO != null) {
+            result = socialService.updateCnt(Id);
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     // social 작성(등록)

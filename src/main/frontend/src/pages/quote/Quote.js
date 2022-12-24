@@ -46,8 +46,8 @@ function Quote() {
   };
 
   return (
-    <div style={{ fontSize: "1.2rem" }}>
-      {quotes[getRandomIndex(quotes.length)]}
+    <div style={{ fontSize: "1.5rem" }}>
+      "{quotes[getRandomIndex(quotes.length)]}"
     </div>
   );
 }

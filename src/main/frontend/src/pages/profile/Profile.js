@@ -17,8 +17,18 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 90vh;
+  @media screen and (max-width: 768px) {
+    min-height: 70vh;
+  }
   gap: 2rem;
+  .goToSchedule {
+    text-shadow: 1px 1px 1px #5c5696;
+    &:hover {
+      text-shadow: none;
+      transform: translateY(5%);
+    }
+  }
 `;
 
 function Profile() {
@@ -33,7 +43,6 @@ function Profile() {
   //   };
   //   Data();
   // }, []);
-
 
   // function requestPermission() {
   //   console.log('Requesting permission...');
@@ -63,14 +72,25 @@ function Profile() {
           />
         </div>
         <div className="user_container" style={{ display: "flex" }}>
-          <h2 className="userName">{sessionStorage.getItem("userNickname")}</h2>
+          <h2 className="userName" style={{ fontWeight: "600" }}>
+            {sessionStorage.getItem("userNickname")}
+          </h2>
           <Link to="/user/check">
             <FaRegEdit size="30" style={{ marginLeft: "5" }} />
           </Link>
         </div>
         <div className="todays_info" style={{ textAlign: "center" }}>
           <Link to={`/myPage/myCalendar/${userId}`}>
-            <label style={{ fontSize: "1.3rem", color: "#6a679e" }}>
+            <label
+              className="goToSchedule"
+              style={{
+                fontSize: "1.3rem",
+                color: "#6a679e",
+                cursor: "pointer",
+                marginBottom: "1.8rem",
+                hover: "transform: {translateY(5%)",
+              }}
+            >
               오늘의 일정을 확인하세요.
             </label>
           </Link>

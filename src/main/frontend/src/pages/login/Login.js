@@ -28,6 +28,9 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   min-height: 90vh;
+  @media screen and (max-width: 768px) {
+    min-height: 70vh;
+  }
 `;
 
 function Login() {
@@ -58,7 +61,6 @@ function Login() {
   //   };
   //   Data();
   // }, []);
-
 
   // function requestPermission() {
   //   console.log('Requesting permission...');
