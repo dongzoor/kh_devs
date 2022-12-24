@@ -2,6 +2,7 @@ import SocialApi from "../../../api/SocialApi";
 import styled from "styled-components";
 
 const WriteBlock = styled.div`
+  width: 100%;
   * {
     font-size: 20px;
     font-family: "Gowun Dodum", sans-serif;
@@ -10,17 +11,14 @@ const WriteBlock = styled.div`
   }
   display: flex;
   justify-content: center;
-
   .parentBox {
-    /* background-color: rgba(245, 245, 245, 255); */
+    width: 100%;
     padding: 10px;
-    margin: 20px 50px;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     align-items: stretch;
     box-shadow: 5px 5px 10px rgba(0, 0, 255, 0.2);
-
     textarea {
       padding: 10px;
       box-sizing: border-box;
