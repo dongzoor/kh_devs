@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { deleteObject, ref } from "@firebase/storage";
-import { storageService } from "../../lib/api/fbase";
+import { storageService } from "../../api/fbase";
 import CommentList from "./comment/CommentList";
 import SocialApi from "../../api/SocialApi";
 

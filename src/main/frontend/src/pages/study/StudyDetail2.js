@@ -7,7 +7,8 @@ import Button from 'react-bootstrap/Button';
 import { async } from "@firebase/util";
 import { Badge } from "react-bootstrap";
 import { IoPersonOutline } from "react-icons/io5";
-
+import { deleteObject, ref } from "firebase/storage";
+import { storageService } from "../../api/fbase";
 
 const DetailBox = styled.div`
   & > * {
@@ -173,7 +174,6 @@ const DetailBox = styled.div`
   }
 `;
 
-
 const StudyDetail = () => {
   const params = useParams().studyId;
   const [studyDetail, setStudyDetail] = useState("");
@@ -183,51 +183,51 @@ const StudyDetail = () => {
   // const [userId, SetUserId] = useState("");
   const navigate = useNavigate();
   const userId = sessionStorage.getItem("userId")
-  const userNickname = sessionStorage.getItem("userNickname");
+  const userEmail = sessionStorage.getItem("userEmail");
   const [loading, setLoading] = useState(false);
+  const [userInfo, setUserInfo] = useState("");
 
   let isApplied = false;
 
+
   useEffect(() => {
     const StudyData = async () => {
-      setLoading(true);
       try {
         const response = await StudyApi.studyDetail(parseInt(params));
 
         // const SetUserId = await UserApi.~~~//api로 정보 가져와야함
         setStudyDetail(response.data);
         setApplyGoalCnt(response.data.goalPeople); // 목표 인원 수
-        setApplyCnt(response.data.applyPeople.length); // 지원자 수 
         setApplyPeople(response.data.applyPeople); // 지원자 목록
         console.log(response.data);
-
+        setUserInfo(response.data.user);
+        console.log("userInfo", response.data.user);
       } catch (e) {
         console.log(e);
       }
-      setLoading(false);
     };
     StudyData();
   }, []);
-  if (loading) {
-    return <DetailBox>조금만 기다려주세요...👩‍💻</DetailBox>;
-  }
 
   const chatTest = async () => {
     navigate("/chat");
   }
-  const goToList = () => {
-    navigate("/studies");
-  };
   const goToUpdate = () => {
     // <Link to={`/study/${parseInt(params)}`} style={{ "textDecoration": "none" }}></Link>
     navigate(`/study/${parseInt(params)}/update`)
   }
+  const goToList = () => {
+    navigate("/studies");
+  };
 
   const applySubmit = async () => {  // 스터디 지원
     let applyPeoples;
     let applyCnts;
 
-    applyPeople.map((e) => { (e === userId) && (isApplied = true) });
+    applyPeople.map((e, index) => {
+      (e === userId) &&
+        (isApplied = true)
+    });
     try {
       // 스터디 가입했는지 확인
       if (!isApplied) { // 가입 안했으면,
@@ -246,42 +246,101 @@ const StudyDetail = () => {
     navigate(`/studies`);
   }
 
+  const onClickDelete = async () => {
+    if (window.confirm("삭제하시겠습니까?")) {
+      if (true) {
+        const res = await StudyApi.studyDelete(parseInt(params));
+        // const imageId = studyDetail.imgUrl;
+        // // 기존 이미지가 존재하면 삭제(이미지 ID로 확인)
+        // if (imageId !== "null") {
+        //   // 이미지없는 게시글 삭제 에러 수정 완료
+        //   // 파이어베이스 상 파일주소 지정
+        //   const attachmentRef = ref(storageService, `/STUDY/${imageId}`);
+        //   // 참조경로로 firebase 이미지 삭제
+        //   await deleteObject(attachmentRef)
+        //     .then(() => {
+        //       console.log("Firebase File deleted successfully !");
+        //     })
+        //     .catch((error) => {
+        //       console.log("Uh-oh, File Delete error occurred!");
+        //     });
+        // 
+        navigate(`/studies`);
+        alert("게시글 삭제 완료 !");
+        // } else {
+        //   alert("게시글 삭제 실패 ㅜ");
+        //   console.log(res.data.result);
+      } else {
+        alert("게시글 삭제 실패 ㅜ");
+        return;
+      }
+    }
+  };
+
   return (
-    <>
-      {studyDetail &&
-        <div className="card" style={{ "width": "50vw", "margin": "0 auto", "marginTop": "5vh", "padding": "5px", "boxShadow": "0px 0px 24px #5c5696" }}>
-          <img src={`${studyDetail.imgUrl}`} className="card-img-top" alt="" />
-          <div className="card-body">
-            <h5 className="card-title">{`${studyDetail.title}`}</h5>
-            <h6 className="card-subtitle mb2 text-muted" style={{ "float": "right" }}>{`${studyDetail.user.userNickname}`}</h6>
-            <br />
-            <p className="card-text">{`${studyDetail.content}`}</p>
-            {`${studyDetail.hashtag}` &&
-              studyDetail.hashtag.map((e, index) => <Badge bg="info" key={index} style={{ "marginRight": "0.5vw" }} > {e} </Badge>)}
-          </div>
-          <div>
-            <div style={{ "display": "flex", "alignItems": "center", "float": "right" }}>
-              {userNickname !== studyDetail.user.userNickname ?
+    <DetailBox>
+      <div className="subtitle">Board Detail Page</div>
+      <div className="parentBox">
+        <div key={studyDetail.id}>
+          <div className="content-title">{studyDetail.title}</div>
+          <div className="post-info">
+            <div className="publisher-info">
+              <img
+                className="userImage"
+                alt="프로필 사진"
+                src={
+                  userInfo.profileImagePath
+                }
+              ></img>
+              <span className="nickName">
+                {userInfo.userNickname}
+              </span>
+              <span className="date">
+                {/* | {studyDetail.goalTime[0]}-{studyDetail.goalTime[1]}-{studyDetail.goalTime[2]} {studyDetail.goalTime[3]}:
+                {studyDetail.goalTime[4]} */}
+              </span>
+            </div>
+            <div className="button-box">
+              {/* 게시글 작성자 email = 로그인한 유저 email 이면 출력 */}
+              {userEmail !== userInfo.userEmail ?
                 (
-                  studyDetail.applyPeople.length === studyDetail.goalPeople ?
-                    <Button variant="light" type="submit" style={{ "width": "10vw" }}>모집 완료</Button>
+                  applyPeople.length === studyDetail.goalPeople ?
+
+                    <button className="deleteBt">모집완료</button>
                     :
-                    <Button variant="light" type="submit" style={{ "width": "10vw" }} onClick={applySubmit}>스터디 신청하기</Button>
+                    <button className="deleteBt" onClick={applySubmit}>스터디 신청하기</button>
                 )
                 :
-                <Button variant="light" type="submit" style={{ "width": "10vw" }} onClick={goToUpdate}>수정</Button>
+                <>
+                  <button className="updateBt" onClick={onClickDelete}>삭제</button>
+                  <button className="updateBt" onClick={goToUpdate}>수정</button>
+                </>
               }
-              <Button variant="light" type="submit" style={{ "width": "10vw" }} onClick={chatTest}>채팅</Button>
-            </div>
-            <div style={{ "display": "flex", "alignItems": "center", "float": "right", "margin": "0.5vh 1vw 0 0" }}>
-              <IoPersonOutline />
-              <span className="goalPeople">{`${studyDetail.applyPeople.length}/${studyDetail.goalPeople}`}</span>
+              <button className="deleteBt" onClick={chatTest}>채팅</button>
             </div>
           </div>
+          <div className="attachedImg">
+            {`${studyDetail.imgUrl}` != null && (
+              <img src={studyDetail.imgUrl} className="preview" alt="" />
+            )}
+          </div>
+          <div className="content-text">{studyDetail.content}</div>
+          <div className="hashtags-box">
+            {studyDetail.hashtag &&
+              studyDetail.hashtag.map((e, index) => (
+                <Badge bg="info" style={{ marginRight: "0.5vw" }}>
+                  #{e}
+                </Badge>
+              ))}
+          </div>
+          <hr className="line" />
+          <button className="goList" onClick={goToList}>
+            GO LIST
+          </button>
         </div>
-      }
-    </>
+      </div>
+    </DetailBox>
   )
-}
+};
 
 export default StudyDetail;

@@ -3,7 +3,7 @@
 import "./EditInfo.css";
 
 import React, { useEffect, useRef, useState } from "react";
-import { db, storageService } from "../../lib/api/fbase";
+import { db, storageService } from "../../api/fbase";
 import {
   deleteObject,
   getDownloadURL,

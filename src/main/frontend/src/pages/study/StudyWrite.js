@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid"
 import { ref, uploadString, getDownloadURL, deleteObject } from "@firebase/storage";
-import { storageService } from "../../lib/api/fbase";
-import StudyApi from "../../lib/api/StudyApi";
+import { storageService } from "../../api/fbase";
+import StudyApi from "../../api/StudyApi";
 import { Badge, Button, Form, InputGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Addr from "./Addr";
@@ -64,6 +64,40 @@ const Box = styled.div`
   .btn-submit {
     float: right;
   }
+
+  .studyInfo-container {
+    display: flex;
+
+  }
+
+  @media (width < 768px) {
+
+    .inputContainer {
+      width:90vw;
+      height: 121vh;
+    }
+
+    .studyInfo-container {
+      
+      flex-wrap: wrap;
+
+    .addr-container {
+      width: 30vw;
+    }
+
+    .member-container {
+      width: 30vw;
+      
+    }
+
+    .calendar-container {
+      width: 80vw;
+      margin: 5px auto;
+      margin-bottom: 10px;
+    }
+  }
+  
+  }
 `;
 
 const StudyWrite = (studyObj) => {
@@ -117,46 +151,47 @@ const StudyWrite = (studyObj) => {
   };
 
   const onSubmit = async (e) => {
-
     e.preventDefault();
 
+    if (title === "" || content === "") {
+      alert("⚡ 제목과 내용은 필수 입력사항입니다. 꼭 작성해주세요 ⚡");
+    } else {
 
-    //이미지 첨부하지 않고 텍스트만 올리고 싶을 때도 있기 때문에 attachment가 있을때만 아래 코드 실행
-    //이미지 첨부하지 않은 경우엔 attachmentUrl=""이 된다.
-    if (attachment !== "") {
-      //파일 경로 참조 만들기
-      const attachmentRef = ref(storageService, `/STUDY/${uuidv4()}`); //const fileRef = ref(storageService, `${ studyObj.studyId } / ${ uuidv4() }`);
-      //storage 참조 경로로 파일 업로드 하기                                            위의 거로 바꿔주어야 스터디 아이디에 맞게 저장됨
-      const response = await uploadString(
-        attachmentRef,
-        attachment,
-        "data_url"
+      //이미지 첨부하지 않고 텍스트만 올리고 싶을 때도 있기 때문에 attachment가 있을때만 아래 코드 실행
+      //이미지 첨부하지 않은 경우엔 attachmentUrl=""이 된다.
+      if (attachment !== "") {
+        //파일 경로 참조 만들기
+        const attachmentRef = ref(storageService, `/STUDY/${uuidv4()}`); //const fileRef = ref(storageService, `${ studyObj.studyId } / ${ uuidv4() }`);
+        //storage 참조 경로로 파일 업로드 하기                                            위의 거로 바꿔주어야 스터디 아이디에 맞게 저장됨
+        const response = await uploadString(
+          attachmentRef,
+          attachment,
+          "data_url"
+        );
+        //storage 참조 경로에 있는 파일의 URL을 다운로드해서 attachmentUrl 변수에 넣어서 업데이트
+        attachmentUrl = await getDownloadURL(response.ref);
+        console.log(attachmentUrl);
+      }
+
+      const studyReg = await StudyApi.studyWrite(
+        userId,
+        title,
+        content,
+        attachmentUrl,
+        hashtags,
+        people,
+        addr,
+        valueDate,
+        applyPeople
       );
-      //storage 참조 경로에 있는 파일의 URL을 다운로드해서 attachmentUrl 변수에 넣어서 업데이트
-      attachmentUrl = await getDownloadURL(response.ref);
-      console.log(attachmentUrl);
+
+      console.log(studyReg);
+
+      console.log(studyReg.statusText);
+      if (studyReg.statusText === "OK")
+        window.confirm("스터디 모집이 시작되었습니다.");
+      navigate("/studies");
     }
-
-
-
-    const studyReg = await StudyApi.studyWrite(
-      userId,
-      title,
-      content,
-      attachmentUrl,
-      hashtags,
-      people,
-      addr,
-      valueDate,
-      applyPeople
-    );
-
-    console.log(studyReg);
-
-    console.log(studyReg.statusText);
-    if (studyReg.statusText === "OK")
-      window.confirm("스터디 모집이 시작되었습니다.");
-    navigate("/studies");
   };
 
   // const onDelete = async () => {
@@ -178,26 +213,23 @@ const StudyWrite = (studyObj) => {
   }
 
   const addHashtag = (e) => {
-    setHashtags([...hashtags, hashtag]);
-    // setHashtag('');
-    setTagStatus(true);
-  }
+    if (hashtag.length > 10 || hashtags.length > 4) {
+      alert("⚡ 해시태그는 10자 이하의 단어로 최대 5개까지 입력 가능합니다 ⚡");
+    } else {
+      setHashtags([...hashtags, hashtag]);
+      setTagStatus(true);
+    }
+  };
 
-  const onDeleteHash = (e) => {
-    // const {
-    //   target: target
-    // } = e;
-
-    // hashtags.pop(target.innerHTML);
-    // console.log(hashtags);
-    // target.innerHTML = "";
-    hashtags.splice(e, 1);
+  const onDeleteHash = (index) => {
+    hashtags.splice(index, 1);
     setTagStatus(true);
-  }
+  };
+
   useEffect(() => {
     setTagStatus(false);
-    setHashtag("");
-  }, [tagStatus, hashtags])
+    setHashtag('');
+  }, [tagStatus, hashtags]);
 
   const getAddr = (e) => {
     setAddr(e);
@@ -227,13 +259,14 @@ const StudyWrite = (studyObj) => {
 
         <div className="hastag-contianer">
           <label htmlFor="hashtag-input" className="form-label">Hashtag</label>
-          <InputGroup className="mb-3" onChange={onChangeHashtag}>
+          <InputGroup className="mb-3">
             <Form.Control
               placeholder="태그를 입력하세요."
               aria-label="태그를 입력하세요."
               aria-describedby="basic-addon2"
               id="hashtag-input"
               value={hashtag}
+              onChange={onChangeHashtag}
             />
             <Button variant="outline-secondary" id="button-addon2" onClick={addHashtag} >
               추가
@@ -243,11 +276,11 @@ const StudyWrite = (studyObj) => {
 
         <div className="hashtag-container">
           {hashtags.map((e, index) =>
-            <Badge bg="info" className="hashtag-badge" key={index} onClick={() => onDeleteHash(index)}>{e}</Badge>)}
+            <Badge bg="info" className="hashtag-badge" key={index} onClick={() => onDeleteHash(index)}> #{e} </Badge>)}
         </div>
 
-        <div style={{ "display": "flex" }}>
-          <div>
+        <div className="studyInfo-container">
+          <div className="member-container">
             <label htmlFor="memberCount" className="form-label">인원</label>
             <Form.Select aria-label="memberCount" className="form-select"
               onChange={(e) => {

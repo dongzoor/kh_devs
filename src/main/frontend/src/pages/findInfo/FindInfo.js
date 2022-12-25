@@ -10,7 +10,7 @@ import { MdArrowBack } from "react-icons/md";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import UserApi from "../../api/UserApi";
-import { auth } from "../../lib/api/fbase";
+import { auth } from "../../api/fbase";
 import styled from "styled-components";
 
 const Box = styled.div`

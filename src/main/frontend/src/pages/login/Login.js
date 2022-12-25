@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 
 import KakaoLogin from "react-kakao-login";
 import UserApi from "../../api/UserApi";
-import { auth } from "../../lib/api/fbase";
+import { auth } from "../../api/fbase";
 import kakaoimages from "./images/kakao_login_small.png";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import styled from "styled-components";

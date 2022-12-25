@@ -1,7 +1,7 @@
 import "./Register.css";
 
 import React, { useEffect, useRef, useState } from "react";
-import { auth, db } from "../../lib/api/fbase";
+import { auth, db } from "../../api/fbase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "@firebase/storage";
@@ -11,7 +11,7 @@ import { MdArrowBack } from "react-icons/md";
 import Modal from "../../utill/Modal";
 import Terms from "../register/Terms";
 import UserApi from "../../api/UserApi";
-import { storageService } from "../../lib/api/fbase";
+import { storageService } from "../../api/fbase";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 

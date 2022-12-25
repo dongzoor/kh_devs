@@ -7,7 +7,7 @@ import {
 } from "@firebase/storage";
 import { useNavigate, useParams } from "react-router-dom";
 import SocialApi from "../../api/SocialApi";
-import { storageService } from "../../lib/api/fbase";
+import { storageService } from "../../api/fbase";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 

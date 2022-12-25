@@ -14,53 +14,55 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/api/social")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 @Slf4j
 public class SocialController {
     private final SocialService socialService; // Controller 는 넘어온 요청을 처리하기 위해 Service 를 호출한다.
 
     // [hashtag] 검색
-    @GetMapping("/hashtag/{tag}")
+    @GetMapping("/social/hashtag/{tag}")
     public ResponseEntity<List<SocialDTO>> searchHashtag(@PathVariable("tag") String tag) {
         List<SocialDTO> socialDTO = socialService.searchHashtag(tag);
         return new ResponseEntity<>(socialDTO, HttpStatus.OK);
     }
 
     // [제목+내용] 검색
-    @GetMapping("/titleContent/{tc}")
+    @GetMapping("/social/titleContent/{tc}")
     public ResponseEntity<List<SocialDTO>> searchTorC(@PathVariable("tc") String tc) {
         List<SocialDTO> socialDTO = socialService.searchTorC(tc);
         return new ResponseEntity<>(socialDTO, HttpStatus.OK);
     }
 
     // [작성자 닉네임] 검색
-    @GetMapping("/nickname/{nickname}")
+    @GetMapping("/social/nickname/{nickname}")
     public ResponseEntity<List<SocialDTO>> searchNickname(@PathVariable("nickname") String nickname) {
         List<SocialDTO> socialDTO = socialService.searchNickname(nickname);
         return new ResponseEntity<>(socialDTO, HttpStatus.OK);
     }
 
     // social 전체 목록 조회
-    @GetMapping
+    @GetMapping("/socials")
     public ResponseEntity<List<SocialDTO>> socialList() {
         List<SocialDTO> list = socialService.getSocialList();
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     // social 디테일 페이지 조회
-    @GetMapping("/{Id}")
+    @GetMapping("/social/{Id}")
     public ResponseEntity<SocialDTO> socialList(@PathVariable Long Id) {
         SocialDTO socialDTO = socialService.getSocialList(Id);
         // J2 조회수 업데이트
         if (socialDTO != null) {
             socialService.updateCnt(Id);
         }
-        return new ResponseEntity<>(socialDTO, HttpStatus.OK);
+
+        SocialDTO socialCnt = socialService.getSocialList(Id);
+        return new ResponseEntity<>(socialCnt, HttpStatus.OK);
     }
 
     // social 작성(등록)
-    @PostMapping("/write")
+    @PostMapping("/social/write")
     public Map<String, Object> socialWrite(@RequestBody Map<String, String> regData) throws Exception {
         SocialDTO socialDTO = new SocialDTO();
         String[] strToArray = regData.get("hashtags").split(","); // front 에서 배열을 ","로 join 해서 보냈기 때문
@@ -83,7 +85,7 @@ public class SocialController {
     }
 
     // social 수정
-    @PutMapping("/{Id}/update")
+    @PutMapping("/social/{Id}/update")
     public ResponseEntity<Boolean> socialUpdate(@PathVariable("Id") long pathSocialId, @RequestBody Map<String, String> editData) throws Exception {
         String[] strToArray = editData.get("hashtags").split(","); // front 에서 배열을 ","로 join 해서 보냈기 때문
         Long socialId = pathSocialId;
@@ -101,7 +103,7 @@ public class SocialController {
     }
 
     // social 삭제
-    @DeleteMapping("/{Id}")
+    @DeleteMapping("/social/{Id}")
     public Map<String, Object> deleteSocial(@PathVariable("Id") long Id) {
         Map<String, Object> response = new HashMap<>();
         if (socialService.delSocial(Id) > 0) {

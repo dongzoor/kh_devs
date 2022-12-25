@@ -1,6 +1,7 @@
 package com.kh.devs.controller;
 
 import com.kh.devs.dao.StudyRepository;
+import com.kh.devs.dto.SocialDTO;
 import com.kh.devs.dto.StudyDTO;
 import com.kh.devs.entity.Study;
 import com.kh.devs.service.StudyService;
@@ -59,36 +60,38 @@ public class StudyController {
 
     @PutMapping("/study/edit/{studyId}")
     public void updateStudy(@PathVariable Long studyId, @RequestBody StudyDTO studyDTO) {
-//        로그인 파트에서 세션으로 주면 받아올 예정
         studyService.updateStudy(studyId, studyDTO);
-
-//        return "redirect:/study/" + studyId;
     }
 
-    @PutMapping("/study/{studyId}")  // 스터디 신청5
+    @PutMapping("/study/{studyId}")  // 스터디 신청
     public void applyStudy(@PathVariable Long studyId, @RequestBody StudyDTO studyDTO) {
-//        로그인 파트에서 세션으로 주면 받아올 예정
         studyService.applyStudy(studyId, studyDTO);
 
-//        return "redirect:/study/" + studyId;
     }
-//    @GetMapping("/study/edit/{studyId}")
-//    public ResponseEntity<Study> getUpdateStudy(@PathVariable Long studyId) {
-//        Optional<Study> study = studyService.getStudy(studyId);
-//        return new ResponseEntity(study, HttpStatus.OK);
-//    }
 
-
-    @DeleteMapping("study/{studyId}")
+    @DeleteMapping("/study/{studyId}")
     public void deleteStudy(@PathVariable Long studyId) {
         studyRepository.deleteById(studyId);
     }
 
-
     // hashtag 검색
-    @GetMapping("/study/hashtag/{tag}")
-    public ResponseEntity<List<StudyDTO>> searchHashtag(@PathVariable("tag") String tag) {
-        List<StudyDTO> studyDTO = studyService.searchHashtag(tag);
+    @GetMapping("/studies/hashtag/{tag}")
+    public ResponseEntity<List<Study>> searchHashtag(@PathVariable("tag") String tag) {
+        List<Study> studyDTO = studyService.searchHashtag(tag);
         return new ResponseEntity<>(studyDTO, HttpStatus.OK);
     }
+
+    // [제목+내용] 검색
+    @GetMapping("/studies/titleContent/{tc}")
+    public ResponseEntity<List<Study>> searchTorC(@PathVariable("tc") String tc) {
+        List<Study> studyDTO = studyService.searchTorC(tc);
+        return new ResponseEntity<>(studyDTO, HttpStatus.OK);
+    }
+
+    // [작성자 닉네임] 검색
+//    @GetMapping("/studies/nickname/{nickname}")
+//    public ResponseEntity<List<StudyDTO>> searchNickname(@PathVariable("nickname") String nickname) {
+//        List<StudyDTO> studyDTO = studyService.searchNickname(nickname);
+//        return new ResponseEntity<>(studyDTO, HttpStatus.OK);
+//    }
 }

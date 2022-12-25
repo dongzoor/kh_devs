@@ -7,10 +7,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { Badge } from "react-bootstrap";
 import {
   IoCalendarOutline,
+  IoChatboxOutline,
   IoEyeOutline,
   IoLocationOutline,
   IoPersonOutline,
 } from "react-icons/io5";
+import { RxReset } from "react-icons/rx";
 
 const Box = styled.div`
 
@@ -450,195 +452,267 @@ const ListBlock = styled.div`
 const Study = () => {
   const [studyList, setStudyList] = useState([]);
   const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
+  const [searchData, setSearchData] = useState("");
+  const [reset, setReset] = useState(false);
+  const [typeSelect, setTypeSelect] = useState("one");
+
+
   useEffect(() => {
     const StudyData = async () => {
-      const response = await StudyApi.studyList();
-      setStudyList(response.data);
-      console.log(response.data);
+      setLoading(true);
+      try {
+        const response = await StudyApi.studyList();
+        setStudyList(response.data);
+        console.log(response.data);
+        setReset(false);
+        setTypeSelect("one");
+      } catch (e) {
+        console.log(e);
+      }
+      setLoading(false);
     };
     StudyData();
-  }, []);
+  }, [reset]);
+
+
+  const searchTag = async (e) => {
+    if (e.key === "Enter") {
+      const {
+        target: { value },
+      } = e;
+      if (value === "") {
+        alert("검색어가 없습니다. 다시 입력해주세요.");
+      } else {
+        if (typeSelect === "one") {
+          // [제목+내용] 검색
+          console.log("[제목+내용] 검색");
+          console.log(value);
+          const res = await StudyApi.titleContentSearch(value);
+          setStudyList(res.data);
+          console.log(res.data);
+        } else if (typeSelect === "two") {
+          // [해시태그] 검색
+          console.log("[해시태그] 검색");
+          console.log(value);
+          const res = await StudyApi.hashTagSearch(value);
+          setStudyList(res.data);
+          console.log(res.data);
+        }
+        //  else {
+        //   // [작성자 닉네임] 기준 검색
+        //   console.log("[작성자 닉네임] 검색");
+        //   const res = await StudyApi.userSearch(value);
+        //   setStudyList(res.data);
+        // }
+      }
+    }
+  };
+
+  // 검색 초기화 버튼
+  const onClickReset = () => {
+    setReset(true);
+  };
 
   const goToWrite = () => {
     navigate("/study/write");
   };
 
+  const onSelectType = (e) => {
+    setTypeSelect(e.target.value);
+    console.log(e.target.value);
+  };
+
+  if (loading) {
+    return <ListBlock>조금만 기다려주세요...👩‍💻</ListBlock>;
+  }
+
   return (
-    <>
-      <ListBlock>
-        <div className="subtitle">Dev' Study</div>
-        <div className="inducer"> Share anything you want 👩🏻‍💻✨</div>
-        <div className="post-box">
-          <button className="postBt" onClick={goToWrite}>
-            P O S T
-          </button>
-        </div>
-        <div className="input-group">
+    <ListBlock>
+      <div className="subtitle">Dev' Study</div>
+      <div className="inducer"> Share anything you want 👩🏻‍💻✨</div>
+      <div className="post-box">
+        <button className="postBt" onClick={goToWrite}>
+          P O S T
+        </button>
+      </div>
+      <div className="parentBox">
+        <div className="search-box">
+          <select className="search-type-selector" onChange={onSelectType}>
+            <option value="one" defaultChecked>
+              제목+내용
+            </option>
+            <option value="two">해시태그</option>
+            {/* <option value="three">닉네임</option> */}
+          </select>
           <input
-            type="search"
-            className="form-control rounded"
-            placeholder="Search"
-            aria-label="Search"
-            aria-describedby="search-addon"
+            type="text"
+            placeholder="🔎 검색어를 입력해주세요!"
+            className="search"
+            onKeyPress={searchTag}
           />
-          <span className="input-group-text border-0" id="search-addon">
-            <FontAwesomeIcon icon={faSearch} />
-          </span>
+          <button className="resetBt" onClick={onClickReset}>
+            <RxReset size="25px" color="rgba(3, 0, 209, 0.4)" />
+          </button>
         </div>
         {studyList &&
           studyList.map((list) =>
             list.imgUrl ? (
-              <ul key={list.id}>
-                <Link
-                  to={`/study/${list.id}`}
-                >
-                  <div className="card-container">
-                    <div className="card mb-3">
-                      <div className="row g-0">
-                        <div className="col-md-5">
-                          <img
-                            src={`${list.imgUrl}`}
-                            className="img-fluid rounded-start"
-                            alt="..."
-                          />
-                        </div>
-                        <div className="col-md-6">
-                          <div className="card-body">
-                            <h5 className="card-title">{`${list.title}`}</h5>
-                            <h6
-                              className="card-subtitle mb-2 text-muted"
-                              style={{ float: "right" }}
-                            >{`${list.user.userNickname}`}</h6>
-                            <br />
-                            <p className="card-text">{`${list.content}`}</p>
-                            {list.hashtag &&
-                              list.hashtag.map((e) => (
-                                <Badge
-                                  bg="info"
-                                  style={{ marginRight: "0.5vw" }}
-                                >
-                                  {" "}
-                                  {e}{" "}
-                                </Badge>
-                              ))}
-                          </div>
-
-                          <div className="icon-box">
-                            <IoEyeOutline />
-                            <span
-                              className="count"
-                              style={{ margin: "0 0.5vw 0 0.1vw" }}
-                            >
-                              {list.cnt}
-                            </span>
-                            <IoPersonOutline />
-                            <span
-                              className="goalPeople"
-                              style={{ margin: "0 0.5vw 0 0.1vw" }}
-                            >
-                              {list.goalPeople}
-                            </span>
-                            <IoLocationOutline />
-                            <span
-                              className="addr"
-                              style={{ margin: "0 0.5vw 0 0.1vw" }}
-                            >
-                              {list.addr}
-                            </span>
-                            <IoCalendarOutline />
-                            <span
-                              className="goalDate"
-                              style={{ margin: "0 0.5vw 0 0.1vw" }}
-                            >
-                              {`${list.goalTime[0]}/${list.goalTime[1]}/${list.goalTime[2]}`}
-                            </span>
-                          </div>
-                        </div>
+              <Link
+                to={`/study/${list.id}`}
+                key={list.id}
+              >
+                <div className="childBox">
+                  <div className="flex-box1">
+                    <img src={list.imgUrl} className="insertImg" alt="" />
+                  </div>
+                  <div className="flex-box2">
+                    <div className="content-title">{list.title}</div>
+                    <div className="hashtag-box">
+                      {list.hashtag &&
+                        list.hashtag.map((e, index) => (
+                          <Badge
+                            bg="info"
+                            style={{ marginRight: "0.5vw" }}
+                          >
+                            #{e}{" "}
+                          </Badge>
+                        ))}
+                    </div>
+                    <div className="flex-box3">
+                      <div className="publisher-info">
+                        <img
+                          className="userImage"
+                          alt="프로필 사진"
+                          src={
+                            // list.userimgUrl
+                            //   ? list.userImageUrl
+                            //   : 
+                            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                          }
+                        />
+                        <span className="nickName">{list.userNickName}</span>
+                        <span className="date">
+                          {/* {`${list.goalTime[0]}/${list.goalTime[1]}/${list.goalTime[2]}`} */}
+                        </span>
+                      </div>
+                      <div className="icon-box">
+                        <IoEyeOutline />
+                        <span
+                          className="count"
+                          style={{ margin: "0 0.5vw 0 0.1vw" }}
+                        >
+                          {list.cnt}
+                        </span>
+                        <IoPersonOutline />
+                        <span
+                          className="goalPeople"
+                          style={{ margin: "0 0.5vw 0 0.1vw" }}
+                        >
+                          {list.goalPeople}
+                        </span>
+                        <IoLocationOutline />
+                        <span
+                          className="addr"
+                          style={{ margin: "0 0.5vw 0 0.1vw" }}
+                        >
+                          {list.addr}
+                        </span>
+                        <IoCalendarOutline />
+                        <span
+                          className="goalDate"
+                          style={{ margin: "0 0.5vw 0 0.1vw" }}
+                        >
+                          {/* {`${list.goalTime[0]}/${list.goalTime[1]}/${list.goalTime[2]}`} */}
+                        </span>
                       </div>
                     </div>
                   </div>
-                </Link>
-              </ul>
+                </div>
+              </Link>
             ) : (
-              <ul key={list.id}>
-                <Link
-                  to={`/study/${list.id}`}
-                  style={{ textDecoration: "none" }}
-                >
-                  <div className="card-container">
-                    <div
-                      className="card"
-                      style={{
-                        width: "40vw",
-                        margin: "0 auto",
-                        boxShadow: "0px 0px 24px #5c5696",
-                      }}
-                    >
-                      <div className="card-body">
-                        <h5 className="card-title">
-                          {`${list.title}`}
-                          <Link to={`/study/${list.studyId}`} />
-                        </h5>
-                        <h6
-                          className="card-subtitle mb-2 text-muted"
-                          style={{ float: "right" }}
-                        >{`${list.user.userNickname}`}</h6>
-                        <br />
-                        <p className="card-text"> {`${list.content}`}</p>
-                        {`${list.hashtag}` &&
-                          list.hashtag.map((e) => (
-                            <Badge bg="info" style={{ marginRight: "0.5vw" }}>
-                              {" "}
-                              {e}{" "}
-                            </Badge>
-                          ))}
-                        <div className="icon-box">
-                          <IoEyeOutline />
-                          <span
-                            className="count"
-                            style={{ margin: "0 0.5vw 0 0.1vw" }}
+              <Link
+                to={`/study/${list.id}`}
+                key={list.id}
+              >
+                <div className="childBox-noPic">
+                  <div className="flex-box2">
+                    <div className="content-title-noPic">{list.title}</div>
+                    <div className="hashtag-box">
+                      {list.hashtag &&
+                        list.hashtag.map((e, index) => (
+                          <Badge
+                            bg="info"
+                            style={{ marginRight: "0.5vw" }}
                           >
-                            {list.cnt}
-                          </span>
-                          <IoPersonOutline />
-                          <span
-                            className="goalPeople"
-                            style={{ margin: "0 0.5vw 0 0.1vw" }}
-                          >
-                            {list.goalPeople}
-                          </span>
-                          <IoLocationOutline />
-                          <span
-                            className="addr"
-                            style={{ margin: "0 0.5vw 0 0.1vw" }}
-                          >
-                            {list.addr}
-                          </span>
-                          <IoCalendarOutline />
-                          <span
-                            className="goalDate"
-                            style={{ margin: "0 0.5vw 0 0.1vw" }}
-                          >
-                            {`${list.goalTime[0]}/${list.goalTime[1]}/${list.goalTime[2]}`}
-                          </span>
-                        </div>
+                            #{e}{" "}
+                          </Badge>
+                        ))}
+                    </div>
+                    <div className="flex-box3">
+                      <div className="publisher-info">
+                        <img
+                          className="userImage"
+                          alt="프로필 사진"
+                          src={
+                            // list.userimgUrl
+                            //   ? list.userImageUrl
+                            //   : 
+                            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                          }
+                        />
+                        <span className="nickName">{list.userNickName}</span>
+                        <span className="date">
+                          {/* {`${list.goalTime[0]}/${list.goalTime[1]}/${list.goalTime[2]}`} */}
+                        </span>
+                      </div>
+                      <div className="icon-box">
+                        <IoEyeOutline />
+                        <span
+                          className="count"
+                          style={{ margin: "0 0.5vw 0 0.1vw" }}
+                        >
+                          {list.cnt}
+                        </span>
+                        <IoPersonOutline />
+                        <span
+                          className="goalPeople"
+                          style={{ margin: "0 0.5vw 0 0.1vw" }}
+                        >
+                          {list.goalPeople}
+                        </span>
+                        <IoLocationOutline />
+                        <span
+                          className="addr"
+                          style={{ margin: "0 0.5vw 0 0.1vw" }}
+                        >
+                          {list.addr}
+                        </span>
+                        <IoCalendarOutline />
+                        <span
+                          className="goalDate"
+                          style={{ margin: "0 0.5vw 0 0.1vw" }}
+                        >
+                          {/* {`${list.goalTime[0]}/${list.goalTime[1]}/${list.goalTime[2]}`} */}
+                        </span>
                       </div>
                     </div>
                   </div>
-                </Link>
-              </ul>
+                </div>
+              </Link>
             )
           )}
-
+        {/* 
         <div className="btn-container">
           <div className="frame">
             <button className="custom-btn btn-6" onClick={goToWrite}>
               Write
             </button>
           </div>
-        </div>
-      </ListBlock>
-    </>
+        </div> */}
+      </div>
+    </ListBlock>
   );
 };
 

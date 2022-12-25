@@ -2,8 +2,8 @@ import { useState } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid"
 import { ref, uploadString, getDownloadURL, deleteObject } from "@firebase/storage";
-import { storageService } from "../../lib/api/fbase";
-import StudyApi from "../../lib/api/StudyApi";
+import { storageService } from "../../api/fbase";
+import StudyApi from "../../api/StudyApi";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Badge, Button, Form, InputGroup } from "react-bootstrap";
@@ -22,6 +22,7 @@ const Box = styled.div`
   height: 2vh;
   margin: -0.8vh 0.2vh 1vh 0;
   }
+
   .hashtag-badge {
     margin-right: 0.5vw; 
   }
@@ -61,6 +62,40 @@ const Box = styled.div`
 
   .btn-submit {
     float: right;
+  }
+
+  .studyInfo-container {
+    display: flex;
+
+  }
+
+  @media (width < 768px) {
+
+    .inputContainer {
+      width:90vw;
+      height: 121vh;
+    }
+
+    .studyInfo-container {
+      
+      flex-wrap: wrap;
+
+    .addr-container {
+      width: 30vw;
+    }
+
+    .member-container {
+      width: 30vw;
+      
+    }
+
+    .calendar-container {
+      width: 80vw;
+      margin: 5px auto;
+      margin-bottom: 10px;
+    }
+  }
+  
   }
 `;
 
@@ -288,7 +323,7 @@ const StudyWrite = (studyObj) => {
 
         <div className="mb-3">
           <label htmlFor="content-textarea" className="form-label">Content</label>
-          <textarea className="form-control" id="content-textarea" rows="12" placeholder="내용을 입력하세요." onChange={contentChange} defaultValue={studyDetail.content}></textarea>
+          <textarea className="form-control" id="content-textarea" rows="9" placeholder="내용을 입력하세요." onChange={contentChange} defaultValue={studyDetail.content}></textarea>
         </div>
 
         <div className="hastag-contianer">
@@ -308,11 +343,11 @@ const StudyWrite = (studyObj) => {
         </div>
 
         <div className="hashtag-container">
-          {hashtags.map((e, index) => <Badge bg="info" className="hashtag-badge" key={index} onClick={() =>onDeleteHash(index)}>{e} </Badge>)}
+          {hashtags.map((e, index) => <Badge bg="info" className="hashtag-badge" key={index} onClick={() => onDeleteHash(index)}>{e} </Badge>)}
         </div>
 
-        <div className="option-container">
-          <div>
+        <div className="studyInfo-container">
+          <div className="member-container">
             <label htmlFor="memberCount" className="form-label">인원</label>
             <Form.Select aria-label="memberCount" className="form-select"
               key={studyDetail.goalPeople}

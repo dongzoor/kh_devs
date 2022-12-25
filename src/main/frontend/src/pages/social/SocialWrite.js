@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import SocialApi from "../../api/SocialApi";
-import { storageService } from "../../lib/api/fbase";
+import { storageService } from "../../api/fbase";
 import { v4 as uuidv4 } from "uuid";
 import { getDownloadURL, ref, uploadString } from "@firebase/storage";
 
