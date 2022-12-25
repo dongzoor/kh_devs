@@ -29,9 +29,9 @@ const Content = styled.div`
   align-items: center;
   flex-direction: column;
   @media screen and (max-width: 768px) {
-    min-height: 70vh;
+    min-height: 80vh;
   }
-  gap: 2rem;
+  gap: 1.8rem;
   .goToSchedule {
     text-shadow: 1px 1px 1px #5c5696;
     &:hover {
@@ -104,7 +104,7 @@ function Profile() {
                 width: "250px",
                 height: "250px",
                 borderRadius: "50%",
-                boxShadow: "0px 0px 24px #5c5696",
+                boxShadow: "0px 0px 20px #5c5696",
               }}
             />
           </div>
