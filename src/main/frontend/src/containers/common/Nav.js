@@ -51,8 +51,8 @@ function OffcanvasExample() {
     if (window.Kakao.Auth.getAccessToken()) {
       window.Kakao.API.request({
         url: "/v1/user/unlink",
-        success: function (response) {},
-        fail: function (error) {},
+        success: function (response) { },
+        fail: function (error) { },
       });
       window.Kakao.Auth.setAccessToken(undefined);
     }
@@ -142,15 +142,6 @@ function OffcanvasExample() {
                   )}
                   <Nav.Link href="/chat">Chat</Nav.Link>
                 </Nav>
-                <Form className="d-flex" style={{ marginTop: "20px" }}>
-                  <Form.Control
-                    type="search"
-                    placeholder="Search"
-                    className="me-2"
-                    aria-label="Search"
-                  />
-                  <Button variant="outline-success">Search</Button>
-                </Form>
               </Offcanvas.Body>
             </Navbar.Offcanvas>
           </Container>

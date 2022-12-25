@@ -18,25 +18,25 @@ const Box = styled.div`
   padding: 0;
   font-family: Raleway, Pretendard Std;
   background: linear-gradient(90deg, #ffe7e8, #8da4d0);
-  
-  .hashtag-container {
-  height: 2vh;
-  margin: -0.8vh 0.2vh 1vh 0;
-  }
-
-  .hashtag-badge {
-    margin-right: 0.5vw; 
-  }
 
   .inputContainer {
-    width: 60vw;
-    height: 115vh;
+    width: 60%;
+    height: 77vh;
     margin: 0 auto;
     padding: 15px;
     background-color: #FFF;
     box-shadow: 0px 0px 24px #5c5696;
     border-radius: 25px;
   }
+
+  .hashtag-container {
+    height: 2vh;
+    margin: -0.8vh 0.2vh 1vh 0;
+    }
+  
+    .hashtag-badge {
+      margin-right: 0.5vw; 
+    }
 
   .option-container {
     display: flex;
@@ -70,31 +70,74 @@ const Box = styled.div`
 
   }
 
-  @media (width < 768px) {
+  .studyInfo-container {
+    
+    flex-wrap: wrap;
+
+    .member-container {
+      width: 10vw;
+      
+      .form-select {
+        width: 50%;
+      }
+    }
+
+    .addr-container {
+      width: 15vw;
+      
+      .addr {
+        width: 100%;
+      }
+    }
+
+    .calendar-container {
+      width: 20vw;
+      margin: 5px auto;
+      margin-bottom: 10px;
+
+      .calendar {
+        width: 100%;
+      }
+    }
+}
+
+  @media only screen and (max-width: 1200px) {
 
     .inputContainer {
       width:90vw;
-      height: 121vh;
+      height: 85vh;
     }
 
     .studyInfo-container {
       
       flex-wrap: wrap;
 
-    .addr-container {
-      width: 30vw;
-    }
+      .member-container {
+        width: 25vw;
+        
+        .form-select {
+          width: 100%;
+        }
+      }
 
-    .member-container {
-      width: 30vw;
-      
-    }
+      .addr-container {
+        width: 60%;
+        
+        .addr-label {
+          width: 50%;
+        }
+        .addr {
+          width: 100%;
+        }
+      }
 
-    .calendar-container {
-      width: 80vw;
-      margin: 5px auto;
-      margin-bottom: 10px;
-    }
+      .calendar-container {
+        width: 80vw;
+        margin: 5px auto;
+        margin-bottom: 10px;
+      }
+  }
+  
   }
   
   }
@@ -114,7 +157,7 @@ const StudyWrite = (studyObj) => {
 
   const navigate = useNavigate();
   const userId = sessionStorage.getItem("userId");
-
+  const userNickName = sessionStorage.getItem("userNickname");
   let attachmentUrl = "";
   //사진 첨부 없이 텍스트만 트윗하고 싶을 때도 있으므로 기본 값을 ""로 해야한다.
   //트윗할 때 텍스트만 입력시 이미지 url ""로 비워두기 위함
@@ -138,7 +181,7 @@ const StudyWrite = (studyObj) => {
       target: { files },
     } = e;
     const theFile = files[0];
-    console.log(theFile);
+    // console.log(theFile);
 
     const reader = new FileReader();
     reader.onloadend = (finishedEvent) => {
@@ -170,7 +213,7 @@ const StudyWrite = (studyObj) => {
         );
         //storage 참조 경로에 있는 파일의 URL을 다운로드해서 attachmentUrl 변수에 넣어서 업데이트
         attachmentUrl = await getDownloadURL(response.ref);
-        console.log(attachmentUrl);
+        // console.log(attachmentUrl);
       }
 
       const studyReg = await StudyApi.studyWrite(
@@ -185,9 +228,9 @@ const StudyWrite = (studyObj) => {
         applyPeople
       );
 
-      console.log(studyReg);
+      // console.log(studyReg);
 
-      console.log(studyReg.statusText);
+      // console.log(studyReg.statusText);
       if (studyReg.statusText === "OK")
         window.confirm("스터디 모집이 시작되었습니다.");
       navigate("/studies");
@@ -213,7 +256,7 @@ const StudyWrite = (studyObj) => {
   }
 
   const addHashtag = (e) => {
-    if (hashtag.length > 10 || hashtags.length > 4) {
+    if (hashtag === "" || hashtag.length > 10 || hashtags.length > 4) {
       alert("⚡ 해시태그는 10자 이하의 단어로 최대 5개까지 입력 가능합니다 ⚡");
     } else {
       setHashtags([...hashtags, hashtag]);
@@ -233,7 +276,7 @@ const StudyWrite = (studyObj) => {
 
   const getAddr = (e) => {
     setAddr(e);
-    console.log(addr + " " + valueDate + " " + people);
+    // console.log(addr + " " + valueDate + " " + people);
   }
 
   // const handleKeyPress = (e) => {
@@ -285,7 +328,7 @@ const StudyWrite = (studyObj) => {
             <Form.Select aria-label="memberCount" className="form-select"
               onChange={(e) => {
                 setPeople(e.target.value);
-                setApplyPeople([userId]);
+                setApplyPeople([userNickName]);
               }}>
               <option>인원 수</option>
               <option value="2">2</option>
@@ -305,8 +348,8 @@ const StudyWrite = (studyObj) => {
 
           <div className="calendar-container">
             <label htmlFor="calendar" className="calendar-label" >스터디 시작 날짜</label>
-            <div className="calendar" >
-              <Calendar onChange={(e) => setValueDate(e)}
+            <div>
+              <Calendar className="calendar" onChange={(e) => setValueDate(e)}
                 formatDay={(locale, date) => moment(date).format("DD")} />
             </div>
           </div>

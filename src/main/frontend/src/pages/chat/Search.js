@@ -77,7 +77,7 @@ const Search = () => {
     setUsername("")
   };
   return (
-    <div className="search">
+    <div className="chat-search">
       <div className="searchForm">
         <input
           type="text"

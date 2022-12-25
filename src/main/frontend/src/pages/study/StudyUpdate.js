@@ -17,25 +17,25 @@ const Box = styled.div`
   padding: 0;
   font-family: Raleway, Pretendard Std;
   background: linear-gradient(90deg, #ffe7e8, #8da4d0);
-  
-  .hashtag-container {
-  height: 2vh;
-  margin: -0.8vh 0.2vh 1vh 0;
-  }
-
-  .hashtag-badge {
-    margin-right: 0.5vw; 
-  }
 
   .inputContainer {
-    width: 60vw;
-    height: 115vh;
+    width: 60%;
+    height: 77vh;
     margin: 0 auto;
     padding: 15px;
     background-color: #FFF;
     box-shadow: 0px 0px 24px #5c5696;
     border-radius: 25px;
   }
+
+  .hashtag-container {
+    height: 2vh;
+    margin: -0.8vh 0.2vh 1vh 0;
+    }
+  
+    .hashtag-badge {
+      margin-right: 0.5vw; 
+    }
 
   .option-container {
     display: flex;
@@ -69,31 +69,75 @@ const Box = styled.div`
 
   }
 
-  @media (width < 768px) {
+  .studyInfo-container {
+    
+    flex-wrap: wrap;
+
+    .member-container {
+      width: 10vw;
+      
+      .form-select {
+        width: 50%;
+      }
+    }
+
+    .addr-container {
+      width: 15vw;
+      
+      .addr {
+        width: 100%;
+      }
+    }
+
+    .calendar-container {
+      width: 20vw;
+      margin: 5px auto;
+      margin-bottom: 10px;
+
+      .calendar {
+        width: 100%;
+      }
+    }
+  }
+
+
+  @media only screen and (max-width: 1200px) {
 
     .inputContainer {
       width:90vw;
-      height: 121vh;
+      height: 85vh;
     }
 
     .studyInfo-container {
       
       flex-wrap: wrap;
 
-    .addr-container {
-      width: 30vw;
-    }
+      .member-container {
+        width: 25vw;
+        
+        .form-select {
+          width: 100%;
+        }
+      }
 
-    .member-container {
-      width: 30vw;
-      
-    }
+      .addr-container {
+        width: 60%;
+        
+        .addr-label {
+          width: 50%;
+        }
+        .addr {
+          width: 100%;
+        }
+      }
 
-    .calendar-container {
-      width: 80vw;
-      margin: 5px auto;
-      margin-bottom: 10px;
-    }
+      .calendar-container {
+        width: 80vw;
+        margin: 5px auto;
+        margin-bottom: 10px;
+      }
+  }
+  
   }
   
   }
@@ -132,7 +176,7 @@ const StudyWrite = (studyObj) => {
         setStudyDetail(response.data);
         setHashtags(response.data.hashtag);
 
-        console.log(response.data);
+        // console.log(response.data);
       } catch (e) {
         console.log(e);
       }
@@ -164,7 +208,7 @@ const StudyWrite = (studyObj) => {
       target: { files },
     } = e;
     const theFile = files[0];
-    console.log(theFile);
+    // console.log(theFile);
 
     const reader = new FileReader();
     reader.onloadend = (finishedEvent) => {
@@ -211,7 +255,7 @@ const StudyWrite = (studyObj) => {
           valueDate,
           applyPeople
         );
-        console.log(studyUpdate);
+        // console.log(studyUpdate);
         navigate("/studies");
       } else { //첨부한게 없을 때 (이미지 유지)
 
@@ -226,7 +270,7 @@ const StudyWrite = (studyObj) => {
           valueDate,
           applyPeople
         );
-        console.log(studyUpdate);
+        // console.log(studyUpdate);
         navigate("/studies");
       }
     } else { // 첨부했던 이미지가 없을 때
@@ -253,7 +297,7 @@ const StudyWrite = (studyObj) => {
           valueDate,
           applyPeople
         );
-        console.log(studyUpdate);
+        // console.log(studyUpdate);
         navigate("/studies");
       } else {
         const studyUpdate = await StudyApi.studyUpdate(
@@ -267,7 +311,7 @@ const StudyWrite = (studyObj) => {
           valueDate,
           applyPeople
         );
-        console.log(studyUpdate);
+        // console.log(studyUpdate);
         navigate("/studies");
       }
     }
@@ -318,7 +362,7 @@ const StudyWrite = (studyObj) => {
 
         <div className="mb-3">
           <label htmlFor="title-input" className="form-label">Title</label>
-          <input type="email" className="form-control" id="title-input" placeholder="제목을 입력하세요." onChange={titleChange} defaultValue={studyDetail.title} />
+          <input type="text" className="form-control" id="title-input" placeholder="제목을 입력하세요." onChange={titleChange} defaultValue={studyDetail.title} />
         </div>
 
         <div className="mb-3">
@@ -328,13 +372,14 @@ const StudyWrite = (studyObj) => {
 
         <div className="hastag-contianer">
           <label htmlFor="hashtag-input" className="form-label">Hashtag</label>
-          <InputGroup className="mb-3" onChange={onChangeHashtag}>
+          <InputGroup className="mb-3" >
             <Form.Control
               placeholder="태그를 입력하세요."
               aria-label="태그를 입력하세요."
               aria-describedby="basic-addon2"
               id="hashtag-input"
               value={hashtag}
+              onChange={onChangeHashtag}
             />
             <Button variant="outline-secondary" id="button-addon2" onClick={addHashtag}>
               추가
@@ -343,7 +388,7 @@ const StudyWrite = (studyObj) => {
         </div>
 
         <div className="hashtag-container">
-          {hashtags.map((e, index) => <Badge bg="info" className="hashtag-badge" key={index} onClick={() => onDeleteHash(index)}>{e} </Badge>)}
+          {hashtags.map((e, index) => <Badge bg="info" className="hashtag-badge" key={index} onClick={() => onDeleteHash(index)}>#{e} </Badge>)}
         </div>
 
         <div className="studyInfo-container">
@@ -376,8 +421,9 @@ const StudyWrite = (studyObj) => {
 
           <div className="calendar-container">
             <label htmlFor="calendar" className="calendar-label" >스터디 시작 날짜</label>
-            <div className="calendar" >
+            <div>
               <Calendar
+                className="calendar"
                 onChange={(e) => setValueDate(e)}
                 formatDay={(locale, date) => moment(date).format("DD")} />
             </div>

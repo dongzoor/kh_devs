@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import CommentList from "./comment/CommentList";
 import SocialApi from "../../api/SocialApi";
-import { storageService } from "../../lib/api/fbase";
+import { storageService } from "../../api/fbase";
 import styled from "styled-components";
 
 const DetailBox = styled.div`

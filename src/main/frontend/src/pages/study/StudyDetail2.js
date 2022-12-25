@@ -11,55 +11,49 @@ import { deleteObject, ref } from "firebase/storage";
 import { storageService } from "../../api/fbase";
 
 const DetailBox = styled.div`
+  overflow-x: hidden;
   & > * {
     margin: 0;
     padding: 0;
     font-size: 20px;
   }
-  margin: 0px auto;
-  /* background-color: rgba(211, 188, 230, 0.25); */
   .subtitle {
-    font-family: "Alfa Slab One", cursive;
-    text-align: center;
-    font-size: 25px;
+    margin: 20px 0px;
     padding: 10px;
-    margin: 20px;
-  }
-  .subtitle {
+    text-align: center;
     display: flex;
     flex-basis: 100%;
-    align-items: center;
-    color: rgba(0, 0, 0, 0.35);
     font-size: 25px;
-    margin: 8px 0px;
+    color: rgba(0, 0, 0, 0.35);
+    font-family: "Alfa Slab One", cursive;
   }
   .subtitle::before,
   .subtitle::after {
     content: "";
-    flex-grow: 1;
-    background: rgba(0, 0, 0, 0.35);
     height: 1px;
-    font-size: 0px;
-    line-height: 0px;
     margin: 0px 16px;
+    line-height: 0px;
+    flex-grow: 1;
+    font-size: 0px;
+    background: rgba(0, 0, 0, 0.35);
   }
   .parentBox {
-    font-family: "Gowun Dodum", sans-serif;
-    width: 1024px;
+    max-width: 1024px;
+    min-width: 300px;
     margin: 0px auto;
     padding: 5px;
-    /* border: 1px solid black; */
-    background-color: rgba(211, 188, 230, 0.25);
     border-radius: 5px;
     display: flex;
     flex-direction: column;
+    font-family: "Gowun Dodum", sans-serif;
+    background-color: rgba(211, 188, 230, 0.25);
   }
   .content-title {
-    border-radius: 5px;
-    padding: 5px 10px;
     margin: 5px;
-    background-color: rgba(255, 255, 255, 0.8);
+    padding: 5px 10px;
+    border-radius: 5px;
     font-size: 25px;
+    background-color: rgba(255, 255, 255, 0.8);
   }
   hr {
     width: 98%;
@@ -97,34 +91,30 @@ const DetailBox = styled.div`
     margin: 0 5px;
     font-size: 0.8em;
   }
-  .count {
-    padding: 5px;
-  }
-  .hashtags-box {
-    margin: 10px;
-  }
-  .hashtags {
-    margin: 0px 3px;
-    padding: 8px;
-    font-size: 0.75em;
-    font-style: italic;
-    background-color: rgba(219, 219, 219);
-    background-color: rgba(219, 219, 219, 0.5);
-    background-color: rgba(3, 0, 209, 0.2);
-    border-radius: 10px;
-    box-shadow: 0 1px 3px grey;
-  }
   // 첨부 사진 최대 크기 조정
-  .preview {
-    max-width: 95%;
+  .attachedImg {
+    max-width: 90%;
   }
   // 첨부 사진 가운데 정렬
-  .attachedImg {
+  .attachedImg-box {
     display: flex;
     align-items: center;
     justify-content: center;
   }
-
+  .hashtags-box {
+    margin: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    .hashtags {
+      margin: 5px 3px;
+      padding: 8px;
+      font-size: 0.75em;
+      font-style: italic;
+      background-color: rgba(3, 0, 209, 0.2);
+      border-radius: 10px;
+      box-shadow: 0 1px 3px grey;
+    }
+  }
   .goList {
     float: right;
     margin: 20px;
@@ -172,6 +162,23 @@ const DetailBox = styled.div`
       box-shadow: none;
     }
   }
+  .doneBt {
+    border: 0;
+    border-radius: 10px;
+    padding: 5px 10px;
+    margin: 5px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 255, 0.2);
+    background-color: grey;
+  }
+
+  .bottom-container {
+    
+    justify-content: center;
+    height: 100px;
+    .apply-member {
+      
+    }
+  }
 `;
 
 const StudyDetail = () => {
@@ -183,9 +190,12 @@ const StudyDetail = () => {
   // const [userId, SetUserId] = useState("");
   const navigate = useNavigate();
   const userId = sessionStorage.getItem("userId")
+  const userNickName = sessionStorage.getItem("userNickname");
   const userEmail = sessionStorage.getItem("userEmail");
   const [loading, setLoading] = useState(false);
   const [userInfo, setUserInfo] = useState("");
+  const [postDate, setPostDate] = useState("");
+
 
   let isApplied = false;
 
@@ -199,9 +209,10 @@ const StudyDetail = () => {
         setStudyDetail(response.data);
         setApplyGoalCnt(response.data.goalPeople); // 목표 인원 수
         setApplyPeople(response.data.applyPeople); // 지원자 목록
-        console.log(response.data);
+        // console.log(response.data);
         setUserInfo(response.data.user);
-        console.log("userInfo", response.data.user);
+        setPostDate(response.data.regTime);
+        // console.log("userInfo", response.data.user);
       } catch (e) {
         console.log(e);
       }
@@ -231,9 +242,9 @@ const StudyDetail = () => {
     try {
       // 스터디 가입했는지 확인
       if (!isApplied) { // 가입 안했으면,
-        applyPeoples = [userId, ...applyPeople];
+        applyPeoples = [userNickName, ...applyPeople];
         applyCnts = applyCnt + 1;
-        setApplyPeople([userId, ...applyPeople]) // 지원자 목록에 추가
+        setApplyPeople([userNickName, ...applyPeople]) // 지원자 목록에 추가
         window.alert("스터디에 지원했습니다.")
         setApplyCnt(applyCnt + 1);  // 지원자 수 1 증가 
         const res = await StudyApi.studyApply(parseInt(params), applyPeoples, applyCnts);
@@ -296,19 +307,18 @@ const StudyDetail = () => {
                 {userInfo.userNickname}
               </span>
               <span className="date">
-                {/* | {studyDetail.goalTime[0]}-{studyDetail.goalTime[1]}-{studyDetail.goalTime[2]} {studyDetail.goalTime[3]}:
-                {studyDetail.goalTime[4]} */}
+                | {postDate[0]}-{postDate[1]}-{postDate[2]} {postDate[3]}:
+                {postDate[4]}
               </span>
             </div>
             <div className="button-box">
-              {/* 게시글 작성자 email = 로그인한 유저 email 이면 출력 */}
               {userEmail !== userInfo.userEmail ?
                 (
                   applyPeople.length === studyDetail.goalPeople ?
 
-                    <button className="deleteBt">모집완료</button>
+                    <button className="doneBt">모집완료</button>
                     :
-                    <button className="deleteBt" onClick={applySubmit}>스터디 신청하기</button>
+                    <button className="deleteBt" onClick={applySubmit}>신청하기</button>
                 )
                 :
                 <>
@@ -319,24 +329,41 @@ const StudyDetail = () => {
               <button className="deleteBt" onClick={chatTest}>채팅</button>
             </div>
           </div>
-          <div className="attachedImg">
+          <div className="attachedImg-box">
             {`${studyDetail.imgUrl}` != null && (
-              <img src={studyDetail.imgUrl} className="preview" alt="" />
+              <img src={studyDetail.imgUrl} className="attachedImg" alt="" />
             )}
           </div>
           <div className="content-text">{studyDetail.content}</div>
           <div className="hashtags-box">
             {studyDetail.hashtag &&
               studyDetail.hashtag.map((e, index) => (
-                <Badge bg="info" style={{ marginRight: "0.5vw" }}>
+                <Badge bg="info" style={{ marginRight: "0.5vw" }} key={index}>
                   #{e}
                 </Badge>
               ))}
           </div>
           <hr className="line" />
-          <button className="goList" onClick={goToList}>
-            GO LIST
-          </button>
+          <div className="bottom-container">
+            {userEmail !== userInfo.userEmail ?
+              <div className="apply-member">
+                <IoPersonOutline />
+                {`${applyPeople.length}/${applyGoalCnt}`}
+              </div>
+              :
+              <div className="apply-member">
+                {applyPeople.map((e, index) =>
+                  <span key={index}>
+                    <IoPersonOutline />
+                    {`${e}  `}
+                  </span>
+                )}
+              </div>
+            }
+            <button className="goList" onClick={goToList}>
+              GO LIST
+            </button>
+          </div>
         </div>
       </div>
     </DetailBox>
