@@ -90,7 +90,7 @@ function AdminMemberList() {
   const [searchData , setSearchData] = useState('');
   /// 페이지 네그네이션
   const [page, setPage] = useState(1);
-  const [items, setItems] = useState(10); // 페이지별 목록 개수
+  const [items, setItems] = useState(8); // 페이지별 목록 개수
 
   useEffect(() => {
     const MemberData = async () => {
@@ -267,7 +267,7 @@ function AdminMemberList() {
                         )}
                       </>
                       <Link
-                        to={"/user/profile"}
+                        to={`/myPage/mySocial/${list.userId}`}
                         style={{ textDecoration: "none", color: "inherit" }}
                       >
                         <button className="adbutton serch">조회</button>
@@ -289,7 +289,7 @@ function AdminMemberList() {
               activePage={page}
               itemsCountPerPage={items}
               totalItemsCount={members.length - 1}
-              pageRangeDisplayed={10}
+              pageRangeDisplayed={8}
               onChange={handlePageChange}
             ></Pagination>
           </PaginationBox>

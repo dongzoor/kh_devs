@@ -215,7 +215,7 @@ function AdminBoardList() {
                     {/* {social.postDate.slice(0, 3).join("-")} */}
                     {/* {String(list.regTime).substring([0],[16])} */}
                     <td>{list.regTime.slice(0,5).join("-")}</td>
-                    <td>{list.goalPeople}</td>
+                    <td>{list.studyApplyCount}</td>
                     <td>
                       <>
                         <button className="adbutton delete" onClick={() => openModal(list.id)}>
