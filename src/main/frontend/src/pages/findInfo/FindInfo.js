@@ -28,10 +28,10 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  min-height: 90vh;
   @media screen and (max-width: 580px) {
     width: 90%;
-    min-height: 90vh;
+    min-height: 70vh;
   }
 `;
 
@@ -70,6 +70,19 @@ function FindInfo() {
     }
   };
 
+  // 엔터키 아이디찾기
+  const onEnterDown = (e) => {
+    if (e.key === "Enter") {
+      onClickFindId();
+    }
+  };
+
+  // 엔터키 비밀번호 찾기
+  const onEnterDownPwd = (e) => {
+    if (e.key === "Enter") {
+      onClickFindPwd();
+    }
+  };
   // 아이디찾기 - 휴대폰 번호 오토하이픈
   const onChangePhone = (e) => {
     const value = phoneRef.current.value.replace(/\D+/g, "");
@@ -99,8 +112,6 @@ function FindInfo() {
   const onClickFindId = async () => {
     const res = await UserApi.findId(phone);
     if (res.data !== false) {
-      console.log(res.data);
-      // window.alert("test");
       window.alert(`찾으신 아이디는 ${res.data.userEmail} 입니다.`);
     } else {
       window.alert("입력하신 정보를 확인해주세요.");
@@ -136,7 +147,6 @@ function FindInfo() {
   const onClickFindPwd = async () => {
     const res = await UserApi.findPwd(userEmail, pwPhone);
     if (res.data !== false) {
-      console.log(res.data);
       await signInWithEmailAndPassword(auth, userEmail, res.data.bfPwd);
       const user = auth.currentUser;
       await updatePassword(user, res.data.afPwd);
@@ -179,6 +189,7 @@ function FindInfo() {
                       value={phone}
                       onChange={onChangePhone}
                       className="find__input"
+                      onKeyDown={onEnterDown}
                     />
                     <button
                       className="submit_btn"
@@ -211,6 +222,7 @@ function FindInfo() {
                       ref={phonePwRef}
                       value={pwPhone}
                       onChange={onChangePwPhone}
+                      onKeyDown={onEnterDownPwd}
                     />
                     <button
                       className="submit_btn"

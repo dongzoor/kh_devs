@@ -28,10 +28,11 @@ public class SocialService {
     private final CommentRepository commentRepository;
 
     @Transactional
-    public void updateCnt(Long id) {   //스터디 지원
+    public boolean updateCnt(Long id) {   //스터디 지원
         Social social = socialRepository.findById(id).orElseThrow(() -> new NotFoundStudyException("social is not Found!"));
         social.setView(social.getView() + 1);
         socialRepository.save(social);
+        return true;
     }
 
     // [해시태그] 검색
