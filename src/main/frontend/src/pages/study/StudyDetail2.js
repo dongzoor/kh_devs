@@ -190,7 +190,7 @@ const StudyDetail = () => {
   // const [userId, SetUserId] = useState("");
   const navigate = useNavigate();
   const userId = sessionStorage.getItem("userId")
-  const userNickName = sessionStorage.getItem("userNickname");
+  const userNickname = sessionStorage.getItem("userNickname");
   const userEmail = sessionStorage.getItem("userEmail");
   const [loading, setLoading] = useState(false);
   const [userInfo, setUserInfo] = useState("");
@@ -236,15 +236,15 @@ const StudyDetail = () => {
     let applyCnts;
 
     applyPeople.map((e, index) => {
-      (e === userId) &&
+      (e === userNickname) &&
         (isApplied = true)
     });
     try {
       // 스터디 가입했는지 확인
       if (!isApplied) { // 가입 안했으면,
-        applyPeoples = [userNickName, ...applyPeople];
+        applyPeoples = [userNickname, ...applyPeople];
         applyCnts = applyCnt + 1;
-        setApplyPeople([userNickName, ...applyPeople]) // 지원자 목록에 추가
+        setApplyPeople([userNickname, ...applyPeople]) // 지원자 목록에 추가
         window.alert("스터디에 지원했습니다.")
         setApplyCnt(applyCnt + 1);  // 지원자 수 1 증가 
         const res = await StudyApi.studyApply(parseInt(params), applyPeoples, applyCnts);

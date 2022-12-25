@@ -67,7 +67,7 @@ public class StudyService {
         if (!studyDTO.getContent().equals("")) study.setContent(studyDTO.getContent()); // 내용이 바뀐 경우
         if (!studyDTO.getHashtag().isEmpty()) study.setHashtag(studyDTO.getHashtag()); // 해시태그가 바뀐 경우
         if (studyDTO.getGoalPeople() != 0) study.setGoalPeople(studyDTO.getGoalPeople()); // 목표 인원이 바뀐 경우
-        study.setApplyPeople(studyDTO.getApplyPeople()); // 모집 배열이 바뀐 경우
+        if (!studyDTO.getApplyPeople().isEmpty()) study.setApplyPeople(studyDTO.getApplyPeople()); // 모집 배열이 바뀐 경우
         study.setAddr(studyDTO.getAddr());
         study.setGoalTime(studyDTO.getGoalTime());
         study.setImgUrl(studyDTO.getImgUrl());

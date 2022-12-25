@@ -508,7 +508,7 @@ const Study = () => {
   return (
     <ListBlock>
       <div className="subtitle">Dev' Study</div>
-      <div className="inducer"> Share anything you want 👩🏻‍💻✨</div>
+      <div className="inducer"> Recruit Member 👩🏻‍💻✨</div>
       <div className="post-box">
         <button className="postBt" onClick={goToWrite}>
           P O S T
