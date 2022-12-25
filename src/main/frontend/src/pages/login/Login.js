@@ -28,6 +28,9 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   min-height: 90vh;
+  @media screen and (max-width: 768px) {
+    min-height: 70vh;
+  }
 `;
 
 function Login() {
@@ -59,7 +62,6 @@ function Login() {
   //   Data();
   // }, []);
 
-
   // function requestPermission() {
   //   console.log('Requesting permission...');
   //   Notification.requestPermission().then((permission) => {
@@ -81,8 +83,6 @@ function Login() {
   const onClickLogin = async () => {
     // 로그인을 위한 axios 호출
     const res = await UserApi.userLogin(inputId, inputPw);
-
-    console.log(res.data);
     if (res.data === "BAN_USER") {
       window.alert("차단된 유저입니다 서비스이용이 불가합니다.");
       window.location.replace("/");
@@ -119,15 +119,12 @@ function Login() {
   // 카카오 로그인 실패
   const socialLoginFail = (res) => {
     console.log("카카오 로그인 실패");
-    console.log(res);
   };
 
   // 카카오 로그인(카카오 API로 불러온 정보로 DB에 저장)
   const kakaoLoginInfo = async (email, nickname) => {
     // 로그인을 위한 axios 호출
     const res = await UserApi.kakaoLogin(email, nickname);
-
-    console.log(res.data);
 
     // 로그인을 성공하는 경우
     if (res.data !== false) {
@@ -153,8 +150,6 @@ function Login() {
       if (window.confirm("가입된 정보가 없습니다, 가입하시겠습니까?")) {
         sessionStorage.setItem("kakaoEmail", email);
         sessionStorage.setItem("kakaoNickname", nickname);
-        console.log(email);
-        console.log(nickname);
         window.location.replace("/user/register");
       }
     }

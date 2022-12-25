@@ -16,7 +16,7 @@ import {
   updatePassword,
   updateProfile,
 } from "firebase/auth";
-import { arrayUnion, doc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 
 import { Link } from "react-router-dom";
 import { MdArrowBack } from "react-icons/md";
@@ -149,7 +149,6 @@ function EditInfo() {
       target: { files },
     } = e;
     const theFile = files[0];
-    console.log("이미지 파일 : ", theFile);
 
     const reader = new FileReader();
     reader.onloadend = (finishedEvent) => {
@@ -374,7 +373,7 @@ function EditInfo() {
           //     photoURL: profileImagePath
           //   })
           //   });
-        
+
           window.location.replace("/user/profile");
         }
       }
@@ -410,9 +409,7 @@ function EditInfo() {
     if (window.Kakao.Auth.getAccessToken()) {
       window.Kakao.API.request({
         url: "/v1/user/unlink",
-        success: function (response) {
-          console.log(response);
-        },
+        success: function (response) {},
         fail: function (error) {
           console.log(error);
         },
@@ -428,7 +425,7 @@ function EditInfo() {
           <Link to="/user/profile">
             <MdArrowBack size="24" style={{ margin: 10 }} />
           </Link>
-          <h1 class="form-title">Edit Account Information</h1>
+          <h1 className="form-title">Edit Account Information</h1>
           <div>
             <form className="edit-form">
               <img

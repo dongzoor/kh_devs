@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import SocialApi from "../../api/SocialApi";
 import { RxReset } from "react-icons/rx";
-import { IoChatboxOutline, IoEyeOutline,IoHeartOutline } from "react-icons/io5";
+import { IoChatboxOutline, IoEyeOutline } from "react-icons/io5";
 
 const ListBlock = styled.div`
   overflow-x: hidden;
@@ -11,6 +11,7 @@ const ListBlock = styled.div`
     margin: 0;
     padding: 0;
     text-decoration: none;
+    font-family: "Gowun Dodum", sans-serif;
   }
   a:hover,
   a:visited,
@@ -62,36 +63,33 @@ const ListBlock = styled.div`
     background-color: rgba(3, 0, 209, 0.2);
   }
   .search {
+    width: 250px;
     margin: 10px 10px;
     padding: 8px;
     border: none;
     border-radius: 5px;
     box-shadow: 0 1px 3px grey;
     background-color: rgba(3, 0, 209, 0.2);
-    font-family: "Gowun Dodum", sans-serif;
-    width: 250px;
   }
   .resetBt {
-    border-radius: 5px;
-    border: 1px solid rgba(3, 0, 209, 0.4);
     height: 40px;
     width: 40px;
+    border-radius: 5px;
+    border: 1px solid rgba(3, 0, 209, 0.4);
     background-color: none;
   }
   .parentBox {
-    font-family: "Gowun Dodum", sans-serif;
     max-width: 1024px;
-    min-width: 480px;
+    min-width: 450px;
+    margin: 0px auto;
     padding: 5px;
     border-radius: 10px;
-    margin: 0px auto;
     background-color: rgba(255, 255, 255, 0.35);
-    min-width: 486px;
   }
-  .childBox {
+  .childBox-pic {
     max-width: 990px;
-    min-width: 480px;
     display: flex;
+    justify-content: space-between;
     height: 100%;
     margin: 20px 10px;
     border: 2px solid grey;
@@ -103,8 +101,11 @@ const ListBlock = styled.div`
       font-size: 20px;
     }
     & > .flex-box2 {
-      max-width: 760px;
-      min-width: 220px;
+      width: 784px; // 필수 지정(하지 않으면 길이가 기본적으로 줄어든다.)
+      max-width: 784px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
     }
     &:hover {
       color: white;
@@ -114,14 +115,13 @@ const ListBlock = styled.div`
       box-shadow: none;
       & > .flex-box1 > img {
         -webkit-transition: 0.4s ease;
-        transform: scale(1.15);
-        transition: 0.6s ease;
+        transform: scale(1.3);
+        transition: 0.7s ease;
       }
     }
   }
   .childBox-noPic {
     max-width: 990px;
-    min-width: 480px;
     height: 100%;
     margin: 20px 10px;
     border: 2px solid grey;
@@ -129,8 +129,11 @@ const ListBlock = styled.div`
     background-color: white;
     box-shadow: 2px 3px 3px 1px rgba(0, 0, 0, 0.2);
     transition-duration: 0.3s;
-    & > * {
-      font-size: 20px;
+    font-size: 20px;
+    & > .flex-box2 {
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
     }
     &:hover {
       color: white;
@@ -151,21 +154,15 @@ const ListBlock = styled.div`
     align-items: center;
     overflow: hidden;
     position: relative;
-    min-width: 206px;
-  }
-  .flex-box2 {
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
+    width: 206px;
+    min-width: 100px;
   }
   .insertImg {
     height: 90%;
-    width: 200px;
+    width: 90%;
     height: 170px;
     border-radius: 5px;
     position: absolute; // = 부모 기준 배치
-    /* left: 5px;
-    top: 5px; */
   }
   .flex-box3 {
     display: flex;
@@ -178,7 +175,8 @@ const ListBlock = styled.div`
   }
   .content-title {
     font-weight: 550;
-    width: 750px;
+    max-width: 750px;
+    min-width: 10px;
     margin: 5px;
   }
   .content-title-noPic {
@@ -206,46 +204,16 @@ const ListBlock = styled.div`
     padding: 5px;
   }
   .hashtag-box {
-    word-break: keep-all;
-    margin: 15px 0px;
-  }
-  .hashtag {
-    word-break: keep-all;
-    font-size: 0.7em;
-    margin: 15px 3px;
-    padding: 10px;
-    font-style: italic;
-    background-color: rgba(219, 219, 219, 0.5);
-    border-radius: 10px;
-  }
-
-  @media (width < 768px) {
-    & {
-      display: flex;
-      flex-direction: column;
-    }
-    .parentBox {
-      width: 95vw;
-      flex-direction: column;
-      display: flex;
-      align-items: center;
-      flex-wrap: nowrap;
-      .childBox {
-        align-items: center;
-        justify-content: center;
-        width: 80vw;
-        .flex-box2 {
-          width: 50vw;
-        }
-        .insertImg {
-          min-height: 170px;
-        }
-      }
-      .childBox-noPic {
-        align-items: center;
-        justify-content: center;
-        width: 80vw;
-      }
+    margin: 5px 0px;
+    display: flex;
+    flex-wrap: wrap;
+    .hashtag {
+      font-size: 0.7em;
+      margin: 5px 3px;
+      padding: 10px;
+      font-style: italic;
+      background-color: rgba(219, 219, 219, 0.5);
+      border-radius: 10px;
     }
   }
 `;
@@ -263,7 +231,6 @@ const Social = () => {
     setTypeSelect(e.target.value);
     console.log(e.target.value);
   };
-  // const [userImageUrl, setUserImageUrl] = useState("");
   const searchTag = async (e) => {
     if (e.key === "Enter") {
       const {
@@ -357,7 +324,7 @@ const Social = () => {
           socialList.map((social) =>
             social.image ? (
               <Link to={`/social/${social.socialId}`} key={social.socialId}>
-                <div className="childBox">
+                <div className="childBox-pic">
                   <div className="flex-box1">
                     <img src={social.image} className="insertImg" alt="" />
                   </div>

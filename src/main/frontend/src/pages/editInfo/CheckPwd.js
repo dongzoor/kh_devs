@@ -24,10 +24,10 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  min-height: 90vh;
   @media screen and (max-width: 580px) {
     width: 90%;
-    min-height: 90vh;
+    min-height: 70vh;
   }
 `;
 
@@ -46,9 +46,20 @@ function PwdCheck() {
     setPassword(e.target.value);
   };
 
+  // 엔터키 비밀번호 확인
+  const onEnterPwdChkDown = (e) => {
+    if (e.key === "Enter") {
+      onClickEdit();
+    }
+  };
+
+  // 엔터키 이벤트 시 form에 대한 action 발생 방지
+  function handleSubmit(e) {
+    e.preventDefault();
+  }
+
   const onClickEdit = async () => {
     const res = await UserApi.userLogin(userEmail, password);
-    console.log(res.data);
 
     if (res.data !== false) {
       // 성공 시 페이지 전환하기
@@ -71,12 +82,13 @@ function PwdCheck() {
             </span>
           </div>
           <div>
-            <form className="pwdCheck-form">
+            <form className="pwdCheck-form" onSubmit={handleSubmit}>
               <input
                 type="password"
                 placeholder="PASSWORD"
                 value={password}
                 onChange={onChangePassword}
+                onKeyDown={onEnterPwdChkDown}
               />
               <button
                 type="button"
