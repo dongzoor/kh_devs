@@ -1,16 +1,17 @@
-import styled from "styled-components";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import StudyApi from "../../lib/api/StudyApi";
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Badge } from "react-bootstrap";
 import {
   IoCalendarOutline,
   IoEyeOutline,
   IoLocationOutline,
   IoPersonOutline,
 } from "react-icons/io5";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+
+import { Badge } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import StudyApi from "../../lib/api/StudyApi";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import styled from "styled-components";
 
 const Box = styled.div`
   * {
@@ -240,6 +241,7 @@ const Study = () => {
                             {list.hashtag &&
                               list.hashtag.map((e) => (
                                 <Badge
+                                  key={e}
                                   bg="info"
                                   style={{ marginRight: "0.5vw" }}
                                 >

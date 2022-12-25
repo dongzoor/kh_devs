@@ -53,9 +53,13 @@ function PwdCheck() {
     }
   };
 
+  // 엔터키 이벤트 시 form에 대한 action 발생 방지
+  function handleSubmit(e) {
+    e.preventDefault();
+  }
+
   const onClickEdit = async () => {
     const res = await UserApi.userLogin(userEmail, password);
-    console.log(res.data);
 
     if (res.data !== false) {
       // 성공 시 페이지 전환하기
@@ -78,7 +82,7 @@ function PwdCheck() {
             </span>
           </div>
           <div>
-            <form className="pwdCheck-form" onSubmit={"return false;"}>
+            <form className="pwdCheck-form" onSubmit={handleSubmit}>
               <input
                 type="password"
                 placeholder="PASSWORD"

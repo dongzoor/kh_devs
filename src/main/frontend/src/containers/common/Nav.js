@@ -1,22 +1,23 @@
 import { getAuth, signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
+
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
+import LogoImg from "./image/devs.png";
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import LogoImg from "./image/devs.png";
 
 const NAVI = styled.div`
   * {
     font-family: "Gowun Dodum", sans-serif;
 
-    .devs_nav{
-         font-size: 'bold';
+    .devs_nav {
+      font-size: "bold";
     }
   }
 `;
@@ -50,12 +51,8 @@ function OffcanvasExample() {
     if (window.Kakao.Auth.getAccessToken()) {
       window.Kakao.API.request({
         url: "/v1/user/unlink",
-        success: function (response) {
-          console.log(response);
-        },
-        fail: function (error) {
-          console.log(error);
-        },
+        success: function (response) {},
+        fail: function (error) {},
       });
       window.Kakao.Auth.setAccessToken(undefined);
     }
@@ -64,10 +61,16 @@ function OffcanvasExample() {
   return (
     <NAVI>
       {[false].map((expand) => (
-        <>
         <Navbar key={expand} bg="light" expand={expand} className="mb-3">
           <Container fluid>
-            <Navbar.Brand href="#" className="devs_nav">DEVS&nbsp;<img src={LogoImg} alt="" style={{  margin: '5px', width: '30px', height: '40px'}}/></Navbar.Brand>
+            <Navbar.Brand href="#" className="devs_nav">
+              DEVS&nbsp;
+              <img
+                src={LogoImg}
+                alt=""
+                style={{ margin: "5px", width: "30px", height: "40px" }}
+              />
+            </Navbar.Brand>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
             <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-${expand}`}
@@ -76,7 +79,12 @@ function OffcanvasExample() {
             >
               <Offcanvas.Header closeButton>
                 <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-                &nbsp;DEVS&nbsp;<img src={LogoImg} alt="" style={{  margin: '5px', width: '30px', height: '40px'}}/>
+                  &nbsp;DEVS&nbsp;
+                  <img
+                    src={LogoImg}
+                    alt=""
+                    style={{ margin: "5px", width: "30px", height: "40px" }}
+                  />
                 </Offcanvas.Title>
               </Offcanvas.Header>
               <Offcanvas.Body>
@@ -90,6 +98,11 @@ function OffcanvasExample() {
                     title="마이페이지"
                     id={`offcanvasNavbarDropdown-expand-${expand}`}
                   >
+                    {isLogin !== "" && (
+                      <NavDropdown.Item href="/user/profile">
+                        내 프로필
+                      </NavDropdown.Item>
+                    )}
                     {isLogin !== "" && (
                       <NavDropdown.Item href="/user/check">
                         내 정보 수정
@@ -142,7 +155,6 @@ function OffcanvasExample() {
             </Navbar.Offcanvas>
           </Container>
         </Navbar>
-        </>
       ))}
     </NAVI>
   );
