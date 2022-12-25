@@ -46,6 +46,13 @@ function PwdCheck() {
     setPassword(e.target.value);
   };
 
+  // 엔터키 비밀번호 확인
+  const onEnterPwdChkDown = (e) => {
+    if (e.key === "Enter") {
+      onClickEdit();
+    }
+  };
+
   const onClickEdit = async () => {
     const res = await UserApi.userLogin(userEmail, password);
     console.log(res.data);
@@ -71,12 +78,13 @@ function PwdCheck() {
             </span>
           </div>
           <div>
-            <form className="pwdCheck-form">
+            <form className="pwdCheck-form" onSubmit={"return false;"}>
               <input
                 type="password"
                 placeholder="PASSWORD"
                 value={password}
                 onChange={onChangePassword}
+                onKeyDown={onEnterPwdChkDown}
               />
               <button
                 type="button"

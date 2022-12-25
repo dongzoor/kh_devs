@@ -70,6 +70,19 @@ function FindInfo() {
     }
   };
 
+  // 엔터키 아이디찾기
+  const onEnterDown = (e) => {
+    if (e.key === "Enter") {
+      onClickFindId();
+    }
+  };
+
+  // 엔터키 비밀번호 찾기
+  const onEnterDownPwd = (e) => {
+    if (e.key === "Enter") {
+      onClickFindPwd();
+    }
+  };
   // 아이디찾기 - 휴대폰 번호 오토하이픈
   const onChangePhone = (e) => {
     const value = phoneRef.current.value.replace(/\D+/g, "");
@@ -179,6 +192,7 @@ function FindInfo() {
                       value={phone}
                       onChange={onChangePhone}
                       className="find__input"
+                      onKeyDown={onEnterDown}
                     />
                     <button
                       className="submit_btn"
@@ -211,6 +225,7 @@ function FindInfo() {
                       ref={phonePwRef}
                       value={pwPhone}
                       onChange={onChangePwPhone}
+                      onKeyDown={onEnterDownPwd}
                     />
                     <button
                       className="submit_btn"
