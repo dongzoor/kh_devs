@@ -168,8 +168,114 @@
   margin-bottom: 1rem;
 }
 
-@media only screen and (max-width: 800px),
-(min-device-width: 768px) and (max-device-width: 1024px)  {
+@media only screen and (min-width: 350px) and (max-width: 768px) 
+ {
+
+  #adminNav {
+    position: fixed;
+  }
+
+  .table_admemberlist {
+    background-color: #ddddef;
+  
+    width: 350px;
+    margin-bottom: 1rem;
+    box-shadow: 0px 0px 24px #5c6696;
+  }
+  .table_adboardlist {
+    background-color: #ddddef;
+    width: 350px;
+    margin-bottom: 1rem;
+    box-shadow: 0px 0px 24px #5c6696;
+  
+  }
+  .table_scboardlist {
+    background-color: #ddddef;
+    width: 350px;
+    margin-bottom: 1rem;
+    box-shadow: 0px 0px 24px #5c6696;
+  
+  }
+  
+
+	/* Force table to not be like tables anymore */
+	table, thead, tbody, th, td, tr { 
+		display: block; 
+	}
+	
+	/* Hide table headers (but not display: none;, for accessibility) */
+	thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	
+	tr { border: 1px solid #ccc; }
+	
+	td { 
+		/* Behave  like a "row" */
+		border: none;
+		border-bottom: 1px solid #eee; 
+		padding-left: 50%; 
+	}
+	
+	td:before { 
+		/* Now like a table header */
+
+		/* Top/left values mimic padding */
+		top: 6px;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+    text-align:left;
+		white-space: nowrap;
+    font-weight: bold;
+    
+
+	}
+	
+	/*
+	Label the data
+	*/
+  .table_adboardlist td:nth-of-type(1):before { content: "제목 : "; }
+	.table_adboardlist td:nth-of-type(2):before { content: "내용 : "; }
+	.table_adboardlist td:nth-of-type(3):before { content: "게시글 사진 : "; }
+	.table_adboardlist td:nth-of-type(4):before { content: "작성자 : "; }
+	.table_adboardlist td:nth-of-type(5):before { content: "조회수 : "; }
+	.table_adboardlist td:nth-of-type(6):before { content: "생성시간 : "; }
+  .table_adboardlist td:nth-of-type(7):before { content: "모집현황 : "; }
+	.table_adboardlist td:nth-of-type(8):before { content: "관리 : "; }
+
+  .table_scboardlist td:nth-of-type(1):before { content: "제목 : "; }
+	.table_scboardlist td:nth-of-type(2):before { content: "내용 : "; }
+	.table_scboardlist td:nth-of-type(3):before { content: "게시글 사진 : "; }
+	.table_scboardlist td:nth-of-type(4):before { content: "작성자 : "; }
+	.table_scboardlist td:nth-of-type(5):before { content: "조회수 : "; }
+	.table_scboardlist td:nth-of-type(6):before { content: "생성시간 : "; }
+	.table_scboardlist td:nth-of-type(8):before { content: "관리 : "; }
+
+  .table_admemberlist td:nth-of-type(1):before { content: "이메일 아이디 : "; }
+  .table_admemberlist td:nth-of-type(2):before { content: "닉네임 : "; }
+  .table_admemberlist td:nth-of-type(3):before { content: "전화번호 : "; }
+  .table_admemberlist td:nth-of-type(4):before { content: "가입시간 : "; }
+  .table_admemberlist td:nth-of-type(5):before { content: "관리 : "; }
+
+}
+.search {
+  background-color: #ddddef;
+  width: 2vh;
+  border-radius: 20px;
+  margin: 10px 0;
+  padding: 10px 10px;
+  border: 1px solid #ddddef;
+  box-shadow: 0px 0px 10px #5c6696;
+  font-family: 'FontAwesome';
+  
+  /* border-radius: 20%; */
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1200px) 
+{
 
   #adminNav {
     position: fixed;
@@ -184,14 +290,14 @@
   }
   .table_adboardlist {
     background-color: #ddddef;
-    width: 500px;
+    width: 600px;
     margin-bottom: 1rem;
     box-shadow: 0px 0px 24px #5c6696;
   
   }
   .table_scboardlist {
     background-color: #ddddef;
-    width: 500px;
+    width: 600px;
     margin-bottom: 1rem;
     box-shadow: 0px 0px 24px #5c6696;
   
@@ -273,3 +379,5 @@
   
   /* border-radius: 20%; */
 }
+
+
