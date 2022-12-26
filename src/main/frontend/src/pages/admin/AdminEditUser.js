@@ -10,7 +10,7 @@ import {
 
 import { Link, useParams } from "react-router-dom";
 import { MdArrowBack } from "react-icons/md";
-import { storageService } from "../../lib/api/fbase";
+import { storageService } from "../../api/fbase";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import AdminApi from "../../api/AdminApi";

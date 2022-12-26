@@ -22,6 +22,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "SELECT * FROM users  WHERE user_nickname like %:nickname% ", nativeQuery = true)
     List<User> findByUserNicknameLike(@Param("nickname") String nickname);
 
+
     // admin용
     List<User> findAll();
 

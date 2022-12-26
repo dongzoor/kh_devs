@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
+import LogoImg from "./image/devs.png";
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Navbar from "react-bootstrap/Navbar";
@@ -14,6 +15,10 @@ import { useNavigate } from "react-router-dom";
 const NAVI = styled.div`
   * {
     font-family: "Gowun Dodum", sans-serif;
+
+    .devs_nav {
+      font-size: "bold";
+    }
   }
 `;
 function OffcanvasExample() {
@@ -46,12 +51,8 @@ function OffcanvasExample() {
     if (window.Kakao.Auth.getAccessToken()) {
       window.Kakao.API.request({
         url: "/v1/user/unlink",
-        success: function (response) {
-          console.log(response);
-        },
-        fail: function (error) {
-          console.log(error);
-        },
+        success: function (response) { },
+        fail: function (error) { },
       });
       window.Kakao.Auth.setAccessToken(undefined);
     }
@@ -62,7 +63,14 @@ function OffcanvasExample() {
       {[false].map((expand) => (
         <Navbar key={expand} bg="light" expand={expand} className="mb-3">
           <Container fluid>
-            <Navbar.Brand href="#">DevS</Navbar.Brand>
+            <Navbar.Brand href="#" className="devs_nav">
+              DEVS&nbsp;
+              <img
+                src={LogoImg}
+                alt=""
+                style={{ margin: "5px", width: "30px", height: "40px" }}
+              />
+            </Navbar.Brand>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
             <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-${expand}`}
@@ -71,7 +79,12 @@ function OffcanvasExample() {
             >
               <Offcanvas.Header closeButton>
                 <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-                  DevS
+                  &nbsp;DEVS&nbsp;
+                  <img
+                    src={LogoImg}
+                    alt=""
+                    style={{ margin: "5px", width: "30px", height: "40px" }}
+                  />
                 </Offcanvas.Title>
               </Offcanvas.Header>
               <Offcanvas.Body>
@@ -85,6 +98,11 @@ function OffcanvasExample() {
                     title="마이페이지"
                     id={`offcanvasNavbarDropdown-expand-${expand}`}
                   >
+                    {isLogin !== "" && (
+                      <NavDropdown.Item href="/user/profile">
+                        내 프로필
+                      </NavDropdown.Item>
+                    )}
                     {isLogin !== "" && (
                       <NavDropdown.Item href="/user/check">
                         내 정보 수정
@@ -117,27 +135,13 @@ function OffcanvasExample() {
                   </NavDropdown>
                   <Nav.Link href="/studies">Study</Nav.Link>
                   <Nav.Link href="/social">Social</Nav.Link>
-                  {localStorage.getItem("adminEmail") !== "" ? (
-                    <Nav.Link href="/AdminLogin">관리자모드</Nav.Link>
-                  ) : (
+                  {localStorage.getItem("adminEmail") !== null ? (
                     <Nav.Link href="/AdminMemberList">관리자모드</Nav.Link>
+                  ) : (
+                    <Nav.Link href="/AdminLogin">관리자모드</Nav.Link>
                   )}
                   <Nav.Link href="/chat">Chat</Nav.Link>
-                  {isLogin !== "" ? (
-                    <Nav.Link href="/AdminMemberList">관리자모드</Nav.Link>
-                  ) : (
-                    <Nav.Link href="/AdminLogin">관리자모드</Nav.Link>
-                  )}
                 </Nav>
-                <Form className="d-flex" style={{ marginTop: "20px" }}>
-                  <Form.Control
-                    type="search"
-                    placeholder="Search"
-                    className="me-2"
-                    aria-label="Search"
-                  />
-                  <Button variant="outline-success">Search</Button>
-                </Form>
               </Offcanvas.Body>
             </Navbar.Offcanvas>
           </Container>

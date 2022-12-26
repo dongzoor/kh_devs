@@ -2,11 +2,12 @@ import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import SocialApi from "../../api/SocialApi";
-import { storageService } from "../../lib/api/fbase";
+import { storageService } from "../../api/fbase";
 import { v4 as uuidv4 } from "uuid";
 import { getDownloadURL, ref, uploadString } from "@firebase/storage";
 
 const WriteBox = styled.div`
+  overflow-x: hidden;
   & > * {
     margin: 0;
     padding: 0;
@@ -21,7 +22,8 @@ const WriteBox = styled.div`
   }
   .parentBox {
     font-family: "Gowun Dodum", sans-serif;
-    width: 1024px;
+    max-width: 1024px;
+    min-width: 300px;
     margin: 0px auto;
     padding: 5px;
     /* border: 1px solid black; */
@@ -92,10 +94,12 @@ const WriteBox = styled.div`
     /* width: 500px; */
   }
   .hashtags-box {
+    display: flex;
+    flex-wrap: wrap;
     margin: 15px;
   }
   .hashtags {
-    margin: 0px 5px;
+    margin: 5px 5px;
     padding: 8px;
     font-style: italic;
     background-color: rgba(219, 219, 219);
@@ -144,8 +148,8 @@ const SocialWrite = () => {
   };
   const addHashtag = (e) => {
     if (e.key === "Enter") {
-      if (hashtag.length > 10 || hashtags.length > 4) {
-        alert("⚡ 해시태그는 10자 이하의 단어로 최대 5개까지 입력 가능합니다 ⚡");
+      if (hashtag === "" || hashtag.length > 10 || hashtags.length > 4) {
+        alert("⚡ 해시태그는 1~10자의 단어로 최대 5개까지 입력 가능합니다 ⚡");
       } else {
         setHashtags([...hashtags, hashtag]);
         setTagStatus(true);

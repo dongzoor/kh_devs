@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import "./lib/api/fbase";
-import "./pages/admin/firebase-messaging-sw";
+import "./api/fbase";
+//import "./pages/admin/firebase-messaging-sw";
 
 
 import { Route, BrowserRouter as Router, Routes, Navigate } from "react-router-dom";
@@ -31,8 +31,8 @@ import SocialDetail from "./pages/social/SocialDetail";
 import SocialList from "./pages/social/SocialList";
 import SocialUpdate from "./pages/social/SocialUpdate";
 import SocialWrite from "./pages/social/SocialWrite";
-import StudyDetail from "./pages/study/StudyDetail";
-import StudyList from "./pages/study/StudyList";
+import StudyDetail from "./pages/study/StudyDetail2";
+import StudyList from "./pages/study/StudyList2";
 import StudyUpdate from "./pages/study/StudyUpdate";
 import StudyWrite from "./pages/study/StudyWrite";
 import Home from "./pages/chat/Home";
@@ -56,7 +56,6 @@ function App() {
     <Router>
       <Nav />
       <Routes>
-        {/* <Route path="/Admin" element={<Admin />} /> */}
         <Route path="/AdminLogin" element={<AdminLogin />} />
         <Route path="/AdminScBoardList" element={<AdminScBoardList />} />
         <Route path="/AdminBoardList" element={<AdminBoardList />} />
@@ -71,7 +70,7 @@ function App() {
         <Route path="/studies" element={<StudyList />} />
         <Route path="/study/write" element={<StudyWrite />} />
         <Route exact path="/study/:studyId" element={<StudyDetail />} />
-        <Route exact path="/study/edit/:studyId" element={<StudyUpdate />} />
+        <Route exact path="/study/:studyId/update" element={<StudyUpdate />} />
         <Route path="/social" element={<SocialList />} />
         <Route exact path="/social/:socialId" element={<SocialDetail />} />
         <Route
@@ -100,7 +99,6 @@ function App() {
           }
         />
       </Routes>
-      {/* <Admin></Admin> */}
     </Router>
   );
 }

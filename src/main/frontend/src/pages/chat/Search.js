@@ -10,7 +10,7 @@ import {
   serverTimestamp,
   getDoc,
 } from "firebase/firestore";
-import { db } from "../../lib/api/fbase";
+import { db } from "../../api/fbase";
 import { AuthContext } from "../context/AuthContext";
 const Search = () => {
   const [username, setUsername] = useState("");
@@ -77,7 +77,7 @@ const Search = () => {
     setUsername("")
   };
   return (
-    <div className="search">
+    <div className="chat-search">
       <div className="searchForm">
         <input
           type="text"

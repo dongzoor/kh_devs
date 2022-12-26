@@ -23,6 +23,12 @@ const SocialApi = {
   socialDetail: async function (socialId) {
     return await axios.get(`/api/social/${socialId}`);
   },
+
+  // 게시글 조회수 증가
+  socialViewUpdate: async function (socialId) {
+    return await axios.get(`/api/social/socialViewUpdate/${socialId}`);
+  },
+
   // 게시글 작성
   socialWrite: async function (
     userEmail,

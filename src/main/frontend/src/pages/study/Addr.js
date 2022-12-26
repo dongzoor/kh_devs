@@ -24,8 +24,8 @@ const Addr = (props) => {
 
   return (
     <div style={{ "display": "flex" }}>
-      <Form.Select onChange={onChangeValue} key={props.city} defaultValue={props.city}>
-        <option value="">선택</option>
+      <Form.Select onChange={onChangeValue} key={props.city} defaultValue={props.city} style={{ width: "50%" }}>
+        <option value="" >선택</option>
         {/* map을 사용하여 행정동에 있는 키값을 받아옴 */}
         {sido.map((el) => (
           <option key={el.sido} value={el.sido} >
@@ -33,7 +33,7 @@ const Addr = (props) => {
           </option>
         ))}
       </Form.Select>
-      <Form.Select onChange={onChangeValue2} key={props.sidonggun} defaultValue={props.sidonggun}>
+      <Form.Select onChange={onChangeValue2} key={props.sidonggun} defaultValue={props.sidonggun} style={{ width: "50%" }}>
         <option value="">선택</option>
         {sigugun
           // 필터함수를 사용하여 배열을 필터링하여 군/구를 불러옴

@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.kh.devs.constant.ApplyStatus;
 import com.kh.devs.dao.StudyRepository;
 import com.kh.devs.dao.UserRepository;
+import com.kh.devs.dto.SocialDTO;
 import com.kh.devs.dto.StudyDTO;
+import com.kh.devs.dto.UserDTO;
+import com.kh.devs.entity.Social;
 import com.kh.devs.entity.Study;
 import com.kh.devs.entity.User;
 import com.kh.devs.exception.NotFoundStudyException;
@@ -51,24 +54,9 @@ public class StudyService {
         return studyRepository.findAll();
     }
 
-    @JsonSetter
+//    @JsonSetter
     public Study getStudy(Long id) {
-//        Study study = studyRepository.findById(id).get();
-//        StudyDTO studyDTO = new StudyDTO();
-//        studyDTO.setStudyId(study.getId());
-//        studyDTO.setWriter(study.getWriter());
-//        studyDTO.setTitle((study.getTitle()));
-//        studyDTO.setContent(study.getContent());
-//        studyDTO.setImgUrl(study.getImgUrl());
-//        if(study.getApplyStatus() == ApplyStatus.ING) studyDTO.setStudyApply(true);
-//        else studyDTO.setStudyApply(false);
-//        studyDTO.setReadCount(study.getCnt());
-//        log.warn(studyDTO.toString());
-//        Study study = studyRepository.findById(id).orElseThrow(() -> new NotFoundStudyException("study is not Found!"));
-
         Study study = studyRepository.findById(id).get();
-
-
         return study;
     }
 
@@ -79,7 +67,7 @@ public class StudyService {
         if (!studyDTO.getContent().equals("")) study.setContent(studyDTO.getContent()); // 내용이 바뀐 경우
         if (!studyDTO.getHashtag().isEmpty()) study.setHashtag(studyDTO.getHashtag()); // 해시태그가 바뀐 경우
         if (studyDTO.getGoalPeople() != 0) study.setGoalPeople(studyDTO.getGoalPeople()); // 목표 인원이 바뀐 경우
-        study.setApplyPeople(studyDTO.getApplyPeople()); // 모집 배열이 바뀐 경우
+        if (!studyDTO.getApplyPeople().isEmpty()) study.setApplyPeople(studyDTO.getApplyPeople()); // 모집 배열이 바뀐 경우
         study.setAddr(studyDTO.getAddr());
         study.setGoalTime(studyDTO.getGoalTime());
         study.setImgUrl(studyDTO.getImgUrl());
@@ -100,35 +88,85 @@ public class StudyService {
 
 
     @Transactional
-    public void updateCnt(Long id) {   //스터디 지원
+    public void updateCnt(Long id) {    //조회수 증가
         Study study = studyRepository.findById(id).orElseThrow(() -> new NotFoundStudyException("study is not Found!"));
         study.setCnt(study.getCnt() + 1);
         studyRepository.save(study);
     }
     // hashtag 검색
-    public List<StudyDTO> searchHashtag(String tag) {
-        List<StudyDTO> studyDTOS = new ArrayList<>();
+    public List<Study> searchHashtag(String tag) {
+//        List<StudyDTO> studyDTOS = new ArrayList<>();
         List<Study> study = studyRepository.findByHashtag(tag);
         // for(배열요소이름 변수명 : 배열이름)
-        for (Study e : study) {
-            StudyDTO studyDTO = new StudyDTO();
-            studyDTO.setStudyId(e.getId());
-            studyDTO.setTitle(e.getTitle());
-            studyDTO.setContent(e.getContent());
-            studyDTO.setImgUrl(e.getImgUrl());
-            studyDTO.setAddr(e.getAddr());
-            studyDTO.setHashtag(e.getHashtag());
-            studyDTO.setGoalPeople(e.getGoalPeople());
-            studyDTO.setApplyPeople(e.getApplyPeople());
-            studyDTO.setReadCount(e.getCnt());
-            log.warn(studyDTO.toString());
-
-            studyDTOS.add(studyDTO);
-        }
-        return studyDTOS;
+//        for (Study e : study) {
+//            StudyDTO studyDTO = new StudyDTO();
+//            studyDTO.setUser(e.getUser());
+//            studyDTO.setStudyId(e.getId());
+//            studyDTO.setTitle(e.getTitle());
+//            studyDTO.setContent(e.getContent());
+//            studyDTO.setImgUrl(e.getImgUrl());
+//            studyDTO.setAddr(e.getAddr());
+//            studyDTO.setHashtag(e.getHashtag());
+//            studyDTO.setGoalPeople(e.getGoalPeople());
+//            studyDTO.setApplyPeople(e.getApplyPeople());
+//            studyDTO.setCnt(e.getCnt());
+//            log.warn(studyDTO.toString());
+//
+//            studyDTOS.add(studyDTO);
+//        }
+        return study;
     }
 
+    public List<Study> searchTorC(String TorC) {
+//        List<StudyDTO> studyDTOS = new ArrayList<>();
+        List<Study> studyList = studyRepository.findByTitleOrContent(TorC);
+        // for(배열요소이름 변수명 : 배열이름)
+//        for (Study e : study) {
+//            StudyDTO studyDTO = new StudyDTO();
+//            studyDTO.setUser(e.getUser());
+//            studyDTO.setStudyId(e.getId());
+//            studyDTO.setTitle(e.getTitle());
+//            studyDTO.setContent(e.getContent());
+//            studyDTO.setImgUrl(e.getImgUrl());
+//            studyDTO.setAddr(e.getAddr());
+//            studyDTO.setHashtag(e.getHashtag());
+//            studyDTO.setGoalPeople(e.getGoalPeople());
+//            studyDTO.setApplyPeople(e.getApplyPeople());
+//            studyDTO.setCnt(e.getCnt());
+//            log.warn(studyDTO.toString());
+//
+//            studyDTOS.add(studyDTO);
+//        }
+        return studyList;
+    }
 
+//    public List<Study> searchNickname(String nickname) {
+//        List<Study> studyList = new ArrayList<>();
+//        List<User> users = userRepository.findByUserNicknameLike(nickname);
+//        for (User u : users) {
+//            UserDTO userDTOS = new UserDTO();
+//            userDTOS.setUserId(u.getUserId());
+//            List<Study> study = studyRepository.findAllByUserId(userDTOS.getUserId());
+//        // for(배열요소이름 변수명 : 배열이름)
+//            for (Study e : study) {
+//                StudyDTO studyDTO = new StudyDTO();
+//                studyDTO.setUser(e.getUser());
+//                studyDTO.setStudyId(e.getId());
+//                studyDTO.setTitle(e.getTitle());
+//                studyDTO.setContent(e.getContent());
+//                studyDTO.setImgUrl(e.getImgUrl());
+//                studyDTO.setAddr(e.getAddr());
+//                studyDTO.setHashtag(e.getHashtag());
+//                studyDTO.setGoalPeople(e.getGoalPeople());
+//                studyDTO.setApplyPeople(e.getApplyPeople());
+//                studyDTO.setCnt(e.getCnt());
+//                log.warn(studyDTO.toString());
+//
+//                studyDTOS.add(studyDTO);
+//            }
+//        }
+//        return studyList;
+//    }
 
 //    @Transactional
 //    public Long save(Long userId, StudyDTO studyDTO) {

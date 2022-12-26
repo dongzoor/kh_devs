@@ -3,7 +3,7 @@ import { doc, onSnapshot } from "firebase/firestore";
 
 import { AuthContext } from "../context/AuthContext";
 import { ChatContext } from "../context/ChatContext";
-import { db } from "../../lib/api/fbase";
+import { db } from "../../api/fbase";
 
 const Chats = () => {
   const [chats, setChats] = useState([]);

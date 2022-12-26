@@ -4,6 +4,7 @@ package com.kh.devs.dto;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.kh.devs.constant.ApplyStatus;
+import com.kh.devs.entity.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,6 +18,7 @@ import java.util.List;
 @Getter
 @Setter
 public class StudyDTO {
+    private User user;
     private String userId;
     private Long studyId;
     private String title;
@@ -30,7 +32,7 @@ public class StudyDTO {
     private String addr; // 주소
     private List<String> applyPeople;
     private int goalPeople; // 목표 참여인원
-    private int readCount;
+    private int cnt;
     private boolean studyApply;
     private int applyCnt; //지원자 수
     

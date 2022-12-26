@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { auth } from "../../lib/api/fbase";
+import { auth } from "../../api/fbase";
 import { onAuthStateChanged } from "firebase/auth";
 
 export const AuthContext = createContext();
@@ -10,7 +10,7 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
-      console.log(user);
+      // console.log(user);
     });
 
     return () => {
