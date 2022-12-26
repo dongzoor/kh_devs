@@ -22,13 +22,13 @@ const MySocial = () => {
     const MySocialData = async () => {
         setLoading(true);
         try {
-          console.log("User Id : " + userId);
+          // console.log("User Id : " + userId);
           // 로그인된 userId로 작성된 글 조회
           const response = await MyPageApi.mySocialList(userId)
           setMySocialList(response.data);  
-          console.log("작성글 리스트", response.data);
+          // console.log("작성글 리스트", response.data);
         } catch (e) {
-          console.log(e);
+          // console.log(e);
         }
         setLoading(false);
     };
@@ -42,17 +42,17 @@ const MySocial = () => {
 
   // 작성글 개별 삭제
   const delConfirmScModal = async (e) => {
-    console.log("삭제 버튼 클릭");
+    // console.log("삭제 버튼 클릭");
     setModalOpen(false);
     const response = await MyPageApi.mySocialDelete(e);
 
     if (response.data.result === "OK") {
-      console.log("삭제 완료");
+      // console.log("삭제 완료");
       setLoading(true);
       window.location.reload();
     } else {
-      console.log("삭제 실패");
-      console.log(response.data.result);
+      // console.log("삭제 실패");
+      // console.log(response.data.result);
       setLoading(false);
     }
   };

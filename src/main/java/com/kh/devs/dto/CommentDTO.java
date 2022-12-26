@@ -19,6 +19,7 @@ public class CommentDTO {
     private String userNickName;    // 작성자 닉네임
     private String userImageUrl;    // 작성자 사진 URL
     private Social socialId;        // social 게시글 ID
+    private Long socialId2;
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime postDate; // 댓글 작성일

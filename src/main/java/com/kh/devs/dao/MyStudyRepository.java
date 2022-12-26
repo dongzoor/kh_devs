@@ -11,7 +11,7 @@ import java.util.List;
 public interface MyStudyRepository extends JpaRepository<Study, Long> {
 
     // 가입한 스터디 조회
-    @Query(value = "SELECT * FROM STUDY WHERE APPLY_PEOPLE LIKE %:userId% ORDER BY REG_TIME DESC", nativeQuery = true)
-    List<Study> findByApplyPeople(Long userId);
+    @Query(value = "SELECT * FROM STUDY WHERE APPLY_PEOPLE LIKE %:nickName% ORDER BY REG_TIME DESC", nativeQuery = true)
+    List<Study> findByApplyPeople(String nickName);
 
 }

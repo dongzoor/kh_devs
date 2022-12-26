@@ -23,9 +23,9 @@ const CalendarDetail = () => {
         setLoading(true);
         try {
           const response = await MyPageApi.eventId(calendarTitle);
-          console.log("캘린더 이벤트 data : ",response.data[0])
+          // console.log("캘린더 이벤트 data : ",response.data[0])
         } catch (e) {
-          console.log(e);
+          // console.log(e);
         }
         setLoading(false);
     };
@@ -38,28 +38,28 @@ const CalendarDetail = () => {
 
   // 일정 수정(수정 페이지로 이동)
   const onClickUpdate = async () => {
-    console.log("수정 버튼 클릭" + calendarId);
+    // console.log("수정 버튼 클릭" + calendarId);
     navigate(`/myPage/myCalendar/update/${calendarId}`);
 
   };
 
   // 일정 삭제
   const onClickDelete = async () => {
-    console.log("삭제 버튼 클릭" + calendarId);
+    // console.log("삭제 버튼 클릭" + calendarId);
 
     if(window.confirm("삭제하시겠습니까?") === true ) {
       const response = await MyPageApi.calendarDelete(calendarId);
-      console.log(response.data.result);
+      // console.log(response.data.result);
 
       if (response.data.result === "OK") {
-        console.log("삭제 완료");
+        // console.log("삭제 완료");
         alert("삭제가 완료되었습니다.")
         setLoading(true);
         navigate(`/myPage/myCalendar/${userId}`);
       } else {
-        console.log("삭제 실패");
+        // console.log("삭제 실패");
         alert("삭제가 실패하였습니다.")
-        console.log(response.data.result);
+        // console.log(response.data.result);
         setLoading(false);
       }
     } else {

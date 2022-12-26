@@ -351,7 +351,6 @@ const StudyWrite = (studyObj) => {
             <div>
               <Calendar className="calendar" onChange={(e) => setValueDate(e)}
                 formatDay={(locale, date) => moment(date).format("DD")} />
-              {console.log(valueDate)}
             </div>
           </div>
         </div>

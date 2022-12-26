@@ -17,9 +17,9 @@ function MyActivityNav() {
         <Nav.Item>
           <Nav.Link className='mp-nv-link' href={`/myPage/myComment/${userId}`} eventKey="myComment">작성댓글</Nav.Link>
         </Nav.Item>
-        <Nav.Item>
+        {/* <Nav.Item>
           <Nav.Link className='mp-nv-link' href={`/myPage/myLike/${userId}`} eventKey="myLike">좋아요</Nav.Link>
-        </Nav.Item>
+        </Nav.Item> */}
       </Nav>
     </div>
   )

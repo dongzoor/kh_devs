@@ -69,7 +69,7 @@ const CalendarUpdate = () => {
       if(true) {
         const calendarId = sessionStorage.getItem("calendar_id")
 
-        console.log("★DATA", calendarId, title, color, content, startDate, endDate)
+        // console.log("★DATA", calendarId, title, color, content, startDate, endDate)
 
         const res = await MyPageApi.calendarUpdate(
           calendarId, 

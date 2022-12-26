@@ -279,7 +279,7 @@ const ListBlock = styled.div`
   }
   .parentBox {
     max-width: 1024px;
-    min-width: 390px;
+    min-width: 380px;
     margin: 0px auto;
     padding: 5px;
     border-radius: 10px;
@@ -417,6 +417,16 @@ const ListBlock = styled.div`
   }
 
   @media only screen and (max-width: 687px) {
+
+    @media (width < 450px) {
+      * {
+        font-size: 15px;
+      }
+      .date{
+        display: none;
+      }
+  
+    }
     .flex-box1 {
       flex-wrap: wrap;
     }
@@ -446,7 +456,7 @@ const Study = () => {
         setReset(false);
         setTypeSelect("one");
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
       setLoading(false);
     };
@@ -635,7 +645,7 @@ const Study = () => {
                             list.user.profileImagePath
                           }
                         />
-                        <span className="nickName">{list.userNickName}</span>
+                        <span className="nickName">{list.user.userNickname}</span>
                         <span className="date">
                           {`${list.goalTime[0]}/${list.goalTime[1]}/${list.goalTime[2] + 1}`}
                         </span>
