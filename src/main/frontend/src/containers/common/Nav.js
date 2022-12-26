@@ -63,8 +63,8 @@ function OffcanvasExample() {
       {[false].map((expand) => (
         <Navbar key={expand} bg="light" expand={expand} className="mb-3">
           <Container fluid>
-            <Navbar.Brand href="#" className="devs_nav">
-              DEVS&nbsp;
+            <Navbar.Brand href="/" className="devs_nav">
+            &nbsp;&nbsp;&nbsp;DEVS&nbsp;
               <img
                 src={LogoImg}
                 alt=""

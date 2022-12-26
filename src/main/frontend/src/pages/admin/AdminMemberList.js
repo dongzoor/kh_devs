@@ -131,7 +131,7 @@ function AdminMemberList() {
     if (deleteUser.data) {
       setLoading(true);
       setDeleteadmem(true);
-      window.location.replace("/AdminMemberList");
+      window.location.reload();
     } else setDeleteadmem(false);
     setLoading(false);
   };
@@ -219,8 +219,7 @@ function AdminMemberList() {
                                   list.userEmail.toLowerCase().includes(searchData) ||
                                   list.phone.toLowerCase().includes(searchData)
                 
-                )
-                .slice(items * (page - 1), items * (page - 1) + items)
+                ).slice(items * (page - 1), items * (page - 1) + items)
                 .map((list) => (
                   <tr key={list.userId}>
                     <td>{list.userEmail}</td>

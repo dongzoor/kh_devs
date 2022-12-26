@@ -52,7 +52,7 @@ const CommentWriter = ({ inputContent, setInputContent, changeState }) => {
         );
         // setInputContent(""); // enter 눌러져서 다시 textarea 초기화
       } else {
-        console.log("엔터 클릭");
+        // console.log("엔터 클릭");
         const res = await SocialApi.commentWrite(
           getSocialId,
           getUserEmail,

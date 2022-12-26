@@ -23,7 +23,7 @@ const WriteBox = styled.div`
   .parentBox {
     font-family: "Gowun Dodum", sans-serif;
     max-width: 1024px;
-    min-width: 300px;
+    min-width: 350px;
     margin: 0px auto;
     padding: 5px;
     /* border: 1px solid black; */
@@ -128,7 +128,7 @@ const SocialWrite = () => {
       target: { files },
     } = e;
     const theFile = files[0];
-    console.log(theFile);
+    // console.log(theFile);
 
     const reader = new FileReader();
     reader.onloadend = (finishedEvent) => {
@@ -183,8 +183,8 @@ const SocialWrite = () => {
           "data_url"
         );
         attachmentUrl = await getDownloadURL(response.ref);
-        console.log("★ 이미지 주소 : " + attachmentUrl);
-        console.log("★ 이미지 UUID : " + imageName);
+        // console.log("★ 이미지 주소 : " + attachmentUrl);
+        // console.log("★ 이미지 UUID : " + imageName);
       }
       const res = await SocialApi.socialWrite(
         userEmail,
@@ -194,13 +194,13 @@ const SocialWrite = () => {
         attachmentUrl,
         imageName
       );
-      console.log("제출 버튼 클릭");
+      // console.log("제출 버튼 클릭");
       if (res.data.result === "SUCCESS") {
         window.alert("Social 게시글 작성 완료 !");
         navigate(`/social`);
       } else {
         window.alert("Social 게시글 작성 실패 ㅜ");
-        console.log(res.data);
+        // console.log(res.data);
       }
     }
   };

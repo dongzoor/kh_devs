@@ -28,7 +28,7 @@ const WriteBox = styled.div`
   .parentBox {
     font-family: "Gowun Dodum", sans-serif;
     max-width: 1024px;
-    min-width: 300px;
+    min-width: 350px;
     margin: 0px auto;
     padding: 5px;
     /* border: 1px solid black; */
@@ -167,7 +167,7 @@ const SocialUpdate = () => {
       target: { files },
     } = e;
     const theFile = files[0];
-    console.log("★ 이미지 파일", theFile);
+    // console.log("★ 이미지 파일", theFile);
 
     const reader = new FileReader();
     reader.onloadend = (finishedEvent) => {
@@ -175,14 +175,14 @@ const SocialUpdate = () => {
         currentTarget: { result },
       } = finishedEvent;
       setAttachment(result); // 바뀐 파일의 string값 저장
-      console.log(attachment);
+      // console.log(attachment);
     };
     reader.readAsDataURL(theFile);
     setInputVal(e.target.value);
-    console.log(inputVal);
+    // console.log(inputVal);
   };
   const onClickEdit = async () => {
-    console.log("수정 버튼 클릭");
+    // console.log("수정 버튼 클릭");
     if (titleInput === "" || contentInput === "") {
       alert("⚡ 제목과 내용은 필수 입력사항입니다. 꼭 작성해주세요 ⚡");
     } else {
@@ -190,8 +190,8 @@ const SocialUpdate = () => {
       if (imageId !== "null") {
         // ※※ 1-1. 다른 이미지가 생겼을 때
         if (inputVal !== "") {
-          console.log(attachment);
-          console.log("1-1. 다른 이미지가 생겼을 때");
+          // console.log(attachment);
+          // console.log("1-1. 다른 이미지가 생겼을 때");
           // =============== 기존 이미지 삭제 =================
           // 파이어베이스 상 파일주소 지정
           const deleteAttachmentRef = ref(storageService, `/SOCIAL/${imageId}`);
@@ -199,11 +199,11 @@ const SocialUpdate = () => {
           await deleteObject(deleteAttachmentRef)
             // then이하 코드는 안타고, catch이하부터 탑니다 - J2
             .then(() => {
-              console.log("Firebase File deleted successfully !");
+              // console.log("Firebase File deleted successfully !");
               setStatus(true);
             })
             .catch((error) => {
-              console.log("Uh-oh, File Delete error occurred!");
+              // console.log("Uh-oh, File Delete error occurred!");
             });
           if (status === true) {
             // =============== 신규 이미지 저장 =================
@@ -239,12 +239,12 @@ const SocialUpdate = () => {
               alert("Social 게시글 수정 완료 !");
             } else {
               alert("Social 게시글 수정 실패 ");
-              console.log(res.data);
+              // console.log(res.data);
             }
           }
         } else if (attachment !== null) {
           // ※※ 1-2. 기존 이미지 그대로 유지할 때
-          console.log("1-2. 기존 이미지 그대로 유지할 때");
+          // console.log("1-2. 기존 이미지 그대로 유지할 때");
           const res = await SocialApi.socialUpdate(
             params,
             titleInput,
@@ -258,14 +258,14 @@ const SocialUpdate = () => {
             alert("Social 게시글 수정 완료 !");
           } else {
             alert("Social 게시글 수정 실패 ");
-            console.log(res.data);
+            // console.log(res.data);
           }
         }
       } else {
         // ※ 2. 기존 이미지가 없을 때
         // ※※ 2-1. 새로 이미지가 생겼을 때
         if (inputVal !== "") {
-          console.log("2-1. 새로 이미지가 생겼을 때");
+          // console.log("2-1. 새로 이미지가 생겼을 때");
           // 파일 참조 경로 지정
           attachmentUrl = null;
           imageName = uuidv4(); // 이미지 UUID
@@ -294,11 +294,11 @@ const SocialUpdate = () => {
             alert("Social 게시글 수정 완료 !");
           } else {
             alert("Social 게시글 수정 실패 ");
-            console.log(res.data);
+            // console.log(res.data);
           }
         } else if (inputVal === "") {
           // ※ 2-2. 계속 이미지가 없을 때
-          console.log("2-2. 계속 이미지가 없을 때");
+          // console.log("2-2. 계속 이미지가 없을 때");
           // api 전송
           attachmentUrl = null;
           const res = await SocialApi.socialUpdate(
@@ -313,7 +313,7 @@ const SocialUpdate = () => {
             alert("Social 게시글 수정 완료 !");
           } else {
             alert("Social 게시글 수정 실패 ");
-            console.log(res.data);
+            // console.log(res.data);
           }
         }
       }
@@ -324,16 +324,16 @@ const SocialUpdate = () => {
     const socialData = async () => {
       setLoading(true);
       try {
-        console.log("게시글ID : " + params);
+        // console.log("게시글ID : " + params);
         const response = await SocialApi.socialDetail(params);
         // 기존 데이터를 useState 값에 다 따로 받아주기 !
         setTitleInput(response.data.title);
         setContentInput(response.data.content);
         setHashtags(response.data.hashtag);
         setAttachment(response.data.image);
-        console.log(response.data);
+        // console.log(response.data);
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
       setLoading(false);
     };

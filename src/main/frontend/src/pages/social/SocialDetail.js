@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { deleteObject, ref } from "@firebase/storage";
 import { useNavigate, useParams } from "react-router-dom";
-
 import CommentList from "./comment/CommentList";
 import SocialApi from "../../api/SocialApi";
 import { storageService } from "../../api/fbase";
@@ -159,6 +158,12 @@ const DetailBox = styled.div`
       box-shadow: none;
     }
   }
+  @media (width < 450px) {
+    .deleteBt,
+    .updateBt {
+      font-size: 12px;
+    }
+  }
 `;
 
 const SocialDetail = () => {
@@ -192,7 +197,7 @@ const SocialDetail = () => {
 
   // 게시글 삭제
   const onClickDelete = async () => {
-    console.log("삭제 버튼 클릭");
+    // console.log("삭제 버튼 클릭");
     const res = await SocialApi.socialDelete(params);
     let imageId = sessionStorage.getItem("social_imageId");
     // 기존 이미지가 존재하면 삭제(이미지 ID로 확인)
@@ -203,10 +208,10 @@ const SocialDetail = () => {
       // 참조경로로 firebase 이미지 삭제
       await deleteObject(attachmentRef)
         .then(() => {
-          console.log("Firebase File deleted successfully !");
+          // console.log("Firebase File deleted successfully !");
         })
         .catch((error) => {
-          console.log("Uh-oh, File Delete error occurred!");
+          // console.log("Uh-oh, File Delete error occurred!");
         });
     }
     if (res.data.result === "SUCCESS") {
@@ -214,7 +219,7 @@ const SocialDetail = () => {
       alert("게시글 삭제 완료 !");
     } else {
       alert("게시글 삭제 실패 ㅜ");
-      console.log(res.data.result);
+      // console.log(res.data.result);
     }
   };
 
@@ -222,14 +227,14 @@ const SocialDetail = () => {
     const socialData = async () => {
       setLoading(true);
       try {
-        console.log("★ 게시글 번호 : " + params);
+        // console.log("★ 게시글 번호 : " + params);
         const response = await SocialApi.socialDetail(params);
         await SocialApi.socialViewUpdate(params);
         setSocialDetail(response.data);
         setPostDate(response.data.postDate);
-        console.log("★ 게시글 내용 ", response.data);
+        // console.log("★ 게시글 내용 ", response.data);
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
       setLoading(false);
     };
@@ -242,7 +247,7 @@ const SocialDetail = () => {
   return (
     <div>
       <DetailBox>
-        <div className="subtitle">Board Detail Page</div>
+        <div className="subtitle">Dev' Social</div>
         <div className="parentBox">
           <div key={socialDetail.socialId}>
             <div className="content-title">{socialDetail.title}</div>

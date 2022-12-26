@@ -307,7 +307,7 @@ const StudyDetail = () => {
                 {userInfo.userNickname}
               </span>
               <span className="date">
-                | {postDate[0]}-{postDate[1]}-{postDate[2]} {postDate[3]}:
+                | {postDate[0]}-{postDate[1]}-{postDate[2] + 1} {postDate[3]}:
                 {postDate[4]}
               </span>
             </div>
