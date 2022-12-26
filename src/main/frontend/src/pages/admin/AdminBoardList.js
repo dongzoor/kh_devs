@@ -239,7 +239,7 @@ function AdminBoardList() {
                       >
                         <button className="adbutton serch">조회</button>
                       </Link>
-                      <Link  to={`/study/edit/${list.id}`}
+                      <Link  to={`/study/${list.id}/update`}
                         style={{ textDecoration: "none", color: "inherit" }}>
                       <button className="adbutton edit">수정</button>
                       </Link>
