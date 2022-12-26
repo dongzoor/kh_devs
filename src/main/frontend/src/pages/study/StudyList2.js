@@ -569,7 +569,7 @@ const Study = () => {
                         />
                         <span className="nickName">{list.user.userNickname}</span>
                         <span className="date">
-                          {`${list.goalTime[0]}/${list.goalTime[1]}/${list.goalTime[2]}`}
+                          {`${list.goalTime[0]}/${list.goalTime[1]}/${list.goalTime[2] + 1}`}
                         </span>
                       </div>
                       <div className="icon-box">
@@ -599,7 +599,7 @@ const Study = () => {
                           className="goalDate"
                           style={{ margin: "0 0.5vw 0 0.1vw" }}
                         >
-                          {`${list.goalTime[0]}/${list.goalTime[1]}/${list.goalTime[2]}`}
+                          {`${list.goalTime[0]}/${list.goalTime[1]}/${list.goalTime[2] + 1}`}
                         </span>
                       </div>
                     </div>
@@ -637,7 +637,7 @@ const Study = () => {
                         />
                         <span className="nickName">{list.userNickName}</span>
                         <span className="date">
-                          {`${list.goalTime[0]}/${list.goalTime[1]}/${list.goalTime[2]}`}
+                          {`${list.goalTime[0]}/${list.goalTime[1]}/${list.goalTime[2] + 1}`}
                         </span>
                       </div>
                       <div className="icon-box">
@@ -667,7 +667,7 @@ const Study = () => {
                           className="goalDate"
                           style={{ margin: "0 0.5vw 0 0.1vw" }}
                         >
-                          {`${list.goalTime[0]}/${list.goalTime[1]}/${list.goalTime[2]}`}
+                          {`${list.goalTime[0]}/${list.goalTime[1]}/${list.goalTime[2] + 1}`}
                         </span>
                       </div>
                     </div>
