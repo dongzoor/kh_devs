@@ -12,5 +12,12 @@ public interface MySocialRepository extends JpaRepository<Social, Long> {
     // 작성글 조회
     @Query(value = "SELECT * FROM SOCIAL WHERE USER_ID = :userId ORDER BY SOCIAL_CREATE DESC", nativeQuery = true)
     List<Social> findAllByUserId(Long userId);
+
+    // 작성 댓글 조회
+    // join 추가!!
+//    @Query(value = "SELECT * FROM SOCIAL WHERE COMMENT_ID = :commentId", nativeQuery = true)
+//    List<Social> findByCommentSocialId(Long socialId);
+    @Query(value = "SELECT social.social_id, comment.social_id FROM social, comment WHERE social.social_id = comment.social_id", nativeQuery = true)
+    List<Social> findByCommentSocialId(Long socialId);
 }
 

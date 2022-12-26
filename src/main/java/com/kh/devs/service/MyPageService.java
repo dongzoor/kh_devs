@@ -6,7 +6,6 @@ import com.kh.devs.dto.SocialDTO;
 import com.kh.devs.entity.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -45,26 +44,57 @@ public class MyPageService {
 
     // 작성 댓글 조회
     public List<CommentDTO> getCommentList(Long userId) {
-        List<Comment> list = myCommentRepository.findAllByUserId(userId);
+        List<Comment> list = myCommentRepository.findByUserId(userId);
         List<CommentDTO> CommentDTOs = new ArrayList<>();
         for (Comment e : list) {
-//            Social social = socialRepository.findBy...().get(0);
+//            SocialDTO socialDTO = new SocialDTO();
+//            Social social = socialRepository.findAll().get();
             CommentDTO commentDTO = new CommentDTO();
             commentDTO.setId(e.getId()); // 댓글 ID
             commentDTO.setContent(e.getContent());
             commentDTO.setPostDate(e.getPostDate());
             commentDTO.setUserId(e.getUser().getUserId());
-//            SocialId가 Null값으로 불려와짐....
-//            commentDTO.setSocialId(e.getSocial().getSocialId(socialId));
-//            commentDTO.setSocialId(e.getSocial());
+//            commentDTO.setSocialId(e.getSocial().getSocialId());
             CommentDTOs.add(commentDTO);
         }
         return CommentDTOs;
     }
+//    public List<SocialDTO> getCommentList(Long userId) {
+//        List<SocialDTO> socialDTOS = new ArrayList<>();
+//        List<User> users = userRepository.findAll();
+//        for (User u : users) {
+//            UserDTO userDTOS = new UserDTO();
+//            userDTOS.setUserId(u.getUserId());
+//            List<Social> socialList = socialRepository.findAll();
+//            for (Social e : socialList) {
+//                SocialDTO socialDTO = new SocialDTO();
+//                socialDTO.setSocialId(e.getSocialId());
+//                socialDTO.setUserNickName(e.getUser().getUserNickname());       // 작성자 닉네임
+//                socialDTO.setTitle(e.getTitle());
+//                socialDTO.setPostDate(e.getPostDate());
+//                socialDTOS.add(socialDTO);
+//                // 댓글 list 조회
+//                List<Comment> list = myCommentRepository.findByUserId(userId);
+//                List<CommentDTO> CommentDTOs = new ArrayList<>();
+//                for (Comment c : list) {
+//                    CommentDTO commentDTO = new CommentDTO();
+//                    commentDTO.setId(c.getId());
+//                    commentDTO.setContent(c.getContent());
+//                    commentDTO.setPostDate(c.getPostDate());
+//                    commentDTO.setUserId(c.getUser().getUserId());
+//                    CommentDTOs.add(commentDTO);    // CommentDTOs list에 값을 담는다
+//                }
+//                socialDTO.setComments(CommentDTOs); // 모든 댓글 list 값을 socialDTO에 담기
+//            }
+//        }
+//        return socialDTOS;
+//    }
+
 
 //    public List<Comment> getCommentList(Long userId) {
-//        return myCommentRepository.findAllByUserId(userId);
+//        return myCommentRepository.findByUserId(userId);
 //    }
+
 
 
     // 작성 댓글 삭제
@@ -121,6 +151,44 @@ public class MyPageService {
         } catch (Exception e) {
             throw new Exception(e);
         }
+    }
+
+    // 일정 상세페이지 조회(title로 조회)
+    public List<Calendar> getEventList(String calendarTitle) {
+        return calendarRepository.findByCalendarTitle(calendarTitle);
+    }
+
+    // 일정 삭제
+    @Transactional // 삭제
+    public int delCalendar(Long calendarId) {
+        Calendar calendar = calendarRepository.findById(calendarId).get();
+        if (!Objects.isNull(calendar)) {
+            calendarRepository.deleteById(calendar.getCalendarId());
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    // 일정 조회(calendar Id로 조회)
+//    public List<Calendar> eventSearch(String calendarId) {
+//        List<Calendar> calendar = calendarRepository.findByCalendarId(calendarId);
+//        return calendar;
+//    }
+
+    // 일정 수정
+    @Transactional
+    public boolean updateCalendar(Long calendarId, String title, String content, String color, String startDate, String endDate) {
+        Calendar calendar = calendarRepository.findById(calendarId)
+                .orElseThrow(() -> {
+                    return new IllegalArgumentException("실패: 일정을 찾을 수 없습니다.");
+                });
+        calendar.setTitle(title);
+        calendar.setContent(content);
+        calendar.setColor(color);
+        calendar.setStartDate(startDate);
+        calendar.setEndDate(endDate);
+        return true;
     }
 
 

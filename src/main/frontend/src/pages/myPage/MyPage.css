@@ -67,13 +67,17 @@
   font-size: 1em;
 }
 
+.container-fluid {
+  padding: 0;
+}
+
 .myPageTableTr, .ms-td-2, .ms-td-3 {
   text-align: center;
 }
 
-.ms-th-1 {
+/* .ms-th-1 {
   width: 70%;
-}
+} */
 
 .deleteButton, .mySocialTitle, .mySocialCommNum{
   display: inline-block;
@@ -91,8 +95,12 @@
   font-weight: bold;
 }
 
+.ms-th-2 {
+  width: 200px;
+}
+
 .ms-th-3 {
-  width: 50px;
+  width: 70px;
 }
 
 /* 댓글 작성 페이지 */
@@ -181,24 +189,20 @@
   padding: 20px;
 }
 
-  /* 가로, 세로 가운데 정렬 필요 */
-/* .calDetailPagecenter {
-} */
-
 .calendarDetailPageTitle {
   font-size: 1.9em;
   text-align: center;
 }
 
 .calendarDetailPagebuttonBox>button {
-  border: none;
+  border: 1px solid gray;
   border-radius: 3px;
   margin: 5px;
-  background-color: rgb(200, 154, 244);
+  background-color: rgb(181, 110, 247);
 }
 
 .calendarDetailPagebuttonBox>button:hover {
-  background-color: rgb(158, 72, 239);
+  background-color: rgb(184, 184, 184);
   color: white;
 }
 
@@ -208,8 +212,8 @@
 }
 
 .backButton {
-  width: 25px;
-  height: 25px;
+  width: 35px;
+  height: 35px;
   border: 1px solid gray;
   border-radius: 3px;
   text-align: center;
@@ -234,4 +238,95 @@
 
 .eventTitle {
   display: inline-block;
+  font-weight: bold;
 }
+
+.calendarDetailPageTitle {
+  font-size: 2em;
+}
+.eventTitle, .eventStartDate, .eventEndDate, .eventContent {
+  font-size: 1.3em;
+}
+
+.calendarDetailPagebuttonBox >button {
+  margin: 5px;
+  height: 40px;
+  width: 60px;
+  border: 1px solid gray;
+  border-radius: 3px;
+  color: rgb(226, 226, 226);
+  background-color: rgb(193, 133, 249);
+  font-weight: bold;
+}
+
+.calendarDetailPagebuttonBox >button:hover {
+  color: rgba(155, 33, 242, 0.568);
+  background-color: rgb(223, 223, 223);
+  font-weight: bold;
+}
+
+
+/* 일정 등록, 수정 페이지 */
+.eventAddPageContainer {
+  font-family: 'Gowun Dodum', sans-serif;
+  width: 350px;
+  margin: auto;
+  padding-top: 20px;
+}
+.calendarAdd {
+  width: 350px;
+  border: 3px solid rgba(128, 128, 128, 0.482);
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.338);
+  padding: 20px;
+}
+
+.calendarAdd > h1 {
+  font-size: 2em;
+  text-align: center;
+}
+
+.calendarInputBox > h3 {
+  font-size: 1.5em;
+}
+.eventColorBox {
+  display: inline;
+  width: 15px;
+  margin-left: 10px;
+}
+.calendarInputBox > input {
+  width: 310px;
+  margin-bottom: 20px;
+  margin-top: 5px;
+  border-radius: 5px;
+  border: 1px solid gray;
+  height: 35px;
+  padding: 0 10px;
+}
+
+.calendarAddButtonBox{
+  text-align: center;
+}
+
+.calendarAddButtonBox >button {
+  margin: 5px;
+  height: 40px;
+  width: 60px;
+  border: 1px solid gray;
+  border-radius: 3px;
+  color: rgb(226, 226, 226);
+  background-color: rgb(193, 133, 249);
+  font-weight: bold;
+}
+
+.calendarAddButtonBox >button:hover {
+  color: rgba(155, 33, 242, 0.568);
+  background-color: rgb(223, 223, 223);
+  font-weight: bold;
+}
+
+/* .eventContent {
+  height: 100px;
+  resize: vertical;
+  white-space: pre-line;
+} */

@@ -6,6 +6,7 @@ import MyPageApi from '../../api/MyPageApi';
 import { Link, useNavigate } from 'react-router-dom';
 import './MyPage.css';
 
+
 const MyCalendar = () => {
 
   // const navigate = useNavigate();
@@ -40,16 +41,18 @@ const MyCalendar = () => {
   }
 
   // 일정 상세페이지로 이동할 calendarId 가져오기
-  const getCalendarId = Array.from(calendarList).map((e) => {
-    let calendarIdObj = {
-      "calendarId":e.calendarId
-    }
-    return calendarIdObj;
-  });
-  console.log("*getCalendarId", getCalendarId);
+  // const getCalendarId = Array.from(calendarList).map((e) => {
+  //   let calendarIdObj = {
+  //     "calendarId":e.calendarId
+  //   }
+  //   return calendarIdObj;
+  // });
+  // console.log("*getCalendarId", getCalendarId);
 
   // 일정(Event) 상세페이지로 이동
-  // const handleEventClick = (getCalendarId) => {
+  // function CalendarDetail() {
+  //   console.log
+
   //   console.log("일정 클릭 calendarId + ", getCalendarId)
   //   navigate(`/myPage/myCalendar/${getCalendarId}`);
   // }
@@ -58,7 +61,7 @@ const MyCalendar = () => {
   //   console.log("날짜 클릭 : " )
   // }
 
-  // Events 입력 형태 만들기(Array.from : 유사 배열 객체를 새로운 객체로 변환)
+  // Events 입력을 위한 형태로 만들기(Array.from : 유사 배열 객체를 새로운 객체로 변환)
   const eventList = Array.from(calendarList).map((e) => {
     let returnObj = {
       "title":e.title,
@@ -74,7 +77,7 @@ const MyCalendar = () => {
   return (
     <div className="myPageContainer">
       <div className="subTitle">
-        <h1>My Calendar</h1>
+        <h1>My Calendar 🗓️ </h1>
       </div>
       <hr className="myPageHr"/>
       <div className="calContainer">
@@ -87,14 +90,21 @@ const MyCalendar = () => {
         
         
         <FullCalendar 
-          defaultView="dayGridMonth" 
+          defaultView="dayGridWeek"
           plugins={[ dayGridPlugin, interactionPlugin ]}
           events={
-            // 데이터 입력 샘플
-            // { title: '파이널 마무리', date: "2022-12-30T17:01", end: "2022-12-30T17:01", color: '#95e4fe'},
+            // 일정 입력 샘플
+            // { title: '일정 입력 샘플', date: "2022-12-30T17:01", end: "2022-12-31", color: '#95e4fe'}
             eventList
           }
-          // eventClick= {handleEventClick(calendarId)}
+          eventClick={
+            function(arg){
+              console.log("event data : ", arg.event);
+              sessionStorage.setItem("event_title", arg.event.title);
+              sessionStorage.setItem("event_start_date", arg.event.start);
+              window.location.replace("/myPage/myCalendar/detail");
+            }
+          }
           // eventClick={handleEventClick()} 
           // dateClick={handleDateClick}
         />

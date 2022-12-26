@@ -22,6 +22,8 @@ import MySocial from "./pages/myPage/MySocial";
 import MyStudy from "./pages/myPage/MyStudy";
 import CalendarAdd from "./pages/myPage/CalendarAdd";
 import CalendarDetail from "./pages/myPage/CalendarDetail";
+import CalendarId from "./pages/myPage/CalendarId";
+import CalendarUpdate from "./pages/myPage/CalendarUpdate";
 import Nav from "../src/containers/common/Nav";
 import Profile from "./pages/profile/Profile";
 import Register from "./pages/register/Register";
@@ -85,7 +87,9 @@ function App() {
         <Route path="/myPage/MyLike/:userId" element={<MyLike />} />
         <Route path="/myPage/myCalendar/add" element={<CalendarAdd />} />
         {/* <Route path="/myPage/myCalendar/:calendarId" element={<CalendarDetail />} /> */}
-        <Route path="/myPage/myCalendar/detailTest" element={<CalendarDetail />} />
+        <Route path="/myPage/myCalendar/detail/:calendarTitle" element={<CalendarDetail />} />
+        <Route path="/myPage/myCalendar/detail" element={<CalendarId />} />
+        <Route path="/myPage/myCalendar/update/:calendarId" element={<CalendarUpdate />} />
         <Route
           index
           path="/chat"

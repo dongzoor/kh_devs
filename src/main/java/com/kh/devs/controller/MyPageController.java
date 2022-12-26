@@ -58,6 +58,11 @@ public class MyPageController {
         List<CommentDTO> list = myPageService.getCommentList(userId);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
+//    @GetMapping("/api/myPage/myComment/{userId}")
+//    public ResponseEntity<List<SocialDTO>> commentList(@PathVariable("userId") Long userId) {
+//        List<SocialDTO> socialDTO = myPageService.getCommentList(userId);
+//        return new ResponseEntity<>(socialDTO, HttpStatus.OK);
+//    }
 
 
     // 작성 댓글 삭제
@@ -80,7 +85,7 @@ public class MyPageController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    // 캘린더 일정 조회
+    // 캘린더 일정 전체 조회
     @GetMapping("/api/myPage/myCalendar/{userId}")
     public ResponseEntity<List<Calendar>> CalendarList(@PathVariable Long userId) {
         List<Calendar> list = myPageService.getCalendarList(userId);
@@ -122,5 +127,46 @@ public class MyPageController {
         }
     }
 
+    // 일정 상세페이지 조회
+//    @GetMapping("/api/myPage/myCalendar/detail/{calendarId}")
+//    public ResponseEntity<List<Calendar>> eventList(@PathVariable Long calendarId) {
+//        List<Calendar> list = myPageService.getEventList(calendarId);
+//        return new ResponseEntity<>(list, HttpStatus.OK);
+//    }
+    @GetMapping("/api/myPage/myCalendar/detail/{calendarTitle}")
+    public ResponseEntity<List<Calendar>> eventList(@PathVariable String calendarTitle) {
+        List<Calendar> list = myPageService.getEventList(calendarTitle);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    // 일정 삭제
+    @DeleteMapping("/api/myPage/myCalendar/delete/{calendarId}")
+    public Map<String, Object> deleteCalendar(@PathVariable("calendarId") long calendarId) {
+        Map<String, Object> response = new HashMap<>();
+        if (myPageService.delCalendar(calendarId) > 0) {
+            response.put("result", "OK");
+        } else {
+            response.put("result", "NOK");
+            response.put("reason", "일치하는 게시글 정보가 없습니다.");
+        }
+        return response;
+    }
+
+    // 일정 수정
+    @PutMapping("/api/myPage/myCalendar/update/{calendarId}")
+    public ResponseEntity<Boolean> calendarUpdate(@PathVariable("calendarId") long pathCalendarId, @RequestBody Map<String, String> updateData) throws Exception {
+        Long calendarId = pathCalendarId;
+        String title = updateData.get("title");
+        String content = updateData.get("content");
+        String color = updateData.get("color");
+        String startDate = updateData.get("startDate");
+        String endDate = updateData.get("endDate");
+        boolean result = myPageService.updateCalendar(calendarId, title, content, color, startDate, endDate);
+        if (result) {
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        }
+    }
 
 }
