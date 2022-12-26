@@ -21,7 +21,7 @@ const Box = styled.div`
 
   .inputContainer {
     width: 60%;
-    height: 77vh;
+    height: 120vh;
     margin: 0 auto;
     padding: 15px;
     background-color: #FFF;
@@ -105,7 +105,7 @@ const Box = styled.div`
 
     .inputContainer {
       width:90vw;
-      height: 85vh;
+      height: 130vh;
     }
 
     .studyInfo-container {
@@ -351,6 +351,7 @@ const StudyWrite = (studyObj) => {
             <div>
               <Calendar className="calendar" onChange={(e) => setValueDate(e)}
                 formatDay={(locale, date) => moment(date).format("DD")} />
+              {console.log(valueDate)}
             </div>
           </div>
         </div>
