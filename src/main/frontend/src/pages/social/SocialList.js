@@ -80,7 +80,7 @@ const ListBlock = styled.div`
   }
   .parentBox {
     max-width: 1024px;
-    min-width: 450px;
+    min-width: 350px;
     margin: 0px auto;
     padding: 5px;
     border-radius: 10px;
@@ -216,6 +216,15 @@ const ListBlock = styled.div`
       border-radius: 10px;
     }
   }
+  @media (width < 450px) {
+    * {
+      font-size: 15px;
+    }
+    .date{
+      display: none;
+    }
+
+  }
 `;
 
 const Social = () => {
@@ -229,7 +238,7 @@ const Social = () => {
 
   const onSelectType = (e) => {
     setTypeSelect(e.target.value);
-    console.log(e.target.value);
+    // console.log(e.target.value);
   };
   const searchTag = async (e) => {
     if (e.key === "Enter") {
@@ -241,22 +250,22 @@ const Social = () => {
       } else {
         if (typeSelect === "one") {
           // [제목+내용] 검색
-          console.log("[제목+내용] 검색");
+          // console.log("[제목+내용] 검색");
           setSearchData(value);
-          console.log(value);
+          // console.log(value);
           const res = await SocialApi.titleContentSearch(value);
           setSocialList(res.data);
         } else if (typeSelect === "two") {
           // [해시태그] 검색
-          console.log("[해시태그] 검색");
+          // console.log("[해시태그] 검색");
           setSearchData(value);
-          console.log(value);
+          // console.log(value);
           const res = await SocialApi.hashTagSearch(value);
           setSocialList(res.data);
           setInputTags(res.data.hashtag);
         } else {
           // [작성자 닉네임] 기준 검색
-          console.log("[작성자 닉네임] 검색");
+          // console.log("[작성자 닉네임] 검색");
           setSearchData(value);
           const res = await SocialApi.userSearch(value);
           setSocialList(res.data);
@@ -280,9 +289,9 @@ const Social = () => {
         setInputTags(response.data.hashtag);
         setReset(false);
         setTypeSelect("one");
-        console.log("★ Social List ", response.data);
+        // console.log("★ Social List ", response.data);
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
       setLoading(false);
     };

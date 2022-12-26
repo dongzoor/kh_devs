@@ -65,7 +65,7 @@ const CommentList = () => {
         setDeleteComplete(false);
         setIsSubmit(false);
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     };
     CommentData();
@@ -73,10 +73,10 @@ const CommentList = () => {
 
   // 삭제 버튼 클릭 시
   const onClickButton = async (commentId) => {
-    console.log(commentId + "번 댓글 삭제 버튼 클릭");
+    // console.log(commentId + "번 댓글 삭제 버튼 클릭");
     const res = await SocialApi.commentDelete(commentId);
     if (res.data === true) {
-      console.log(res.data);
+      // console.log(res.data);
       setDeleteComplete(true); // 삭제되면 render 되도록
       alert("댓글이 삭제되었습니다.");
     } else setDeleteComplete(false);
