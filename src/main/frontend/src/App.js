@@ -38,6 +38,8 @@ import StudyWrite from "./pages/study/StudyWrite";
 import Home from "./pages/chat/Home";
 import { useContext } from "react";
 import { AuthContext } from "./pages/context/AuthContext";
+import Footer from "./footer/Footer";
+import PrivacyPolicy from "./footer/PrivacyPolicy";
 
 // import Admin from "./pages/admin/Admin";
 function App() {
@@ -53,6 +55,7 @@ function App() {
   };
 
   return (
+    <>
     <Router>
       <Nav />
       <Routes>
@@ -89,6 +92,7 @@ function App() {
         <Route path="/myPage/myCalendar/detail/:calendarTitle" element={<CalendarDetail />} />
         <Route path="/myPage/myCalendar/detail" element={<CalendarId />} />
         <Route path="/myPage/myCalendar/update/:calendarId" element={<CalendarUpdate />} />
+        <Route path="/privacyPolicy" element={<PrivacyPolicy />} />
         <Route
           index
           path="/chat"
@@ -99,7 +103,10 @@ function App() {
           }
         />
       </Routes>
+      <Footer></Footer>
     </Router>
+   
+    </>
   );
 }
 

@@ -101,7 +101,7 @@ function AdminBoardList() {
       try {
         const response = await AdminApi.adstudyboardList();
         setAdstudyboard(response.data);
-        console.log(response.data);
+        // console.log(response.data);
       } catch (e) {
         console.log(e);
       }
@@ -123,10 +123,10 @@ function AdminBoardList() {
 
   // 스터디 게시판 삭제
   const confirmModal = async (e) => {
-    console.log("삭제 버튼 클릭");
+    // console.log("삭제 버튼 클릭");
     setModalOpen(true);
     const response = await AdminApi.deleteStudyBoard(e);
-    console.log(response.data);
+    // console.log(response.data);
     if (response.data) {
       setLoading(true);
       setDeleteAdBoard(true);
