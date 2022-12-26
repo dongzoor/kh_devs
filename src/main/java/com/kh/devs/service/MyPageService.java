@@ -48,13 +48,13 @@ public class MyPageService {
         List<CommentDTO> CommentDTOs = new ArrayList<>();
         for (Comment e : list) {
 //            SocialDTO socialDTO = new SocialDTO();
-//            Social social = socialRepository.findAll().get();
+//            socialDTO.setSocialId(e.getSocial().getSocialId());
             CommentDTO commentDTO = new CommentDTO();
+            commentDTO.setSocialId2(e.getSocial().getSocialId());
             commentDTO.setId(e.getId()); // 댓글 ID
             commentDTO.setContent(e.getContent());
             commentDTO.setPostDate(e.getPostDate());
             commentDTO.setUserId(e.getUser().getUserId());
-//            commentDTO.setSocialId(e.getSocial().getSocialId());
             CommentDTOs.add(commentDTO);
         }
         return CommentDTOs;
@@ -110,8 +110,8 @@ public class MyPageService {
     }
 
     // 가입한 스터디 조회
-    public List<Study> getStudyList(Long userId) {
-        return myStudyRepository.findByApplyPeople(userId);
+    public List<Study> getStudyList(String nickName) {
+        return myStudyRepository.findByApplyPeople(nickName);
     }
 
     // 캘린더 일정 조회

@@ -23,13 +23,13 @@ const CalendarAdd = () => {
   // 일정 등록
   const onClickEventAdd = async (e) => {
     
-    console.log("======= data 확인 =======")
-    console.log("user_id : " + userId);
-    console.log("title : " + titleInput);
-    console.log("content : " + contentInput);
-    console.log("color : " + colorInput);
-    console.log("start_date : " + startDateInput);
-    console.log("end_date : " + endDateInput);
+    // console.log("======= data 확인 =======")
+    // console.log("user_id : " + userId);
+    // console.log("title : " + titleInput);
+    // console.log("content : " + contentInput);
+    // console.log("color : " + colorInput);
+    // console.log("start_date : " + startDateInput);
+    // console.log("end_date : " + endDateInput);
 
     if(window.confirm("일정을 등록하시겠습니까?") === true ) {
 
@@ -44,7 +44,7 @@ const CalendarAdd = () => {
       } 
       
       const res = await MyPageApi.calendarEventAdd(userId, titleInput, contentInput, colorInput, startDateInput, endDateInput);
-      console.log(res.data);
+      // console.log(res.data);
 
     
       if(res.data === true) {

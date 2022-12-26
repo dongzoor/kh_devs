@@ -79,9 +79,9 @@ public class MyPageController {
     }
 
     // 가입한 스터디 조회
-    @GetMapping("/api/myPage/myStudy/{userId}")
-    public ResponseEntity<List<Study>> studyList(@PathVariable Long userId){
-        List<Study> list = myPageService.getStudyList(userId);
+    @GetMapping("/api/myPage/myStudy/{nickName}")
+    public ResponseEntity<List<Study>> studyList(@PathVariable String nickName){
+        List<Study> list = myPageService.getStudyList(nickName);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 

@@ -217,6 +217,7 @@
   border: 1px solid gray;
   border-radius: 3px;
   text-align: center;
+  background-image: url(./images/calendarAdd2.png);
 }
 
 .backButton:hover {

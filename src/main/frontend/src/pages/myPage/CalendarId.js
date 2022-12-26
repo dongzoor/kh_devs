@@ -15,7 +15,7 @@ const CalendarId = () => {
         setLoading(true);
         try {
           const response = await MyPageApi.eventId(calendarTitle);
-          console.log("캘린더 이벤트 data : ",response.data[0])
+          // console.log("캘린더 이벤트 data : ",response.data[0])
 
           sessionStorage.setItem("calendar_id",response.data[0].calendarId);
           sessionStorage.setItem("calendar_title",response.data[0].title);
@@ -27,7 +27,7 @@ const CalendarId = () => {
           navigate(`/myPage/myCalendar/detail/${calendarTitle}`);
           
         } catch (e) {
-          console.log(e);
+          // console.log(e);
         }
         setLoading(false);
     };

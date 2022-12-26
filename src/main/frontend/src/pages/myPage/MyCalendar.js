@@ -21,15 +21,15 @@ const MyCalendar = () => {
     const MyCalendarData = async () => {
         setLoading(true);
         try {
-          console.log("User Id : " + userId);
+          // console.log("User Id : " + userId);
           // 로그인된 userId로 작성된 일정 조회
           const response = await MyPageApi.calendarList(userId);
           setCalendarList(response.data);
-          console.log("캘린더 이벤트 리스트", response.data);
+          // console.log("캘린더 이벤트 리스트", response.data);
           // setEvents([...response.data]);  
           
         } catch (e) {
-          console.log(e);
+          // console.log(e);
         }
         setLoading(false);
     };
@@ -39,27 +39,6 @@ const MyCalendar = () => {
   if (loading) {
     return <h2>∘✧₊⁺ 𝑳𝒐𝒅𝒊𝒏𝒈... ⁺₊✧∘</h2>
   }
-
-  // 일정 상세페이지로 이동할 calendarId 가져오기
-  // const getCalendarId = Array.from(calendarList).map((e) => {
-  //   let calendarIdObj = {
-  //     "calendarId":e.calendarId
-  //   }
-  //   return calendarIdObj;
-  // });
-  // console.log("*getCalendarId", getCalendarId);
-
-  // 일정(Event) 상세페이지로 이동
-  // function CalendarDetail() {
-  //   console.log
-
-  //   console.log("일정 클릭 calendarId + ", getCalendarId)
-  //   navigate(`/myPage/myCalendar/${getCalendarId}`);
-  // }
-
-  // const handleDateClick = () => {
-  //   console.log("날짜 클릭 : " )
-  // }
 
   // Events 입력을 위한 형태로 만들기(Array.from : 유사 배열 객체를 새로운 객체로 변환)
   const eventList = Array.from(calendarList).map((e) => {
@@ -71,7 +50,7 @@ const MyCalendar = () => {
     }
     return returnObj;
   });
-  console.log("eventList", eventList);
+  // console.log("eventList", eventList);
 
  
   return (
