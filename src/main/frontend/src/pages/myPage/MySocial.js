@@ -6,8 +6,6 @@ import MyPageNav from './components/MyPageNav';
 import { Link } from 'react-router-dom';
 import './MyPage.css'
 import JwModal from "../../utill/JwModal";
-// import Pagination from "react-js-pagination";
-// import styled from "styled-components";
 
 const MySocial = () => {
 
@@ -40,6 +38,7 @@ const MySocial = () => {
   if (loading) {
     return <h2>∘✧₊⁺ 𝑳𝒐𝒅𝒊𝒏𝒈... ⁺₊✧∘</h2>
   }
+
 
   // 작성글 개별 삭제
   const delConfirmScModal = async (e) => {
@@ -104,7 +103,6 @@ const MySocial = () => {
               </tbody>
             </Table>
           </div>
-          {/* 페이지네이션 추가 예정 */}
       </div>
   )
 }

@@ -66,7 +66,6 @@ const MyStudy = () => {
     } else {
         if (startDate === "") {
           window.alert("스터디 날짜가 지정되지 않아 등록이 불가능합니다.");
-          navigate(`/myPage/myCalendar/${userId}`);
         } else {
           window.alert("일정 등록 실패");
         }
@@ -76,7 +75,7 @@ const MyStudy = () => {
   return (
       <div className="myPageContainer">
        <div className="subTitle">
-         <h1>My Study</h1>
+         <h1>My Study ✏️</h1>
        </div>
        <hr className="myPageHr"/>
         {studyList &&
@@ -118,9 +117,10 @@ const MyStudy = () => {
                   </CardContainer>
                 </Link>
                 {/* 캘린더에 일정 추가 버튼 */}
-                <div className="calendarAddButton" onClick={onClickCalendarAdd(list.title, list.goalTime)}>
+                {/* <div className="calendarAddButton" onClick={onClickCalendarAdd(list.title, list.goalTime)}>
                   <button>일정 등록</button>
-                </div>
+                </div> */}
+                
               </ul>
               :
               <ul key={list.id}>
@@ -153,9 +153,9 @@ const MyStudy = () => {
                   </CardContainer>
                 </Link>
                 {/* 캘린더에 일정 추가 버튼 */}
-                <div className="calendarAddButton" onClick={onClickCalendarAdd(list.title, list.goalTime)}>
+                {/* <div className="calendarAddButton" onClick={onClickCalendarAdd(list.title, list.goalTime)}>
                   <button>일정 등록</button>
-                </div>
+                </div> */}
               </ul>
           )}
       </div>

@@ -16,6 +16,7 @@ const MyPageApi = {
   myCommentList: async function (userId) {
     return await axios.get(`/api/myPage/myComment/${userId}`);
   },
+
   
   // 작성댓글 삭제
   myCommnetDelete: async function (commentId) {
@@ -37,10 +38,15 @@ const MyPageApi = {
     return await axios.get(`/api/myPage/myCalendar/${userId}`);
   },
 
-  // 일정 상세 조회
-  calendarDetail: async function (calendarId) {
-    return await axios.get(`/api/myPage/myCalendar/${calendarId}`);
+  // 일정 상세 조회(title)
+  eventId:async function (calendarTitle) {
+    return await axios.get(`/api/myPage/myCalendar/detail/${calendarTitle}`);
   },
+
+  // 일정 상세 조회
+  // calendarDetail: async function (calendarId) {
+  //   return await axios.get(`/api/myPage/myCalendar/detail/${calendarId}`);
+  // },
 
   // 일정 등록
   calendarEventAdd: async function (userId, titleInput, contentInput, colorInput, startDateInput, endDateInput) {
@@ -67,20 +73,20 @@ const MyPageApi = {
   },
 
   // 일정 수정
-  calendarUpdate: async function (calendarId, titleInput, contentInput, colorInput, startDateInput, endDateInput) {
+  calendarUpdate: async function (calendarId, title, color, content, startDate, endDate) {
     const updateObj = {
-      title: titleInput,
-      content: contentInput,
-      color: colorInput,
-      startDate: startDateInput,
-      endDate: endDateInput,
+      title: title,
+      content: content,
+      color: color,
+      startDate: startDate,
+      endDate: endDate,
     };
-    return await axios.put(`/api/myPage/myCalendar/${calendarId}/update`, updateObj);
+    return await axios.put(`/api/myPage/myCalendar/update/${calendarId}`, updateObj);
   },
 
   // 일정 삭제
   calendarDelete: async function (calendarId) {
-    return await axios.delete(`/api/myPage/myCalendar/${calendarId}`);
+    return await axios.delete(`/api/myPage/myCalendar/delete/${calendarId}`);
   },
 };
 export default MyPageApi;

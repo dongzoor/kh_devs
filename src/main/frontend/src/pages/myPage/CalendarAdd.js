@@ -31,20 +31,32 @@ const CalendarAdd = () => {
     console.log("start_date : " + startDateInput);
     console.log("end_date : " + endDateInput);
 
-    const res = await MyPageApi.calendarEventAdd(userId, titleInput, contentInput, colorInput, startDateInput, endDateInput);
-    console.log(res.data);
-    if(res.data === true) {
-      window.alert("일정이 등록되었습니다!");
-      navigate(`/myPage/myCalendar/${userId}`);
-    } else {
-        if (titleInput === "") {
-          window.alert("제목을 입력하세요");
-        } else if (startDateInput === "") {
+    if(window.confirm("일정을 등록하시겠습니까?") === true ) {
+
+      if (titleInput === "") {
+        window.alert("제목을 입력하세요");
+        return;
+      } 
+      
+      if (startDateInput === "") {
           window.alert("시작 날짜를 입력하세요");
-        } else {
-          window.alert("일정 입력 실패");
-        }  
-      }
+          return;
+      } 
+      
+      const res = await MyPageApi.calendarEventAdd(userId, titleInput, contentInput, colorInput, startDateInput, endDateInput);
+      console.log(res.data);
+
+    
+      if(res.data === true) {
+        window.alert("일정이 등록되었습니다!");
+        navigate(`/myPage/myCalendar/${userId}`);
+      } else {
+            window.alert("일정 입력 실패");
+          } 
+
+    } else {
+      return false;
+    }
   };
 
   // 취소 버튼
@@ -56,29 +68,33 @@ const CalendarAdd = () => {
     }
   }
 
+  
+
   return (
 
-    <div className='calendarAddTest'>
+    <div className="eventAddPageContainer">
+      <div className='calendarAdd'>
       <h1>🗓️ 일정 등록</h1>
-      <div className='calendarInputBox'>
-        <h3 style={{"display" : "inline"}}>색상 선택 </h3>
-        <input type={"color"} name={"event_color"} onChange={onChangeColor}/>
-        <hr/>
-        <h3>제목</h3>
-        <input type={"text"} name={"event_title"} placeholder=
-        {"제목을 입력해주세요. (필수)"} onChange={onChangeTitle} />
-        <h3>시작 날짜(필수)</h3>
-        <input type={"datetime-local"} name={"event_start_date"} onChange={onChangeStartDate} />
-        <h3>종료 날짜</h3>
-        <input type={"datetime-local"} name={"event_end_date"} onChange={onChangeEndDate} />
-        <h3>내용</h3>
-        <input type={"textarea"} name={"event_content"} placeholder=
-        {"내용을 입력해주세요."} onChange={onChangeContent} />
-        <hr/>
-      </div>
-      <div className='calendarAddButtonBox'>
-        <button className='calAddButton' onClick={onClickEventAdd}>등록</button>
-        <button className='calCancelButton' onClick={onClickCancel}>취소</button>
+        <div className='calendarInputBox'>
+          <hr/>
+          <h3 style={{"display" : "inline"}}>제목</h3>
+          <div className="eventColorBox">
+            <input type={"color"} name={"event_color"} style={{"display" : "inline"}} onChange={onChangeColor}/>
+          </div>
+          <input type={"text"} name={"event_title"} placeholder={"제목을 입력해주세요. (필수)"} onChange={onChangeTitle} />
+          <h3>시작 날짜(필수)</h3>
+          <input type={"datetime-local"} name={"event_start_date"} onChange={onChangeStartDate} />
+          <h3>종료 날짜</h3>
+          <input type={"datetime-local"} name={"event_end_date"} onChange={onChangeEndDate} />
+          <h3>내용</h3>
+          <input type={"textarea"} name={"event_content"} placeholder=
+          {"내용을 입력해주세요."} onChange={onChangeContent} />
+          <hr/>
+        </div>
+        <div className='calendarAddButtonBox'>
+          <button className='calAddButton' onClick={onClickEventAdd}>등록</button>
+          <button className='calCancelButton' onClick={onClickCancel}>취소</button>
+        </div>
       </div>
     </div>
   );
