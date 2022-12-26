@@ -7,7 +7,7 @@ import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Navbar from "react-bootstrap/Navbar";
 
-// import LogoImg from "./image/devs.png";
+import LogoImg2 from "./image/devs.png";
 
 function Adminheader() {
   const userId = localStorage.getItem("userId");
@@ -31,7 +31,7 @@ function Adminheader() {
         <Navbar.Brand href="/AdminMemberList">
           DEVS 관리페이지&nbsp;
           <img
-            // src={LogoImg}
+            src={LogoImg2}
             alt=""
             style={{ margin: "5px", width: "30px", height: "40px" }}
           />

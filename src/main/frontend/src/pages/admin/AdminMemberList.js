@@ -131,7 +131,7 @@ function AdminMemberList() {
     if (deleteUser.data) {
       setLoading(true);
       setDeleteadmem(true);
-      window.location.replace("/AdminMemberList");
+      window.location.reload();
     } else setDeleteadmem(false);
     setLoading(false);
   };
